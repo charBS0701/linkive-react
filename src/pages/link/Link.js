@@ -11,11 +11,18 @@ function Link() {
     const itemList = (count) => {
         let data = [];
 
-        for(let i = 0;i < count;i++) {
-            data.push(<ItemComponent src="/images/img.png" title="롯데월드" favicon={TestFavicon} folder={"놀이공원"}/>);
-        }
-        return data;
+    for (let i = 0; i < count; i++) {
+      data.push(
+        <ItemComponent
+          src="/images/img.png"
+          title="롯데월드"
+          favicon={TestFavicon}
+          folder={"놀이공원"}
+        />
+      );
     }
+    return data;
+  };
 
     const openModal = () => {
         dialogRef.current.showModal();
