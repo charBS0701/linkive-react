@@ -16,6 +16,10 @@ function useCustomDialog() {
         dispatch({type: "SET_FOLDER_NAME", folderName: name});
     }
 
+    const setButtonText = (texts) => {
+        dispatch({type: "SET_BUTTON_TEXT", buttonText: texts})
+    }
+
     const onCloseDialog = (value) => {
         closeModal();
         state.resolve(value);
@@ -41,7 +45,7 @@ function useCustomDialog() {
         });
     }
 
-    return { dispatch, alert, confirm, setFolderName, onCloseDialog };
+    return { dispatch, alert, confirm, setFolderName, setButtonText, onCloseDialog };
 }
 
 export default useCustomDialog;
