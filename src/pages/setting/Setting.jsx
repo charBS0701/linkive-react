@@ -2,6 +2,7 @@ import React from "react";
 import profile from "../../contents/profile.png";
 import edit from "../../contents/edit.png";
 import right_arrow from "../../contents/right_arrow.png";
+import { Link } from "react-router-dom";
 
 const Pagesheet = (props) => {
   const text = props.children;
@@ -85,13 +86,9 @@ const Setting = () => {
           </text>
           <text style={{ opacity: "50%" }}>@id1234</text>
         </div>
-        <img
-          src={edit}
-          width="30px"
-          height="30px"
-          alt="edit"
-          style={{ marginLeft: "auto" }}
-        />
+        <Link to="/setting/editProfile" style={{ marginLeft: "auto" }}>
+          <img src={edit} width="30px" height="30px" alt="edit" />
+        </Link>
       </div>
 
       <div

@@ -4,6 +4,7 @@ import Setting from "./pages/setting/Setting";
 import Login from "./pages/login/Login";
 import Link from "./pages/link/Link";
 import Header from "./pages/home/Header";
+import EditProfile from "./pages/setting/EditProfile";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <div style={{ margin: "0 6%" }}>
           <Routes>
             <Route path="/setting" element={<Setting />} />
+            <Route path="/setting/editProfile" element={<EditProfile />} />
             <Route path="/login" element={<Login />} />
             <Route path="/link" element={<Link />} />
             <Route path="/" element={<Home />} />
