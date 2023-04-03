@@ -3,12 +3,13 @@ import checked from "../../contents/checked.png";
 import edit_profile from "../../contents/edit_profile.png";
 
 const Btn = (props) => {
+  const { bgColor, fontColor } = props;
   return (
     <div
       style={{
         width: "170px",
-        backgroundColor: "white",
-        color: "#6368E3",
+        backgroundColor: bgColor,
+        color: fontColor,
         border: "solid",
         borderColor: "#6368E3",
         borderRadius: "25px",
@@ -115,16 +116,15 @@ const EditProfile = () => {
           justifyContent: "space-evenly",
         }}
       >
-        <Btn>탈퇴하기</Btn>
+        <Btn 
+            fontColor="#6368E3"
+            bgColor="white"
+          >탈퇴하기</Btn>
 
         <Btn
-          props={{
-            fontColor: "white",
-            bgColor: "#6368E3", //색 변수 방법, props 방법
-          }}
-        >
-          수정하기
-        </Btn>
+            fontColor="white"
+            bgColor="#6368E3"
+          >수정하기</Btn>
       </div>
     </div>
   );

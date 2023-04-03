@@ -10,7 +10,7 @@ function App() {
   return (
     <div style={{ margin: "3% 3%" }}>
       <Router>
-        <Header />
+        {window.location.pathname !== "/login" && <Header />} {/* 여기에 조건 추가 */}
         <div style={{ margin: "0 6%" }}>
           <Routes>
             <Route path="/setting" element={<Setting />} />
@@ -26,3 +26,5 @@ function App() {
 }
 
 export default App;
+
+
