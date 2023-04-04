@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import InputField from './InputField';
-import logo from '../../contents/logo.png';
+import axios from "axios";
+import React, { useState } from "react";
+import styled from "styled-components";
+import InputField from "./InputField";
+import logo from "../../contents/logo.png";
 import { Link } from "react-router-dom";
-import googleBtn from '../../contents/googleBtn.png';
-import naverBtn from '../../contents/naverBtn.png';
-import kakaoBtn from '../../contents/kakaoBtn.png';
+import googleBtn from "../../contents/googleBtn.png";
+import naverBtn from "../../contents/naverBtn.png";
+import kakaoBtn from "../../contents/kakaoBtn.png";
 
-
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Layout = styled.div`
   display: flex;
@@ -34,8 +36,7 @@ const LoginForm = styled.form`
   align-items: center;
 `;
 
-const LoginBtn = styled.button(
-{
+const LoginBtn = styled.button({
   width: "450px",
   backgroundColor: "#6368E3",
   color: "white",
@@ -45,8 +46,20 @@ const LoginBtn = styled.button(
   padding: "10px",
   textAlign: "center",
   fontSize: "25px",
-  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)"
+  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
 });
+const handleGoogleLogin = () => {
+  axios
+    .get("http://localhost:8123/users/auth/google", { withCredentials: true })
+    .then((res) => {
+      console.log(res);
+      // 로그인 성공 시 처리할 코드 작성
+    })
+    .catch((err) => {
+      console.error(err);
+      // 로그인 실패 시 처리할 코드 작성
+    });
+};
 
 /*
 const GoogleButton = () => {
@@ -72,17 +85,16 @@ const GoogleButton = () => {
 };
 */
 
-
 const Login = () => {
-  const [id, setId] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    if (name === 'id') {
+    if (name === "id") {
       setId(value);
-    } else if (name === 'password') {
+    } else if (name === "password") {
       setPassword(value);
     }
   };
@@ -92,7 +104,7 @@ const Login = () => {
 
     // Validate form input
     if (!id || !password) {
-      setError('Please enter id and password');
+      setError("Please enter id and password");
       return;
     }
 
@@ -104,13 +116,14 @@ const Login = () => {
     <Layout>
       <LoginContainer>
         <img src={logo} alt="logo" />
-        <LoginForm onSubmit={handleSubmit}
+        <LoginForm
+          onSubmit={handleSubmit}
           style={{
             // border: "solid",
             marginTop: "10%",
             display: "flex",
-
-          }}>
+          }}
+        >
           <InputField
             placeholder="아이디"
             type="text"
@@ -128,35 +141,95 @@ const Login = () => {
           <br />
           <LoginBtn type="submit">로그인</LoginBtn>
           {error && <div>{error}</div>}
-          </LoginForm>
-          <div style={{
+        </LoginForm>
+        <div
+          style={{
             display: "flex",
             justifyContent: "space-between",
             width: "400px",
             marginTop: "5%",
             padding: "10px",
             fontSize: "17px",
-            fontWeight: "bold"
-          }}>
-            <Link to="/login/findId" style={{ color: "black", textDecoration: "none"}}>아이디 찾기</Link>| 
-            <Link to="/login/findPassword"style={{color: "black", textDecoration: "none"}}>비밀번호 찾기</Link>|
-            <Link to="/login/SignIn"style={{ color: "black",textDecoration: "none"}}>회원가입</Link>
-          </div>
-          <hr style={{width: "100%",  margin: "7%",}}/>
-          
-          <text style={{fontSize:"20px", fontWeight:"530", marginBottom:"3%"}}>이메일 아이디로 로그인</text>
+            fontWeight: "bold",
+          }}
+        >
+          <Link
+            to="/login/findId"
+            style={{ color: "black", textDecoration: "none" }}
+          >
+            아이디 찾기
+          </Link>
+          |
+          <Link
+            to="/login/findPassword"
+            style={{ color: "black", textDecoration: "none" }}
+          >
+            비밀번호 찾기
+          </Link>
+          |
+          <Link
+            to="/login/SignIn"
+            style={{ color: "black", textDecoration: "none" }}
+          >
+            회원가입
+          </Link>
+        </div>
+        <hr style={{ width: "100%", margin: "7%" }} />
 
-          <div style={{display:"flex"
-          , justifyContent:"space-between",
-          width: "300px",
-        }}>
-            <img src={googleBtn} alt='google login button' style={{width: "25%",
-          }} />
-            <img src={kakaoBtn} alt='google login button' style={{width: "25%",
-          }} />
-            <img src={naverBtn} alt='google login button' style={{width: "25%",
-          }} />
+        <text
+          style={{ fontSize: "20px", fontWeight: "530", marginBottom: "3%" }}
+        >
+          이메일 아이디로 로그인
+        </text>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "300px",
+          }}
+        >
+          <GoogleOAuthProvider
+            clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}
+          >
+            <GoogleLogin
+              clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}
+              onSuccess={(res) => console.log(res, "성공")}
+              onFailure={(res) => console.log(res, "실패")}
+              render={(renderProps) => (
+                <div
+                  className="social_login_box google"
+                  onClick={renderProps.onClick}
+                >
+                  <div className="social_login_image_box">
+                    <img src={googleBtn} alt="google_login" />
+                  </div>
+                  <div className="social_login_text_box">구글로 시작하기</div>
+                  <div className="social_login_blank_box"> </div>
+                </div>
+              )}
+            />
+          </GoogleOAuthProvider>
+
+          <div className="social_login_box google" onClick={handleGoogleLogin}>
+            <div className="social_login_image_box">
+              <img src={googleBtn} alt="google_login" />
+            </div>
+            <div className="social_login_text_box">구글로 시작하기</div>
+            <div className="social_login_blank_box"> </div>
           </div>
+
+          <img
+            src={kakaoBtn}
+            alt="google login button"
+            style={{ width: "25%" }}
+          />
+          <img
+            src={naverBtn}
+            alt="google login button"
+            style={{ width: "25%" }}
+          />
+        </div>
       </LoginContainer>
     </Layout>
   );
