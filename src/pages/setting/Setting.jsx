@@ -3,6 +3,7 @@ import profile from "../../contents/profile.png";
 import edit from "../../contents/edit.png";
 import right_arrow from "../../contents/right_arrow.png";
 import { Link } from "react-router-dom";
+import WithdrawModal from "./WithdrawModal";
 
 const Pagesheet = (props) => {
   const text = props.children;
@@ -39,7 +40,16 @@ const Pagesheet = (props) => {
     </a>
   );
 };
-const Inqyuiry = (props) => {
+const Inquiry = (props) => {
+  const [withdrawModalOpen, setWithdrawModalOpen] = React.useState(false);
+
+  const handleWithdrawModalOpen = () => {
+    setWithdrawModalOpen(true);
+  };
+
+  const handleWithdrawModalClose = () => {
+    setWithdrawModalOpen(false);
+  };
   return (
     <div
       style={{
@@ -50,13 +60,23 @@ const Inqyuiry = (props) => {
         marginBottom: "4%",
       }}
     >
-      <div style={{ fontSize: "18px", fontWeight: "bold" }}>
+      <div
+        style={{ fontSize: "18px", fontWeight: "bold", cursor: "pointer" }}
+        onClick={
+          props.children === "회원탈퇴" ? handleWithdrawModalOpen : undefined
+        }
+      >
         {props.children}
       </div>
       <img src={right_arrow} alt="right_arrow" />
+      <WithdrawModal
+        isOpen={withdrawModalOpen}
+        onClose={handleWithdrawModalClose}
+      />
     </div>
   );
 };
+
 const Setting = () => {
   return (
     <div
@@ -192,9 +212,9 @@ const Setting = () => {
         >
           고객지원
         </span>
-        <Inqyuiry>문의하기</Inqyuiry>
-        <Inqyuiry>로그아웃</Inqyuiry>
-        <Inqyuiry>회원탈퇴</Inqyuiry>
+        <Inquiry>문의하기</Inquiry>
+        <Inquiry>로그아웃</Inquiry>
+        <Inquiry>회원탈퇴</Inquiry>
       </div>
     </div>
   );
