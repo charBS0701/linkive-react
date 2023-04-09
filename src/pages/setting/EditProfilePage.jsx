@@ -4,7 +4,9 @@ import edit_profile from "../../contents/edit_profile.png";
 import styled, { css } from "styled-components";
 import { useState } from "react";
 import WithdrawButton from "./WithdrawButton";
-import EditButton from "./EditButton";
+import Btn from "./Btn";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const Container = styled.div`
   display: flex;
@@ -85,14 +87,30 @@ const ButtonContainer = styled.div`
   flex-direction: row;
   justify-content: space-evenly;
 `;
+
+const EditButton = () => {
+  const handleClick = (event) => {
+    event.preventDefault();
+    event.target.closest("form").submit();
+  };
+  return (
+    <Btn $colored onClick={handleClick}>
+      수정하기
+    </Btn>
+  );
+};
+
 const EditProfile = () => {
+  const [nickname, setNickname] = useState("");
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    const accessToken = Cookies.get("accessToken");
+    const requestToken = Cookies.get("requestToken");
 
     // Validate form input
     if (!userId || !password) {
@@ -101,8 +119,28 @@ const EditProfile = () => {
     }
 
     // Perform login request using fetch or Axios
-    // ...
-    console.log(`userId: ${userId}, Password: ${password}`);
+    try {
+      const response = await axios.post(
+        "http://localhost:8123/users/changeUserInfo",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "refresh-token": requestToken,
+          },
+          data: {
+            nickname,
+            id: userId,
+            password,
+          },
+        }
+      );
+      if (response.status === 200) {
+        // 수정이 완료되었습니다 알림창 띄우기
+        alert("수정이 완료되었습니다.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -115,6 +153,8 @@ const EditProfile = () => {
             <input
               type="text"
               placeholder="닉네임"
+              value={nickname}
+              onChange={(event) => setNickname(event.target.value)}
               style={{
                 marginLeft: "5%",
                 fontSize: "25px",
