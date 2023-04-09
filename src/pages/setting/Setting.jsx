@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import profile from "../../contents/profile.png";
 import edit from "../../contents/edit.png";
 import right_arrow from "../../contents/right_arrow.png";
 import { Link } from "react-router-dom";
 import WithdrawModal from "./WithdrawModal";
+import InquireModal from "./InquireModal";
 
 const Pagesheet = (props) => {
   const text = props.children;
@@ -41,15 +42,23 @@ const Pagesheet = (props) => {
   );
 };
 const Inquiry = (props) => {
-  const [withdrawModalOpen, setWithdrawModalOpen] = React.useState(false);
+  const [withdrawModalOpen, setWithdrawModalOpen] = useState(false);
+  const [inquireModalOpen, setinquireModalOpen] = useState(false);
 
   const handleWithdrawModalOpen = () => {
     setWithdrawModalOpen(true);
   };
-
   const handleWithdrawModalClose = () => {
     setWithdrawModalOpen(false);
   };
+
+  const handleInquireModalOpen = () => {
+    setinquireModalOpen(true);
+  };
+  const handleInquireModalClose = () => {
+    setinquireModalOpen(false);
+  };
+
   return (
     <div
       style={{
@@ -62,9 +71,13 @@ const Inquiry = (props) => {
     >
       <div
         style={{ fontSize: "18px", fontWeight: "bold", cursor: "pointer" }}
-        onClick={
-          props.children === "회원탈퇴" ? handleWithdrawModalOpen : undefined
-        }
+        onClick={() => {
+          if (props.children === "회원탈퇴") {
+            handleWithdrawModalOpen();
+          } else if (props.children === "문의하기") {
+            handleInquireModalOpen();
+          }
+        }}
       >
         {props.children}
       </div>
@@ -72,6 +85,10 @@ const Inquiry = (props) => {
       <WithdrawModal
         isOpen={withdrawModalOpen}
         onClose={handleWithdrawModalClose}
+      />
+      <InquireModal
+        isOpen={inquireModalOpen}
+        onClose={handleInquireModalClose}
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -64,9 +64,10 @@ const ModalButton = styled.button`
 `;
 
 const WithdrawModal = ({ isOpen, onClose }) => {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
+  if (!isOpen) return null;
   const handleWithdraw = async (e) => {
     e.preventDefault();
     const accessToken = Cookies.get("accessToken");
@@ -93,8 +94,6 @@ const WithdrawModal = ({ isOpen, onClose }) => {
       console.error(error);
     }
   };
-
-  if (!isOpen) return null;
 
   return (
     <ModalContainer>
