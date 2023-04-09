@@ -6,6 +6,36 @@ import { useState } from "react";
 import WithdrawButton from "./WithdrawButton";
 import EditButton from "./EditButton";
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+  margin: 0 auto;
+`;
+
+const ProfileContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 7%;
+  padding: 0 5%;
+`;
+
+const InputNicknameContainer = styled.div`
+  border: solid;
+  border-color: #6368e3;
+  border-radius: 30px;
+  width: 70%;
+  margin: 5%;
+  padding: 2%;
+  text-justify: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
 const InputBox = ({ label, type, id, value, onChange }) => {
   return (
     <div
@@ -37,6 +67,24 @@ const InputBox = ({ label, type, id, value, onChange }) => {
   );
 };
 
+const InputBoxContainer = styled.div`
+  width: 100%;
+  border: solid;
+  border-color: #6368e3;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 7%;
+  padding: 5% 5%;
+`;
+
+const ButtonContainer = styled.div`
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+`;
 const EditProfile = () => {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
@@ -59,48 +107,14 @@ const EditProfile = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div
-        style={{
-          // border: "solid",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          width: "50%",
-          margin: "0 auto",
-        }}
-      >
-        <div
-          style={{
-            //   border: "solid",
-            width: "100%",
-            display: "flex",
-            flwxDirection: "row",
-            alignItems: "center",
-            marginBottom: "7%",
-            padding: "0 5%",
-          }}
-        >
-          <img src={edit_profile} width="80px" height="80px" alt="profile" />
-          <div
-            style={{
-              border: "solid",
-              // 보르더 두께줄이기
-              borderColor: "#6368E3",
-              borderRadius: "30px",
-              width: "70%",
-              margin: "5%",
-              padding: "2%",
-              textJustify: "center",
-
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between", // 바깥에 간격있는걸로 바꾸기
-            }}
-          >
+      <Container>
+        <ProfileContainer>
+          <img src={edit_profile} width="80px" height="80px" alt="profile" />{" "}
+          {/* 프로필 사진 불러오고 누르면 수정할 수 있도록 */}
+          <InputNicknameContainer>
             <input
               type="text"
               placeholder="닉네임"
-              // input박스로 변경
               style={{
                 marginLeft: "5%",
                 fontSize: "25px",
@@ -110,21 +124,9 @@ const EditProfile = () => {
               }}
             />
             <img src={checked} alt="cheched" />
-          </div>
-        </div>
-        <div
-          style={{
-            width: "100%",
-            border: "solid",
-            borderColor: "#6368E3",
-            borderRadius: "10px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            marginBottom: "7%",
-            padding: "5% 5%",
-          }}
-        >
+          </InputNicknameContainer>
+        </ProfileContainer>
+        <InputBoxContainer>
           <InputBox
             label="아이디"
             type="text"
@@ -146,20 +148,12 @@ const EditProfile = () => {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
-        </div>
-        <div
-          style={{
-            width: "80%",
-            //   border: "solid",
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-evenly",
-          }}
-        >
+        </InputBoxContainer>
+        <ButtonContainer>
           <WithdrawButton />
           <EditButton />
-        </div>
-      </div>
+        </ButtonContainer>
+      </Container>
     </form>
   );
 };
