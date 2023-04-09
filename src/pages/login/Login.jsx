@@ -50,7 +50,12 @@ const LoginBtn = styled.button({
 });
 const handleGoogleLogin = () => {
   axios
-    .get("http://localhost:8123/users/auth/google", { withCredentials: true })
+    .get("http://localhost:8123/users/auth/google", {
+      withCredentials: true,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+    })
     .then((res) => {
       console.log(res);
       // 로그인 성공 시 처리할 코드 작성
@@ -189,7 +194,7 @@ const Login = () => {
             width: "300px",
           }}
         >
-          <GoogleOAuthProvider
+          {/* <GoogleOAuthProvider
             clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}
           >
             <GoogleLogin
@@ -209,8 +214,7 @@ const Login = () => {
                 </div>
               )}
             />
-          </GoogleOAuthProvider>
-
+          </GoogleOAuthProvider> */}
           <div className="social_login_box google" onClick={handleGoogleLogin}>
             <div className="social_login_image_box">
               <img src={googleBtn} alt="google_login" />
