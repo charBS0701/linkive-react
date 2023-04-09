@@ -5,6 +5,7 @@ import right_arrow from "../../contents/right_arrow.png";
 import { Link } from "react-router-dom";
 import WithdrawModal from "./WithdrawModal";
 import InquireModal from "./InquireModal";
+import LogoutModal from "./LogoutModal";
 
 const Pagesheet = (props) => {
   const text = props.children;
@@ -44,19 +45,28 @@ const Pagesheet = (props) => {
 const Inquiry = (props) => {
   const [withdrawModalOpen, setWithdrawModalOpen] = useState(false);
   const [inquireModalOpen, setinquireModalOpen] = useState(false);
+  const [logoutModalOpen, setLogoutModalOpen] = useState(false);
 
+  // 회원탈퇴
   const handleWithdrawModalOpen = () => {
     setWithdrawModalOpen(true);
   };
   const handleWithdrawModalClose = () => {
     setWithdrawModalOpen(false);
   };
-
+  // 문의하기
   const handleInquireModalOpen = () => {
     setinquireModalOpen(true);
   };
   const handleInquireModalClose = () => {
     setinquireModalOpen(false);
+  };
+  // 로그아웃
+  const handleLogoutModalOpen = () => {
+    setLogoutModalOpen(true);
+  };
+  const handleLogoutModalClose = () => {
+    setLogoutModalOpen(false);
   };
 
   return (
@@ -76,6 +86,8 @@ const Inquiry = (props) => {
             handleWithdrawModalOpen();
           } else if (props.children === "문의하기") {
             handleInquireModalOpen();
+          } else if (props.children === "로그아웃") {
+            handleLogoutModalOpen();
           }
         }}
       >
@@ -90,6 +102,7 @@ const Inquiry = (props) => {
         isOpen={inquireModalOpen}
         onClose={handleInquireModalClose}
       />
+      <LogoutModal isOpen={logoutModalOpen} onClose={handleLogoutModalClose} />
     </div>
   );
 };
