@@ -8,7 +8,7 @@ const Header = () => {
       style={{
         display: "flex",
         justifyContent: "space-between",
-        padding: "0 0 2%",
+        padding: "0 0 2vh 0",
       }}
     >
       <BtnHome />

@@ -9,10 +9,10 @@ import "./styles/App.css";
 
 function App() {
   return (
-    <div style={{ margin: "3% 3%" }}>
+    <div style={{ margin: "3vh 5vw" }}>
       <Router>
         <Header />
-        <div style={{ margin: "0 6%" }}>
+        <div style={{ margin: "0 5vw" }}>
           <Routes>
             <Route path="/setting" element={<Setting />} />
             <Route path="/login" element={<Login />} />
