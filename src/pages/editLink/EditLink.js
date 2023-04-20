@@ -3,15 +3,20 @@ import styled from "styled-components";
 import palette from "../../styles/colorPalette";
 import arrowUp from "../../contents/arrow_up.png";
 import arrowDown from "../../contents/arrow_down.png";
+import instagram from "../../contents/platform_instagram.png";
+import twitter from "../../contents/platform_twitter.png";
+import naverBlog from "../../contents/platform_naver_blog.png";
+import defaultPlatform from "../../contents/platform_default.png";
 import { useEffect } from "react";
 
-
-
 const EditLink = () => {
+  const limitedTitle = 10;
+
   const pageSheetDefault = ['자유', '여행', '공부', '개발', '일기', '체크 리스트'];
   const pageSheetCustom = ['맛집', '운동'];
   const folders = ['놀이공원', '제주도', '부산'];
-
+  const platforms = [instagram, twitter, naverBlog, defaultPlatform];
+  
   const [openPageSheet, setOpenPageSheet] = useState(false);
   const [arrowPageSheet, setArrowPageSheet] = useState(arrowUp);
   const [selectedPageSheet, setSelectedPageSheet] = useState(pageSheetDefault[0]);
@@ -19,6 +24,20 @@ const EditLink = () => {
   const [openFolder, setOpenFolder] = useState(false);
   const [arrowFolder, setArrowFolder] = useState(arrowUp);
   const [selectedFolder, setSelectedFolder] = useState(folders[0]);
+
+  const [title, setTitle] = useState("제목입니다.");
+
+  // 제목 변경
+  const onChangeTitle = e => {
+    var changeTitle = e.target.value;
+    // 글자 수 제한 넘어가면 자르기
+    if(changeTitle.length >= limitedTitle) {
+      changeTitle = changeTitle.substr(0, limitedTitle);
+      alert("제목은 최대 " + limitedTitle + "글자까지 입력 가능합니다.");
+    }
+    
+    setTitle(changeTitle);
+  };
 
   // 페이지 시트 선택 열고 닫기 event
   const openSelectPageSheet = () => {
@@ -42,90 +61,111 @@ const EditLink = () => {
     openFolder, arrowFolder, selectedFolder]);
 
   return (
-    <TopMenus>
-      {/* 페이지 시트 선택 */}
-      <PageSheetLabel>
-        Page Sheet
-      </PageSheetLabel>
+    <Containter>
+      <TopMenus>
+        {/* 페이지 시트 선택 */}
+        <PageSheetLabel>
+          Page Sheet
+        </PageSheetLabel>
 
-      <PageSheetClose>
-        <SelectPageSheet
-          onClick={openSelectPageSheet}>
-          <SelectPageSheetText>{selectedPageSheet}</SelectPageSheetText>
-          <SelectPageSheetArrow
-            src={arrowPageSheet}
-            alt="open" />
-        </SelectPageSheet>
-      
-        {openPageSheet ?
-        <SelectPageSheetUl>
-          <SelectPageSheetLabel>기본</SelectPageSheetLabel>
-          <SelectPageSheetHrDash />
-            {
-              pageSheetDefault.map(pageSheet => (
-                <SelectPageSheetLi
-                  value={pageSheet}
-                  onClick={() => {
-                    setSelectedPageSheet(pageSheet);
-                    openSelectPageSheet();
-                  }}>
-                  {pageSheet}
-                </SelectPageSheetLi>
-              ))
-            }
-          <SelectPageSheetHr />
-          <SelectPageSheetLabel>커스텀</SelectPageSheetLabel>
-          <SelectPageSheetHrDash />
-            {
-              pageSheetCustom.map(pageSheet => (
-                <SelectPageSheetLi
-                  value={pageSheet}
-                  onClick={() => {
-                    setSelectedPageSheet(pageSheet);
-                    openSelectPageSheet();
-                  }}>
-                  {pageSheet}
-                </SelectPageSheetLi>
-              ))
-            }
-        </SelectPageSheetUl>
-        : null}
-
-      </PageSheetClose>
-
-      {/* 폴더 선택 */}
-      <FolderLabel>folder</FolderLabel>
-      <FolderClose>
-        <SelectFolder>
-          <SelectFolderText>{selectedFolder}</SelectFolderText>
-          <SelectPageSheetArrow
-            src={arrowFolder}
-            alt="open"
-            onClick={openSelectFolder} />
-        </SelectFolder>
+        <PageSheetClose>
+          <SelectPageSheet
+            onClick={openSelectPageSheet}>
+            <SelectPageSheetText>{selectedPageSheet}</SelectPageSheetText>
+            <SelectPageSheetArrow
+              src={arrowPageSheet}
+              alt="open" />
+          </SelectPageSheet>
         
-        {openFolder ? 
-          <SelectFolderUl>
-            {
-              folders.map(folder => (
-                <SelectFolderLi
-                  value={folder}
-                  onClick={() => {
-                    setSelectedFolder(folder);
-                    openSelectFolder();
-                  }}>
-                  {folder}
-                </SelectFolderLi>
-              ))
-            }
-          </SelectFolderUl>
-        : null}
-      </FolderClose>
-    </TopMenus>
+          {openPageSheet ?
+          <SelectPageSheetUl>
+            <SelectPageSheetLabel>기본</SelectPageSheetLabel>
+            <SelectPageSheetHrDash />
+              {
+                pageSheetDefault.map(pageSheet => (
+                  <SelectPageSheetLi
+                    value={pageSheet}
+                    onClick={() => {
+                      setSelectedPageSheet(pageSheet);
+                      openSelectPageSheet();
+                    }}>
+                    {pageSheet}
+                  </SelectPageSheetLi>
+                ))
+              }
+            <SelectPageSheetHr />
+            <SelectPageSheetLabel>커스텀</SelectPageSheetLabel>
+            <SelectPageSheetHrDash />
+              {
+                pageSheetCustom.map(pageSheet => (
+                  <SelectPageSheetLi
+                    value={pageSheet}
+                    onClick={() => {
+                      setSelectedPageSheet(pageSheet);
+                      openSelectPageSheet();
+                    }}>
+                    {pageSheet}
+                  </SelectPageSheetLi>
+                ))
+              }
+          </SelectPageSheetUl>
+          : null}
+
+        </PageSheetClose>
+
+        {/* 폴더 선택 */}
+        <FolderLabel>folder</FolderLabel>
+        <FolderClose>
+          <SelectFolder>
+            <SelectFolderText>{selectedFolder}</SelectFolderText>
+            <SelectPageSheetArrow
+              src={arrowFolder}
+              alt="open"
+              onClick={openSelectFolder} />
+          </SelectFolder>
+          
+          {openFolder ? 
+            <SelectFolderUl>
+              {
+                folders.map(folder => (
+                  <SelectFolderLi
+                    value={folder}
+                    onClick={() => {
+                      setSelectedFolder(folder);
+                      openSelectFolder();
+                    }}>
+                    {folder}
+                  </SelectFolderLi>
+                ))
+              }
+            </SelectFolderUl>
+          : null}
+        </FolderClose>
+      </TopMenus>
+
+      {/* 제목 */}
+      <TitleSet>
+        <FlatformIcon
+          src={platforms[0]}
+          alt="출처 플랫폼"
+        />
+        <TitleText
+          type="text"
+          value={title}
+          placeholder="제목을 입력하세요."
+          onChange={onChangeTitle}
+        />
+      </TitleSet>
+    </Containter>
   );
 }
 
-// 상단 메뉴: PageSheet 선택, 폴더 선택
+const Containter = styled.div`
+  display: block;
+  position: relative;
+`;
+
+// 상단 메뉴: PageSheet 선택, 폴더 선택 ---------------------------------------------------------------------------
 const TopMenus = styled.div`
   display: float;
 `;
@@ -166,6 +206,8 @@ const SelectPageSheetArrow = styled.img`
   margin-left: auto;
 `;
 const SelectPageSheetUl = styled.ul`
+  position: absolute;
+  z-index: 5;
   display: block;
   width: fit-content;
   margin: 5px 10px;
@@ -200,7 +242,7 @@ const SelectPageSheetHr = styled.hr`
   border-top: 1.5px solid ${palette.mainColor};
 `;
 
-// 폴더 이동/선택
+// 폴더 이동/선택 -------------------------------------------------------------------------------------------------------
 const FolderClose = styled.div`
   display: block;
   margin-left: 1vw;
@@ -233,6 +275,8 @@ const SelectFolderText = styled.div`
   color: ${palette.black};
 `;
 const SelectFolderUl = styled.ul`
+  position: absolute;
+  z-index: 5;
   display: block;
   width: fit-content;
   margin: 5px 10px;
@@ -249,6 +293,30 @@ const SelectFolderUl = styled.ul`
 const SelectFolderLi = styled.li`
   padding: 14px 15px 12px 15px;
   width: 80px;
+`;
+
+// 제목 ----------------------------------------------------------------------------------------------------------------
+const TitleSet = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 4vh;
+  border: 1px solid ${palette.darkGray};
+  border-radius: 0.5vh;
+  background-color: ${palette.white};
+  box-shadow: 3px 3px 10px -5px ${palette.darkGray};
+`;
+const TitleText = styled.input`
+  width: 70%;
+  border: none;
+  padding: 15px;
+  font-size: 3vh;
+  font-family: 'NanumSquare_acB';
+  color: ${palette.black};
+`;
+const FlatformIcon = styled.img`
+  width: 35px;
+  height: 35px;
+  margin: 12px 7px 12px 20px;
 `;
 
 export default EditLink;
