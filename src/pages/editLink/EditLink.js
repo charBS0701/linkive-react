@@ -7,6 +7,13 @@ import instagram from "../../contents/platform_instagram.png";
 import twitter from "../../contents/platform_twitter.png";
 import naverBlog from "../../contents/platform_naver_blog.png";
 import defaultPlatform from "../../contents/platform_default.png";
+import addLinkEditItem from "../../contents/add_link_edit_item.png";
+import itemText from "../../contents/item_text.png";
+import itemImage from "../../contents/item_image.png";
+import itemLink from "../../contents/item_link.png";
+import itemPlace from "../../contents/item_place.png";
+import itemCheckbox from "../../contents/item_checkbox.png";
+import itemCode from "../../contents/item_code.png";
 import { useEffect } from "react";
 
 const EditLink = () => {
@@ -16,6 +23,7 @@ const EditLink = () => {
   const pageSheetCustom = ['맛집', '운동'];
   const folders = ['놀이공원', '제주도', '부산'];
   const platforms = [instagram, twitter, naverBlog, defaultPlatform];
+  const linkEditItems = [itemText, itemImage, itemLink, itemPlace, itemCheckbox, itemCode];
   
   const [openPageSheet, setOpenPageSheet] = useState(false);
   const [arrowPageSheet, setArrowPageSheet] = useState(arrowUp);
@@ -26,6 +34,8 @@ const EditLink = () => {
   const [selectedFolder, setSelectedFolder] = useState(folders[0]);
 
   const [title, setTitle] = useState("제목입니다.");
+
+  const [closeAddLinkItems, setCloseAddLinkItems] = useState(true);
 
   // 제목 변경
   const onChangeTitle = e => {
@@ -54,11 +64,17 @@ const EditLink = () => {
     if(openFolder) setArrowFolder(arrowUp);
     else setArrowFolder(arrowDown);
   }
+  
+  // 링크 편집 아이템 추가 버튼 리스트 열고 닫기 event
+  const openAddLinkItems = () => {
+    setCloseAddLinkItems(!closeAddLinkItems);
+  }
 
   useEffect(() => {
 
   },[openPageSheet, arrowPageSheet, selectedPageSheet,
-    openFolder, arrowFolder, selectedFolder]);
+    openFolder, arrowFolder, selectedFolder,
+    openAddLinkItems]);
 
   return (
     <Containter>
@@ -156,6 +172,30 @@ const EditLink = () => {
           onChange={onChangeTitle}
         />
       </TitleSet>
+
+      {/* 링크 메모 아이템 리스트 보여주기 */}
+
+      {/* 링크 메모 아이템 추가 버튼 */}
+      <AddLinkMemoSet>
+        {closeAddLinkItems ?
+          <AddLinkMemoItemBtn
+            src={addLinkEditItem}
+            alt="링크 아이템 추가 버튼"
+            onClick={openAddLinkItems}/>
+
+          : <AddLinkMemoItemList>
+            {
+              linkEditItems.map(linkEditItem => (
+                <AddLinkMemoItem
+                  src={linkEditItem}
+                  alt="링크 아이템"
+                  onClick={openAddLinkItems}
+                />
+              ))
+            }
+          </AddLinkMemoItemList>
+        } 
+      </AddLinkMemoSet>
     </Containter>
   );
 }
@@ -317,6 +357,33 @@ const FlatformIcon = styled.img`
   width: 35px;
   height: 35px;
   margin: 12px 7px 12px 20px;
+`;
+
+// 링크 메모 아이템 추가 -------------------------------------------------------------------------------------------------------
+const AddLinkMemoSet = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 5vh;
+`;
+const AddLinkMemoItemBtn = styled.img`
+  width: 45px;
+  height: 45px;
+  margin: auto;
+`;
+const AddLinkMemoItemList = styled.div`
+  display: flex;
+  margin: auto;
+  padding: 5px 10px;
+  align-items: center;
+  border: 1px solid ${palette.mainColor};
+  border-radius: 0.5vh;
+  background-color: ${palette.white};
+  box-shadow: 3px 3px 10px -5px ${palette.darkGray};
+`;
+const AddLinkMemoItem = styled.img`
+  width: 20px;
+  height: 20px;
+  margin: 5px 15px;
 `;
 
 export default EditLink;
