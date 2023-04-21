@@ -4,7 +4,8 @@ import Setting from "./pages/setting/Setting";
 import Login from "./pages/login/Login";
 import Link from "./pages/link/Link";
 import Header from "./pages/home/Header";
-import EditLink from "./pages/editLink/EditLink";
+import ViewLink from "./pages/viewLinkMemo/ViewLink";
+import EditLink from "./pages/editLinkMemo/EditLink";
 import "./styles/App.css";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
             <Route path="/setting" element={<Setting />} />
             <Route path="/login" element={<Login />} />
             <Route path="/link" element={<Link />} />
+            <Route path="/viewlink" element={<ViewLink />} />
             <Route path="/editlink" element={<EditLink />} />
             <Route path="/" element={<Home />} />
           </Routes>

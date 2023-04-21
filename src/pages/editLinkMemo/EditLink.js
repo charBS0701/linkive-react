@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import palette from "../../styles/colorPalette";
+
 import arrowUp from "../../contents/arrow_up.png";
 import arrowDown from "../../contents/arrow_down.png";
 import instagram from "../../contents/platform_instagram.png";
@@ -14,7 +15,6 @@ import itemLink from "../../contents/item_link.png";
 import itemPlace from "../../contents/item_place.png";
 import itemCheckbox from "../../contents/item_checkbox.png";
 import itemCode from "../../contents/item_code.png";
-import { useEffect } from "react";
 
 const EditLink = () => {
   const limitedTitle = 10;
@@ -74,10 +74,10 @@ const EditLink = () => {
 
   },[openPageSheet, arrowPageSheet, selectedPageSheet,
     openFolder, arrowFolder, selectedFolder,
-    openAddLinkItems]);
+    closeAddLinkItems]);
 
   return (
-    <Containter>
+    <Container>
       <TopMenus>
         {/* 페이지 시트 선택 */}
         <PageSheetLabel>
@@ -196,11 +196,11 @@ const EditLink = () => {
           </AddLinkMemoItemList>
         } 
       </AddLinkMemoSet>
-    </Containter>
+    </Container>
   );
 }
 
-const Containter = styled.div`
+const Container = styled.div`
   display: block;
   position: relative;
 `;
