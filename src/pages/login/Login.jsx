@@ -8,16 +8,12 @@ import googleBtn from "../../contents/googleBtn.png";
 import naverBtn from "../../contents/naverBtn.png";
 import kakaoBtn from "../../contents/kakaoBtn.png";
 
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import { GoogleLogin } from "@react-oauth/google";
-
 const Layout = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 3%;
 }`;
-
 const LoginContainer = styled.div`
   display: flex;
   border: solid;
@@ -29,13 +25,11 @@ const LoginContainer = styled.div`
   width: 50%;
   padding: 5%;
 `;
-
 const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
-
 const LoginBtn = styled.button({
   width: "450px",
   backgroundColor: "#6368E3",
@@ -194,45 +188,15 @@ const Login = () => {
             width: "300px",
           }}
         >
-          {/* <GoogleOAuthProvider
-            clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}
-          >
-            <GoogleLogin
-              clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}
-              onSuccess={(res) => console.log(res, "성공")}
-              onFailure={(res) => console.log(res, "실패")}
-              render={(renderProps) => (
-                <div
-                  className="social_login_box google"
-                  onClick={renderProps.onClick}
-                >
-                  <div className="social_login_image_box">
-                    <img src={googleBtn} alt="google_login" />
-                  </div>
-                  <div className="social_login_text_box">구글로 시작하기</div>
-                  <div className="social_login_blank_box"> </div>
-                </div>
-              )}
-            />
-          </GoogleOAuthProvider> */}
-          <div className="social_login_box google" onClick={handleGoogleLogin}>
-            <div className="social_login_image_box">
-              <img src={googleBtn} alt="google_login" />
-            </div>
-            <div className="social_login_text_box">구글로 시작하기</div>
-            <div className="social_login_blank_box"> </div>
-          </div>
-
-          <img
-            src={kakaoBtn}
-            alt="google login button"
-            style={{ width: "25%" }}
-          />
-          <img
-            src={naverBtn}
-            alt="google login button"
-            style={{ width: "25%" }}
-          />
+          <a className="social_login_box google" href="http://localhost:8123/users/auth/google">
+            <img src={googleBtn} alt="google_login" />
+          </a>
+          <a className="social_login_box google" href="http://localhost:8123/users/auth/kakao">
+            <img src={kakaoBtn} alt="google_login" />
+          </a>
+          <a className="social_login_box google" href="http://localhost:8123/users/auth/naver">
+            <img src={naverBtn} alt="google_login" />
+          </a>
         </div>
       </LoginContainer>
     </Layout>
