@@ -42,47 +42,6 @@ const LoginBtn = styled.button({
   fontSize: "25px",
   boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
 });
-const handleGoogleLogin = () => {
-  axios
-    .get("http://localhost:8123/users/auth/google", {
-      withCredentials: true,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-    })
-    .then((res) => {
-      console.log(res);
-      // 로그인 성공 시 처리할 코드 작성
-    })
-    .catch((err) => {
-      console.error(err);
-      // 로그인 실패 시 처리할 코드 작성
-    });
-};
-
-/*
-const GoogleButton = () => {
-  const responseGoogle = (response) => {
-    console.log(response);
-    // 구글 로그인 성공 시 처리할 코드 작성
-  };
-
-  const onFailure = (error) => {
-    console.log(error);
-    // 구글 로그인 실패 시 처리할 코드 작성
-  };
-
-  return (
-    <GoogleLogin
-      clientId="구글 OAuth 클라이언트 ID"
-      buttonText="구글 로그인"
-      onSuccess={responseGoogle}
-      onFailure={onFailure}
-      cookiePolicy={"single_host_origin"}
-    />
-  );
-};
-*/
 
 const Login = () => {
   const [id, setId] = useState("");
@@ -188,13 +147,22 @@ const Login = () => {
             width: "300px",
           }}
         >
-          <a className="social_login_box google" href="http://localhost:8123/users/auth/google">
+          <a
+            className="social_login_box google"
+            href="http://localhost:8123/users/auth/google"
+          >
             <img src={googleBtn} alt="google_login" />
           </a>
-          <a className="social_login_box google" href="http://localhost:8123/users/auth/kakao">
+          <a
+            className="social_login_box google"
+            href="http://localhost:8123/users/checkAuth"
+          >
             <img src={kakaoBtn} alt="google_login" />
           </a>
-          <a className="social_login_box google" href="http://localhost:8123/users/auth/naver">
+          <a
+            className="social_login_box google"
+            href="http://localhost:8123/users/auth/naver"
+          >
             <img src={naverBtn} alt="google_login" />
           </a>
         </div>
