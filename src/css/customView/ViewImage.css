@@ -1,0 +1,43 @@
+.viewImageBorder{
+    position: relative;
+    width: 400px;
+    object-fit: contain;
+}
+
+.viewImage{
+    width: 100%;
+}
+
+.viewImageEditBorder{
+    width: 121px;
+    height: 49px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 18px;
+    margin-right: 21px;
+    border: 1px solid #6368E3;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between; /* 수평축 정렬 */
+    align-items: center; /* 수직축 정렬 */
+}
+
+.viewImageEditImage{
+    width: 30px;
+    height: 30px;
+    margin-left: 17px;
+}
+
+.viewImageEditLine{
+    display: inline;
+    border-left: 1px solid #777777;
+    height: 100%;
+}
+
+.viewImageTrashImage{
+    width: 32px;
+    height: 32px;
+    margin-right: 14px;
+}
