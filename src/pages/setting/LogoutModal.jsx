@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import styled, { css } from "styled-components";
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 import axios from "axios";
-import Cookies from "js-cookie";
 import Btn from "./Btn";
 
 const ModalContainer = styled.div`
@@ -29,11 +28,20 @@ const ModalTitle = styled.h2`
   font-size: 1.5rem;
   text-align: left; // 왼쪽 정렬
 `;
-
 const LogoutModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
   const logout = () => {
-    // 쿠키 지움으로써 로그아웃
+    axios
+      .post("http://localhost:8123/users/logout")
+      .then((response) => {
+        // 요청 성공시 로직
+        console.log(response);
+        onClose();
+      })
+      .catch((error) => {
+        // 요청 실패에 대한 처리
+        console.log(error);
+      });
   };
 
   return (
