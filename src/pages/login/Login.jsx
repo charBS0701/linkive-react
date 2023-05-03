@@ -155,7 +155,7 @@ const Login = () => {
           </a>
           <a
             className="social_login_box google"
-            href="http://localhost:8123/users/checkAuth"
+            href="http://localhost:8123/users/auth/kakao"
           >
             <img src={kakaoBtn} alt="google_login" />
           </a>
@@ -164,6 +164,9 @@ const Login = () => {
             href="http://localhost:8123/users/auth/naver"
           >
             <img src={naverBtn} alt="google_login" />
+          </a>
+          <a href="http://localhost:8123/users/checkAuth">
+            <button>checkAuth</button>
           </a>
         </div>
       </LoginContainer>
