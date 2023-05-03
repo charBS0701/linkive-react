@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import googleBtn from "../../contents/googleBtn.png";
 import naverBtn from "../../contents/naverBtn.png";
 import kakaoBtn from "../../contents/kakaoBtn.png";
+import Cookies from "js-cookie";
 
 const Layout = styled.div`
   display: flex;
@@ -56,6 +57,13 @@ const Login = () => {
       setPassword(value);
     }
   };
+
+  // 쿠키가 있다면 출력
+  const getCookie = (name) => {
+    return Cookies.get(name);
+  };
+  
+  console.log(`쿠키는 : ${getCookie("accessToken")}`);
 
   const handleSubmit = (event) => {
     event.preventDefault();

@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+// import { redirect } from "react-router-dom";
+import axios from "axios";
 import profile from "../../contents/profile.png";
 import edit from "../../contents/edit.png";
 import right_arrow from "../../contents/right_arrow.png";
@@ -108,6 +110,31 @@ const Inquiry = (props) => {
 };
 
 const Setting = () => {
+  const [user, setUser] = useState(null);
+  const [isRedirect, setIsRedirect] = useState(false);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8123/users/userInfo", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response.data);
+        setUser(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+        if (error.response && error.response.status === 302) {
+          setIsRedirect(true);
+        }
+      });
+  }, [isRedirect]);
+  
+  if (isRedirect) {
+    window.location.replace('/login');  // 로그인 안되어있으면 로그인 페이지로 이동 // react로 수정 필요
+  }
+
+
   return (
     <div
       style={{
