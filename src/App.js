@@ -7,15 +7,18 @@ import Header from "./pages/home/Header";
 import ViewLink from "./pages/viewLinkMemo/ViewLink";
 import EditLink from "./pages/editLinkMemo/EditLink";
 import "./styles/App.css";
+import EditProfilePage from "./pages/setting/EditProfilePage";
 
 function App() {
   return (
     <div style={{ margin: "3vh 5vw" }}>
       <Router>
-        <Header />
         <div style={{ margin: "0 5vw" }}>
+          {window.location.pathname !== "/login" && <Header />}{" "}
+          {/* 여기에 조건 추가 */}
           <Routes>
             <Route path="/setting" element={<Setting />} />
+            <Route path="/setting/editProfile" element={<EditProfilePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/link" element={<Link />} />
             <Route path="/viewlink" element={<ViewLink />} />
