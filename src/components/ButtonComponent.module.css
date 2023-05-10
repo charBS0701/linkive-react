@@ -1,0 +1,19 @@
+.button {
+    margin-right: 14px;
+    border: 1px solid #6368E3;
+    border-radius: 20px;
+
+    padding: 8px 22px 8px 22px;
+    cursor: pointer;
+}
+
+.defaultColor {
+    background-color: white;
+    color: #6368E3;
+}
+
+.selectedColor {
+    background-color: #6368E3;
+    color: white;
+}
+

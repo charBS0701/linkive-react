@@ -1,5 +1,5 @@
-import SearchIcon from '../../contents/search_icon.png';
-import styles from './css/SearchComponent.module.css'
+import SearchIcon from '../contents/search_icon.png';
+import styles from './SearchComponent.module.css'
 
 function SearchComponent() {
     return (
