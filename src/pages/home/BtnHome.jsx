@@ -1,5 +1,15 @@
+import styled from "styled-components";
 import logo from "../../logo.png";
 import { Link } from "react-router-dom";
+import palette from "../../styles/colorPalette";
+
+const Linkive = styled.p`
+  color: ${palette.mainColor};
+  font-size: 2.2rem;
+  font-weight: bolder;
+  margin-left: 23px;
+  font-family: 'YANGJIN';
+`;
 
 const BtnHome = () => {
   return (
@@ -12,17 +22,10 @@ const BtnHome = () => {
         textDecoration: "none",
       }}
     >
-      <img src={logo} width="60px" alt="이미지" />
-      <text
-        style={{
-          color: "#6368E3",
-          fontSize: "35px",
-          fontWeight: "bolder",
-          marginLeft: "23px",
-        }}
-      >
+      <img src={logo} width="60vw" alt="이미지" />
+      <Linkive>
         Linkive
-      </text>
+      </Linkive>
     </Link>
   );
 };
