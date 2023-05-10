@@ -1,64 +1,71 @@
-import React from 'react';
-import ItemMenuComponent from './ItemMenuComponent'
-import styled from "styled-components";
+import React, {useState} from 'react';
 
 import FolderIcon from '../../contents/folder_icon.png'
 
+import styles from "./css/ItemComponent.module.css"
+import menuStyles from "./css/ItemMenuComponent.module.css"
+
+import MenuButton from "../../contents/menu_button.png";
+import ClickAwayListener from "react-click-away-listener";
+
+import useCustomDialog from "../../hooks/useCustomDialog";
+
 function ItemComponent(props) {
-    const ItemLi = styled.li`
-      list-style: none;
-      float: left;
-      margin: 8px;
-      box-shadow: 1px 2px 10px black;
-      border-radius: 10px;
-    `;
+    const [popup, setPopup] = useState(false);
+    const { confirm, setFolderName } = useCustomDialog();
 
-    const MainImage = styled.img`
-      border-radius: 10px 10px 0 0;
-    `
+    const openPopup = () => {
+        setPopup(true);
+    }
 
-    const FaviconImage = styled.img`
-      margin: 3px;
-    `
+    const closePopup = () => {
+        setPopup(false);
+    }
 
-    const FolderIconImage = styled.img`
-      margin-left: 3px;
-      margin-right: 8px;
-    `
+    const deleteLink = async() => {
+        setPopup(false);
 
-    const UpperDiv = styled.div`
-      display: flex;
-      margin: 3px 10px 0 10px;
-      align-items: center;
-    `
+        setFolderName(props.folder);
+        const result = await confirm("삭제하기", "폴더를 삭제하면 폴더에 포함된 글도 같이 삭제됩니다.\n폴더를 삭제하시겠습니까?");
 
-    const LowerDiv = styled.div`
-      text-align: right;
-      margin: 0 5px 8px 0;
-    `
+        if(result) {
+            console.log(`Deleted ${props.linkNumber}`);
+        } else {
+            console.log(`Canceled`);
+        }
+    }
 
-    const TitleSpan = styled.span`
-      margin-left: 3px;
-      font-size: 16px;
-    `
+    const editLink = () => {
+        setPopup(false);
+    }
 
-    const FolderNameSpan = styled.span`
-      font-size: 8px
-    `
+
+    const ItemMenuComponent = () => (
+        <div className={menuStyles.root}>
+            <img className={menuStyles.openMenu} src={MenuButton} onClick={openPopup} width={4}></img>
+            {popup && (<ClickAwayListener onClickAway={closePopup}>
+                <div className={[menuStyles.menuBox, 'popup'].join(' ')}>
+                    <button className={menuStyles.menuItem} onClick={deleteLink}>삭제하기&nbsp;&nbsp;</button>
+                    <hr className={menuStyles.noMargin} />
+                    <button className={menuStyles.menuItem} onClick={editLink}>수정하기&nbsp;&nbsp;</button>
+                </div>
+            </ClickAwayListener>)}
+        </div>
+    );
 
     return(
-        <ItemLi>
-            <MainImage src={props.src} alt={props.alt} width={240} height={200}/>
-            <UpperDiv>
-                <FaviconImage src={props.favicon} alt="Favicon" width={18} height={18}/>
-                <TitleSpan>{props.title}</TitleSpan>
+        <li className={styles.li} value={props.key}>
+            <img className={styles.mainImage} src={props.src} alt={props.alt} width={240} height={200}/>
+            <div className={styles.upper}>
+                <img className={styles.faviconImage} src={props.favicon} alt="Favicon" width={18} height={18}/>
+                <span className={styles.title}>{props.title}</span>
                 <ItemMenuComponent />
-            </UpperDiv>
-            <LowerDiv>
-                <FolderNameSpan>{props.folder}</FolderNameSpan>
-                <FolderIconImage src={FolderIcon} alt="Folder Icon" width={10} height={10}/>
-            </LowerDiv>
-        </ItemLi>
+            </div>
+            <div className={styles.lower}>
+                <span className={styles.folderName}>{props.folder}</span>
+                <img className={styles.folderIconImage} src={FolderIcon} alt="Folder Icon" width={10} height={10}/>
+            </div>
+        </li>
     );
 }
 
