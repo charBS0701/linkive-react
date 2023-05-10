@@ -1,7 +1,7 @@
 import { memo } from 'react'
 
-import styles from './css/ButtonComponent.module.css';
-import MultiClassName from "../../utils/MultiClassName";
+import styles from './ButtonComponent.module.css';
+import MultiClassName from "../utils/MultiClassName";
 
 function ButtonComponent(props) {
     return (

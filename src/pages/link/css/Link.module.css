@@ -1,3 +1,61 @@
 .onlyMargin {
-    margin: 0.5em 1em 0.5em 1em;
+    margin: 1em;
 }
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+
+    align-items: flex-end;
+}
+
+.buttonsLine {
+    display: flex;
+    justify-content: space-between;
+}
+
+.addFolderButton {
+    float: right;
+    border: none;
+    border-radius: 40px;
+    background-color: #6368E3;
+
+    color:white;
+
+    font-size: 16px;
+    padding: 12px 20px 12px 20px;
+
+    cursor: pointer;
+
+    vertical-align: center;
+}
+
+.plusSpan {
+    background-color: white;
+    color: #6368E3;
+
+    font-weight: bold;
+    margin-left: 14px;
+
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+
+    display: inline-block;
+}
+
+.buttonCircle {
+    display: inline-block;
+
+    border: none;
+    background: white;
+    border-radius: 100%;
+
+    aspect-ratio: 1 / 1;
+    width: 22px ;
+
+    color: #6368E3;
+
+    margin-left: 10px;
+}
+

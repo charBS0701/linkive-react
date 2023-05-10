@@ -1,15 +1,22 @@
+import {memo, useState} from 'react';
+import { Routes, Route } from 'react-router-dom';
+
 import ItemComponent from './ItemComponent'
 import TestFavicon from '../../contents/favicon_test.png'
-import useCustomDialog from "../../hooks/useCustomDialog";
 import SearchComponent from "./SearchComponent";
-import ButtonComponent from "./ButtonComponent";
+import OptionsComponent from "../../components/OptionsComponent";
 import AddFolderComponent from "./AddFolderComponent";
-import Header from "../home/Header";
+import SelectComponent from './SelectComponent';
+
+import MultiClassName from "../../utils/MultiClassName";
 
 import styles from "./css/Link.module.css";
 
-function Link() {
-    const { confirm } = useCustomDialog();
+import Search from './search/Search';
+import Folder from "./folder/Folder";
+
+function LinkComponent() {
+    const [wrap, setWrap] = useState(false);
 
     const itemList = (count) => {
         let data = [];
@@ -28,21 +35,37 @@ function Link() {
         return data;
     };
 
+    const AddFolderButtonComponent = (p) =>{
+        return (
+            <button className={styles.addFolderButton} onClick={p.onClick}>
+                <span>폴더 추가</span>
+                <span className={styles.buttonCircle}>+</span>
+            </button>
+        )
+    }
+
     const HeaderComponent = () => {
         return (
-            <div className={styles.onlyMargin}>
+            <div className={MultiClassName([styles.onlyMargin, styles.toolbar])}>
                 <SearchComponent />
-                <AddFolderComponent />
+                {wrap ? <AddFolderComponent state={{wrap, setWrap}}/> : <AddFolderButtonComponent onClick={() => setWrap(true)}/>}
             </div>
-        )
+        );
+    };
+
+    const buttonsData = ["링크별", "폴더별"];
+    const optionsOnChange = (idx) => {
+        console.log(idx);
     }
 
     return (
         <div>
             <HeaderComponent />
-            <div className={styles.onlyMargin}>
-                <ButtonComponent text={"링크별"}/>
-                <ButtonComponent text={"폴더별"} type={"main"}/>
+            <div className={MultiClassName([styles.onlyMargin, styles.buttonsLine])}>
+                    <span>
+                        <OptionsComponent data={buttonsData} default={0} onChange={optionsOnChange}/>
+                    </span>
+                <SelectComponent />
             </div>
             <ul>
                 {itemList(8)}
@@ -51,4 +74,16 @@ function Link() {
     );
 }
 
-export default Link;
+
+
+function Link() {
+    return (
+        <Routes>
+            <Route path={'search'} element={<Search />}/>
+            <Route path={'folder'} element={<Folder />}/>
+            <Route path={''} element={<LinkComponent />}/>
+        </Routes>
+    );
+};
+
+export default memo(Link);

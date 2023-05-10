@@ -45,7 +45,18 @@ function useCustomDialog() {
         });
     }
 
-    return { dispatch, alert, confirm, setFolderName, setButtonText, onCloseDialog };
+    const input = (title, data) => {
+        dispatch({type: "INIT", title: title, dtype: 'Input'});
+        dispatch({type: "SET_INPUT_DATA", inputData: data});
+        dispatch({type: "SET_BUTTON_TEXT", buttonText: ["취소", "확인"]});
+        showModal();
+
+        return new Promise(res => {
+            dispatch({type: "SET_RESOLVE", resolve: res});
+        });
+    }
+
+    return { dispatch, alert, confirm, input, setFolderName, setButtonText, onCloseDialog };
 }
 
 export default useCustomDialog;

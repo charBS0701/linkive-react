@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Setting from "./pages/setting/Setting";
 import Login from "./pages/login/Login";
-import Link from "./pages/link/Link";
+import { default as LinkPage} from "./pages/link/Link"; // Prevent name collision
 import Header from "./pages/home/Header";
 import ViewLink from "./pages/viewLinkMemo/ViewLink";
 import EditLink from "./pages/editLinkMemo/EditLink";
@@ -29,6 +29,7 @@ function App() {
               <Route path="/setting" element={<Setting />} />
               <Route path="/setting/editProfile" element={<EditProfilePage />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/link/*" element={<LinkPage />} />
               <Route path="/link" element={<Link />} />
               <Route path="/viewlink" element={<ViewLink />} />
               <Route path="/editlink" element={<EditLink />} />

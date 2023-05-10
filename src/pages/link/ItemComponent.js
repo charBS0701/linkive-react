@@ -12,7 +12,7 @@ import useCustomDialog from "../../hooks/useCustomDialog";
 
 function ItemComponent(props) {
     const [popup, setPopup] = useState(false);
-    const { confirm, setFolderName } = useCustomDialog();
+    const { confirm, input, setFolderName } = useCustomDialog();
 
     const openPopup = () => {
         setPopup(true);
@@ -20,6 +20,19 @@ function ItemComponent(props) {
 
     const closePopup = () => {
         setPopup(false);
+    }
+
+    const changePassword = async() => {
+        setPopup(false);
+        setFolderName(props.folder);
+
+        const result = await input("비밀번호 변경",
+            [{type: "password", placeholder: "현재 비밀번호"}, {hr: true},
+                {type: "password", placeholder: "변경할 비밀번호"}, {type: "password", placeholder: "비밀번호 확인"}]);
+
+        if(result) {
+            console.log(result);
+        }
     }
 
     const deleteLink = async() => {
@@ -45,6 +58,8 @@ function ItemComponent(props) {
             <img className={menuStyles.openMenu} src={MenuButton} onClick={openPopup} width={4}></img>
             {popup && (<ClickAwayListener onClickAway={closePopup}>
                 <div className={[menuStyles.menuBox, 'popup'].join(' ')}>
+                    <button className={menuStyles.menuItem} onClick={changePassword}>비밀번호 설정/변경</button>
+                    <hr className={menuStyles.noMargin} />
                     <button className={menuStyles.menuItem} onClick={deleteLink}>삭제하기&nbsp;&nbsp;</button>
                     <hr className={menuStyles.noMargin} />
                     <button className={menuStyles.menuItem} onClick={editLink}>수정하기&nbsp;&nbsp;</button>

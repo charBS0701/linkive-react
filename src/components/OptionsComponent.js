@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ButtonComponent from "../../components/ButtonComponent";
+import ButtonComponent from "./ButtonComponent";
 
 
 function OptionsComponent(props) {
