@@ -25,3 +25,35 @@
 
     display: inline-block;
 }
+
+.addForm {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.button {
+    display: inline-flex;
+    vertical-align: bottom;
+}
+
+.fieldDiv {
+    display: flex;
+    justify-content: space-between;
+    margin: 3px;
+
+    align-items: center;
+}
+
+.label {
+    color: #6368E3;
+    font-weight: bold;
+}
+
+.input {
+    border: 1px solid #6368E3;
+    border-radius: 20px;
+
+    margin-left: 8px;
+
+    padding: 4px 6px 4px 6px;
+}

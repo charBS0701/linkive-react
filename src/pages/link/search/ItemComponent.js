@@ -1,7 +1,7 @@
 import React from "react";
 
 import styles from "./css/ItemComponent.module.css";
-import FolderIcon from "../../contents/folder_icon.png";
+import FolderIcon from "../../../contents/folder_icon.png";
 
 function ItemComponent(props) {
     return (

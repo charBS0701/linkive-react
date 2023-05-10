@@ -5,6 +5,7 @@ export const initState = {
     folderName: '',
     dtype: "Alert",
     buttonText: ["닫기"],
+    inputData: [],
     resolve: null,
 }
 
@@ -33,6 +34,11 @@ export const reducer = (state, action) => {
                 ...state,
                 buttonText: action.buttonText
             }
+        case 'SET_INPUT_DATA':
+            return {
+                ...state,
+                inputData: action.inputData
+            }
         case 'SET_RESOLVE':
             return {
                 ...state,
@@ -45,7 +51,8 @@ export const reducer = (state, action) => {
                 desc: '',
                 folderName: '',
                 dtype: 'Alert',
-                buttonText: ['확인']
+                buttonText: ['확인'],
+                inputData: []
             }
         default:
             return state;
