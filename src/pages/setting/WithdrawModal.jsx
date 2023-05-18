@@ -45,11 +45,12 @@ const ButtonContainer = styled.div`
   width: 40%;
 `;
 
-const ModalButton = styled.button`
+export const ModalButton = styled.button`
+  width: 100px;
   background-color: white;
   color: #6368e3;
   border: solid 2px #6368e3;
-  border-radius: 5px;
+  border-radius: 25px;
   padding: 10px 20px;
   font-size: 1rem;
   cursor: pointer;
