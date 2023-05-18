@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import axios from "axios";
 import Btn from "./Btn";
+import xImg from "../../contents/x.png";
 
 const ModalContainer = styled.div`
   display: flex;
@@ -16,18 +17,32 @@ const ModalContainer = styled.div`
 `;
 
 const ModalBox = styled.div`
-  width: 30%;
+  width: 20%;
   background-color: #fff;
-  padding: 0.5% 3% 2%;
+  padding: 0.5% 0.5% 1% 0.5%;
   border-radius: 10px;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
   text-align: left;
 `;
 
-const ModalTitle = styled.h2`
-  font-size: 1.5rem;
-  text-align: left; // 왼쪽 정렬
+const XBtn = styled.button`
+  float: right;
+  background-color: transparent;
+  border: none;
 `;
+
+const ModalTitle = styled.div`
+  font-size: 1.2rem;
+  text-align: center; // 왼쪽 정렬
+  margin: 15% 5% 10%;
+  font-weight: bold;
+`;
+
+const Content = styled.div`
+  text-align: center;
+  margin: 2% 5% 5%;
+`;
+
 const LogoutModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
   const logout = () => {
@@ -47,11 +62,16 @@ const LogoutModal = ({ isOpen, onClose }) => {
   return (
     <ModalContainer>
       <ModalBox>
-        <ModalTitle>로그아웃 하시겠습니까?</ModalTitle>
-        <Btn onClick={onClose}>취소</Btn>
-        <Btn $colored onClick={logout}>
-          확인
-        </Btn>
+        <XBtn onClick={onClose}>
+          <img src={xImg} alt="x" />
+        </XBtn>
+        <Content>
+          <ModalTitle>로그아웃 하시겠습니까?</ModalTitle>
+          <Btn onClick={onClose}>취소</Btn>
+          <Btn $colored onClick={logout}>
+            확인
+          </Btn>
+        </Content>
       </ModalBox>
     </ModalContainer>
   );
