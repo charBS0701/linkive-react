@@ -6,7 +6,9 @@ import Link from "./pages/link/Link";
 import Header from "./pages/home/Header";
 import ViewLink from "./pages/viewLinkMemo/ViewLink";
 import EditLink from "./pages/editLinkMemo/EditLink";
+import EditCustomView from "./pages/editCustomView/EditCustomView";
 import "./styles/App.css";
+import ViewTitle from "./routes/customView/ViewTitle";
 
 function App() {
   return (
@@ -20,7 +22,9 @@ function App() {
             <Route path="/link" element={<Link />} />
             <Route path="/viewlink" element={<ViewLink />} />
             <Route path="/editlink" element={<EditLink />} />
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<EditCustomView />} />/
+            {/* <Route path="/" element={<Home />} /> */}
+            
           </Routes>
         </div>
       </Router>

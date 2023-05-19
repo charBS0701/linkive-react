@@ -22,7 +22,7 @@ label::before {
     background-image: url('../../../public/image/ic_viewcheck_true.png');
 }
 
-.viewCheckContent {
+/* .viewCheckContent {
     height: auto;
     border: none;
     outline: none;
@@ -30,12 +30,12 @@ label::before {
     resize: none;
     overflow: hidden;
     margin-left: 14px;
-    flex: 1; /* 아이템 크기 자유 조절 */
+    flex: 1; /* 아이템 크기 자유 조절
     vertical-align: middle;
     margin-top: 5px;
-}
+} */
 
 .viewCheckContent::placeholder {
-    color: 7B7B7B;
+    color: #7B7B7B;
     font-size: 20px;
 }
