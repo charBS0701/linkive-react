@@ -106,7 +106,7 @@ const Inquiry = (props) => {
         isOpen={inquireModalOpen}
         onClose={handleInquireModalClose}
       />
-      <LogoutModal isOpen={logoutModalOpen} onClose={handleLogoutModalClose} />
+      <LogoutModal isOpen={logoutModalOpen} onClose={handleLogoutModalClose} onLogout={props.onLogout}/>
     </div>
   );
 };

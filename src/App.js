@@ -17,13 +17,12 @@ function App() {
   // 유저정보 불러오기
   const [userInfo, setUserInfo] = useState({});
 
-
   // httpOnly: true 일 때 쿠키의 토큰 확인 로직
   const getCookie = (cname) => {
     const name = cname + "=";
     const decodedCookie = decodeURIComponent(document.cookie);
     const ca = decodedCookie.split(";");
-  
+
     for (let i = 0; i < ca.length; i++) {
       let c = ca[i];
       while (c.charAt(0) === " ") {
@@ -35,7 +34,7 @@ function App() {
     }
     return "";
   };
-  
+
   useEffect(() => {
     // acessToken 있는지 확인
     const accessToken = getCookie("accessToken");
@@ -43,24 +42,26 @@ function App() {
       setIsLoggedIn(true);
       console.log("User is logged in!");
       // 유저정보 불러오기
-      axios.get("http://localhost:8123/users/userInfo", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "refresh-token": getCookie("refreshToken")
-        },
-      })
-      .then((res) => {
-        setUserInfo(res.data);
-        console.log(setUserInfo);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
+      axios
+        .get("http://localhost:8123/users/userInfo", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "refresh-token": getCookie("refreshToken"),
+          },
+        })
+        .then((res) => {
+          setUserInfo(res.data);
+          console.log(setUserInfo);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
-      console.log("User is not logged in. Login required.");
+      if (isLoggedIn) {
+        setIsLoggedIn(false);
+      }
     }
-  }, []);
+  }, [isLoggedIn, userInfo]);
 
   return (
     <div style={{ margin: "3vh 5vw" }}>
@@ -71,7 +72,19 @@ function App() {
           )}
           {/* 여기에 조건 추가 */}
           <Routes>
-            <Route path="/setting" element={<Setting isLoggedIn={isLoggedIn} userInfo={userInfo}/>} />
+            <Route
+              path="/setting"
+              element={
+                <Setting
+                  isLoggedIn={isLoggedIn}
+                  onLogout={() => {
+                    setIsLoggedIn(false);
+                    setUserInfo({});
+                  }}
+                  userInfo={userInfo}
+                />
+              }
+            />
             <Route path="/setting/editProfile" element={<EditProfilePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/link" element={<Link />} />

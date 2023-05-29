@@ -3,6 +3,7 @@ import styled from "styled-components";
 import axios from "axios";
 import Btn from "./Btn";
 import xImg from "../../contents/x.png";
+import { useNavigate } from 'react-router-dom';
 
 const ModalContainer = styled.div`
   display: flex;
@@ -43,15 +44,20 @@ const Content = styled.div`
   margin: 2% 5% 5%;
 `;
 
-const LogoutModal = ({ isOpen, onClose }) => {
+const LogoutModal = ({ isOpen, onClose, onLogout }) => {
+  const navigate = useNavigate();
+
   if (!isOpen) return null;
+  
   const logout = () => {
     axios
-      .post("http://localhost:8123/users/logout")
+      .post("http://localhost:8123/users/logout", {}, { withCredentials: true })
       .then((response) => {
         // 요청 성공시 로직
         console.log(response);
         onClose();
+        navigate('/login')
+        onLogout(); // 여기에서 호출
       })
       .catch((error) => {
         // 요청 실패에 대한 처리
