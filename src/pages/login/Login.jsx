@@ -44,7 +44,7 @@ const LoginBtn = styled.button({
   boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
 });
 
-const Login = () => {
+const Login = ({onLogin}) => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -75,6 +75,7 @@ const Login = () => {
       .then((res) => {  
         console.log(res);
         console.log(res.data);
+        console.log(res.status);
         if (res.status === 200) {
           if (res.data.accessToken) {
             // 쿠키에 토큰 저장 // 서버에서 처리했음
@@ -83,6 +84,7 @@ const Login = () => {
           }
           // 메인페이지로 이동
           console.log("로그인 성공");
+          onLogin();
           // navigate("/");
           window.location.href = "/";
 
@@ -159,11 +161,11 @@ const Login = () => {
         </div>
         <hr style={{ width: "75%", margin: "7%" }} />
 
-        <text
+        <span
           style={{ fontSize: "20px", fontWeight: "530", marginBottom: "3%" }}
         >
           이메일 아이디로 로그인
-        </text>
+        </span>
 
         <div
           style={{

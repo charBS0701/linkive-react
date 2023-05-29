@@ -4,8 +4,6 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  Outlet,
-  Link,
   Navigate,
 } from "react-router-dom";
 import Home from "./pages/home/Home";
@@ -18,7 +16,7 @@ import EditLink from "./pages/editLinkMemo/EditLink";
 import "./styles/App.css";
 import EditProfilePage from "./pages/setting/EditProfilePage.jsx";
 
-function RedirectToLogin() {
+function RedirectToLogin() {  // 로그인 안했을 때 로그인 페이지로 이동
   return <Navigate to="/login" />;
 }
 
@@ -49,10 +47,9 @@ function App() {
   useEffect(() => {
     // Check for access token
     const accessToken = getCookie("accessToken");
-  
+
     if (accessToken) {
       setIsLoggedIn(true);
-      console.log(isLoggedIn);
 
       // 유저정보 불러오기
       axios
@@ -68,39 +65,50 @@ function App() {
         .catch((err) => {
           console.log(err);
         });
-
     } else {
       setIsLoggedIn(false);
     }
   }, [isLoggedIn]);
 
-  return isLoggedIn ? (
+  return (
     <div style={{ margin: "3vh 5vw" }}>
       <Router>
         <div style={{ margin: "0 5vw" }}>
-          <Header isLoggedIn={isLoggedIn} />
-            <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/setting" element={<Setting onLogout={() => {
-              setIsLoggedIn(false);
-              setUserInfo({});
-            }} userInfo={userInfo} />}
-            />
-            <Route path="/setting/editProfile" element={<EditProfilePage />} />
-            <Route path="/link" element={<LinkMenu />} />
-            <Route path="/viewlink" element={<ViewLink />} />
-            <Route path="/editlink" element={<EditLink />} />
-          </Routes>
-        </div>
-      </Router>
-    </div>
-  ) : (
-    <div style={{ margin: "3vh 5vw" }}>
-      <Router>
-        <div style={{ margin: "0 5vw" }}>
+          {isLoggedIn && <Header />}
           <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="*" element={<RedirectToLogin />} />
+            {isLoggedIn ? (
+              <>
+                <Route path="/" element={<Home />} /> {/* 메인페이지 */}
+                <Route
+                  path="/setting"
+                  element={
+                    <Setting
+                      onLogout={() => {
+                        setIsLoggedIn(false);
+                        setUserInfo({});
+                      }}
+                      userInfo={userInfo}
+                    />
+                  }
+                />
+                <Route
+                  path="/setting/editProfile"
+                  element={<EditProfilePage />} // 유저정보 수정 페이지
+                />
+                <Route path="/link" element={<LinkMenu />} /> 
+                <Route path="/viewlink" element={<ViewLink />} />
+                <Route path="/editlink" element={<EditLink />} />
+                <Route path="/login" element={<Navigate to="/" />} /> {/* 로그인 페이지 못가게*/}
+              </>
+            ) : (
+              <>
+                <Route
+                  path="/login"
+                  element={<Login onLogin={() => setIsLoggedIn(true)} />}
+                />
+                <Route path="*" element={<RedirectToLogin />} />
+              </>
+            )}
           </Routes>
         </div>
       </Router>
