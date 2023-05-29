@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import googleBtn from "../../contents/googleBtn.png";
 import naverBtn from "../../contents/naverBtn.png";
 import kakaoBtn from "../../contents/kakaoBtn.png";
+import { useNavigate } from "react-router-dom";
 
 const Layout = styled.div`
   display: flex;
@@ -47,6 +48,8 @@ const Login = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
+
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -79,7 +82,10 @@ const Login = () => {
             // Cookies.set("refreshToken", res.data.refreshToken);
           }
           // 메인페이지로 이동
-          window.location.replace("/");
+          console.log("로그인 성공");
+          // navigate("/");
+          window.location.href = "/";
+
         }
       })
       .catch((error) => {
@@ -175,9 +181,6 @@ const Login = () => {
           <a href="http://localhost:8123/users/auth/naver">
             <img src={naverBtn} alt="naver_login" />
           </a>
-          {/* <a href="http://localhost:8123/users/checkAuth">
-            <button>checkAuth</button>
-          </a> */}
         </div>
       </LoginContainer>
     </Layout>

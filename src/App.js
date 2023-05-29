@@ -1,15 +1,26 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Outlet,
+  Link,
+  Navigate,
+} from "react-router-dom";
 import Home from "./pages/home/Home";
-import Setting from "./pages/setting/Setting";
-import Login from "./pages/login/Login";
-import Link from "./pages/link/Link";
-import Header from "./pages/home/Header";
+import Setting from "./pages/setting/Setting.jsx";
+import Login from "./pages/login/Login.jsx";
+import LinkMenu from "./pages/link/Link";
+import Header from "./pages/home/Header.jsx";
 import ViewLink from "./pages/viewLinkMemo/ViewLink";
 import EditLink from "./pages/editLinkMemo/EditLink";
 import "./styles/App.css";
-import EditProfilePage from "./pages/setting/EditProfilePage";
+import EditProfilePage from "./pages/setting/EditProfilePage.jsx";
+
+function RedirectToLogin() {
+  return <Navigate to="/login" />;
+}
 
 function App() {
   // 로그인 여부 확인
@@ -38,18 +49,13 @@ function App() {
   useEffect(() => {
     // Check for access token
     const accessToken = getCookie("accessToken");
+    const currentPath = window.location.pathname;
+  
     if (accessToken) {
       setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, []);
+      console.log(isLoggedIn);
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      console.log("User is logged in!");
       // 유저정보 불러오기
-      const accessToken = getCookie("accessToken");
       axios
         .get("http://localhost:8123/users/userInfo", {
           headers: {
@@ -63,38 +69,39 @@ function App() {
         .catch((err) => {
           console.log(err);
         });
+
     } else {
-      setUserInfo({});
+      setIsLoggedIn(false);
     }
   }, [isLoggedIn]);
 
-  return (
+  return isLoggedIn ? (
     <div style={{ margin: "3vh 5vw" }}>
       <Router>
         <div style={{ margin: "0 5vw" }}>
-          {window.location.pathname !== "/login" && isLoggedIn &&(
-            <Header isLoggedIn={isLoggedIn} />
-          )}
-          <Routes>
-            <Route
-              path="/setting"
-              element={
-                <Setting
-                  isLoggedIn={isLoggedIn}
-                  onLogout={() => {
-                    setIsLoggedIn(false);
-                    setUserInfo({});
-                  }}
-                  userInfo={userInfo}
-                />
-              }
+          <Header isLoggedIn={isLoggedIn} />
+            <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/setting" element={<Setting onLogout={() => {
+              setIsLoggedIn(false);
+              setUserInfo({});
+            }} userInfo={userInfo} />}
             />
             <Route path="/setting/editProfile" element={<EditProfilePage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/link" element={<Link />} />
+            <Route path="/link" element={<LinkMenu />} />
             <Route path="/viewlink" element={<ViewLink />} />
             <Route path="/editlink" element={<EditLink />} />
-            <Route path="/" element={<Home />} />
+          </Routes>
+        </div>
+      </Router>
+    </div>
+  ) : (
+    <div style={{ margin: "3vh 5vw" }}>
+      <Router>
+        <div style={{ margin: "0 5vw" }}>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="*" element={<RedirectToLogin />} />
           </Routes>
         </div>
       </Router>

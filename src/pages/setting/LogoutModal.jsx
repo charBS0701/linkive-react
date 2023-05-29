@@ -3,7 +3,6 @@ import styled from "styled-components";
 import axios from "axios";
 import Btn from "./Btn";
 import xImg from "../../contents/x.png";
-import { useNavigate } from 'react-router-dom';
 
 const ModalContainer = styled.div`
   display: flex;
@@ -46,7 +45,6 @@ const Content = styled.div`
 
 const LogoutModal = ({ isOpen, onClose, onLogout }) => {
   
-  const navigate = useNavigate();
   if (!isOpen) return null;
   
   const logout = () => {
@@ -57,7 +55,6 @@ const LogoutModal = ({ isOpen, onClose, onLogout }) => {
         console.log(response);
         onClose();
         window.location.href = '/login' // 로그인 페이지로 이동
-        // navigate('/login', { replace: true }); // replace를 추가하여 이력에서 제거
         onLogout(); // 여기에서 호출
       })
       .catch((error) => {
