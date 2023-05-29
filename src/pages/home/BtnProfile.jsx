@@ -10,14 +10,17 @@ const BtnProfile = ({ isLoggedIn }) => {
     const fetchProfileImage = async () => {
       if (isLoggedIn) {
         try {
-          const response = await axios.get("http://localhost:8123/users/profileImg", {
-            withCredentials: true,
-          });
+          const response = await axios.get(
+            "http://localhost:8123/users/profileImg",
+            {
+              withCredentials: true,
+            }
+          );
           console.log(response);
           // 로그인 시 프로필 사진 변경
           if (response.data.profileImg !== null) {
-          setProfileImg(response.data.profileImg);
-        }
+            setProfileImg(response.data.profileImg);
+          }
         } catch (error) {
           console.error(error);
           setProfileImg(profile);
@@ -38,7 +41,17 @@ const BtnProfile = ({ isLoggedIn }) => {
         textDecoration: "none",
       }}
     >
-      <img src={profileImg} width="50vw" alt="profile" />
+      <img
+        src={profileImg}
+        width="50vw"
+        alt="profile"
+        style={{
+          borderRadius: "50%",
+          objectFit: "cover",
+          width: "50px",
+          height: "50px",
+        }}
+      />
     </Link>
   );
 };
