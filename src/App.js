@@ -36,12 +36,20 @@ function App() {
   };
 
   useEffect(() => {
-    // acessToken 있는지 확인
+    // Check for access token
     const accessToken = getCookie("accessToken");
     if (accessToken) {
       setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
       console.log("User is logged in!");
       // 유저정보 불러오기
+      const accessToken = getCookie("accessToken");
       axios
         .get("http://localhost:8123/users/userInfo", {
           headers: {
@@ -51,26 +59,22 @@ function App() {
         })
         .then((res) => {
           setUserInfo(res.data);
-          console.log(setUserInfo);
         })
         .catch((err) => {
           console.log(err);
         });
     } else {
-      if (isLoggedIn) {
-        setIsLoggedIn(false);
-      }
+      setUserInfo({});
     }
-  }, [isLoggedIn, userInfo]);
+  }, [isLoggedIn]);
 
   return (
     <div style={{ margin: "3vh 5vw" }}>
       <Router>
         <div style={{ margin: "0 5vw" }}>
-          {window.location.pathname !== "/login" && (
+          {window.location.pathname !== "/login" && isLoggedIn &&(
             <Header isLoggedIn={isLoggedIn} />
           )}
-          {/* 여기에 조건 추가 */}
           <Routes>
             <Route
               path="/setting"

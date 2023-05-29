@@ -45,8 +45,8 @@ const Content = styled.div`
 `;
 
 const LogoutModal = ({ isOpen, onClose, onLogout }) => {
+  
   const navigate = useNavigate();
-
   if (!isOpen) return null;
   
   const logout = () => {
@@ -56,7 +56,8 @@ const LogoutModal = ({ isOpen, onClose, onLogout }) => {
         // 요청 성공시 로직
         console.log(response);
         onClose();
-        navigate('/login')
+        window.location.href = '/login' // 로그인 페이지로 이동
+        // navigate('/login', { replace: true }); // replace를 추가하여 이력에서 제거
         onLogout(); // 여기에서 호출
       })
       .catch((error) => {
