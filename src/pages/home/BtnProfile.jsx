@@ -16,7 +16,6 @@ const BtnProfile = ({ isLoggedIn }) => {
               withCredentials: true,
             }
           );
-          console.log(response);
           // 로그인 시 프로필 사진 변경
           if (response.data.profileImg !== null) {
             setProfileImg(response.data.profileImg);

@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import googleBtn from "../../contents/googleBtn.png";
 import naverBtn from "../../contents/naverBtn.png";
 import kakaoBtn from "../../contents/kakaoBtn.png";
-import Cookies from "js-cookie";
 
 const Layout = styled.div`
   display: flex;

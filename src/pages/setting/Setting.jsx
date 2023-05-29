@@ -9,6 +9,8 @@ import WithdrawModal from "./WithdrawModal";
 import InquireModal from "./InquireModal";
 import LogoutModal from "./LogoutModal";
 
+// 유저정보 
+
 const Pagesheet = (props) => {
   const text = props.children;
   let firstLine = text.slice(0, 2);
@@ -109,8 +111,8 @@ const Inquiry = (props) => {
   );
 };
 
-const Setting = () => {
-  const [user, setUser] = useState(null);
+const Setting = (props) => {
+  const [userInfo, setUserInfo] = useState({});
   const [isRedirect, setIsRedirect] = useState(false);
 
   useEffect(() => {
@@ -119,8 +121,7 @@ const Setting = () => {
         withCredentials: true,
       })
       .then((response) => {
-        console.log(response.data);
-        setUser(response.data);
+        setUserInfo(response.data.userInfo);
       })
       .catch((error) => {
         console.error(error);
@@ -129,7 +130,7 @@ const Setting = () => {
         }
       });
   }, [isRedirect]);
-  
+
   if (isRedirect) {
     window.location.replace('/login');  // 로그인 안되어있으면 로그인 페이지로 이동 // react로 수정 필요
   }
@@ -152,7 +153,7 @@ const Setting = () => {
             marginLeft: "30px",
           }}
         >
-          <text
+          <span
             style={{
               fontSize: "18px",
               marginBottom: "3px",
@@ -160,8 +161,8 @@ const Setting = () => {
             }}
           >
             닉네임
-          </text>
-          <text style={{ opacity: "50%" }}>@id1234</text>
+          </span>
+          <span style={{ opacity: "50%" }}>@{userInfo.nickname}</span>
         </div>
         <Link to="/setting/editProfile" style={{ marginLeft: "auto" }}>
           <img src={edit} width="30px" height="30px" alt="edit" />
