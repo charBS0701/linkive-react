@@ -60,13 +60,13 @@ const InquireModal = ({ isOpen, onClose }) => {
       <ModalBox>
         <ModalTitle>문의하기</ModalTitle>
         <ContentBox>
-          <ModalContent>
+          <ModalContent> 
             Linkive를 사용해주셔서 감사합니다. <br />
             <br />
             서비스 사용과 관련해서 문의사항 또는 불편한 점이 있다면 아래 메일로
             의견을 보내주시기 바랍니다.
             <br />
-            <br />
+            <br style={{cursor:"none"}}/>
           </ModalContent>
           <DevEmail>
             개발진 <LightText>chaqhdtjr7@gmail.com</LightText>
