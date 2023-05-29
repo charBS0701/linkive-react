@@ -55,7 +55,7 @@ const LogoutModal = ({ isOpen, onClose, onLogout }) => {
         console.log(response);
         onClose();
         window.location.href = '/login' // 로그인 페이지로 이동
-        onLogout(); // 여기에서 호출
+        onLogout();
       })
       .catch((error) => {
         // 요청 실패에 대한 처리

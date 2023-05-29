@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import googleBtn from "../../contents/googleBtn.png";
 import naverBtn from "../../contents/naverBtn.png";
 import kakaoBtn from "../../contents/kakaoBtn.png";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const Layout = styled.div`
   display: flex;
@@ -48,7 +48,7 @@ const Login = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
 
   const handleInputChange = (event) => {

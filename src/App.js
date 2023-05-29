@@ -49,7 +49,6 @@ function App() {
   useEffect(() => {
     // Check for access token
     const accessToken = getCookie("accessToken");
-    const currentPath = window.location.pathname;
   
     if (accessToken) {
       setIsLoggedIn(true);

@@ -64,32 +64,29 @@ export const ModalButton = styled.button`
     `}
 `;
 
-const WithdrawModal = ({ isOpen, onClose }) => {
+const WithdrawModal = ({ isOpen, onClose, onLogout }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   if (!isOpen) return null;
   const handleWithdraw = async (e) => {
     e.preventDefault();
-    const accessToken = Cookies.get("accessToken");
-    const requestToken = Cookies.get("requestToken");
     try {
-      const response = await axios.delete(
-        "http://localhost:8123/users/deleteUser",
+      const response = await axios.post(
+        "http://localhost:8123/users/delete",
         {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "refresh-token": requestToken,
-          },
-          data: {
-            email,
-            password,
-          },
+          email,
+          password,
+        },
+        {
+          withCredentials: true,
         }
       );
       if (response.status === 200) {
         console.log("Withdraw Success");
         onClose();
+        window.location.href = "/login"; // 로그인 페이지로 이동
+        onLogout();
       }
     } catch (error) {
       console.error(error);

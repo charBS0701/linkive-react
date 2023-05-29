@@ -101,6 +101,7 @@ const Inquiry = (props) => {
       <WithdrawModal
         isOpen={withdrawModalOpen}
         onClose={handleWithdrawModalClose}
+        onLogout={props.onLogout}
       />
       <InquireModal
         isOpen={inquireModalOpen}
