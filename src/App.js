@@ -17,7 +17,8 @@ import EditLink from "./pages/editLinkMemo/EditLink";
 import "./styles/App.css";
 import EditProfilePage from "./pages/setting/EditProfilePage.jsx";
 
-function RedirectToLogin() {  // 로그인 안했을 때 로그인 페이지로 이동
+function RedirectToLogin() {
+  // 로그인 안했을 때 로그인 페이지로 이동
   return <Navigate to="/login" />;
 }
 
@@ -76,7 +77,7 @@ function App() {
     <div style={{ margin: "3vh 5vw" }}>
       <Router>
         <div style={{ margin: "0 5vw" }}>
-          {isLoggedIn && <Header isLoggedIn/>}
+          {isLoggedIn && <Header isLoggedIn={isLoggedIn} />}
           <Routes>
             {isLoggedIn ? (
               <>
@@ -95,12 +96,13 @@ function App() {
                 />
                 <Route
                   path="/setting/editProfile"
-                  element={<EditProfilePage />} // 유저정보 수정 페이지
+                  element={<EditProfilePage userInfo={userInfo} />} // 유저정보 수정 페이지
                 />
-                <Route path="/link" element={<LinkMenu />} /> 
+                <Route path="/link" element={<LinkMenu />} />
                 <Route path="/viewlink" element={<ViewLink />} />
                 <Route path="/editlink" element={<EditLink />} />
-                <Route path="/login" element={<Navigate to="/" />} /> {/* 로그인 페이지 못가게*/}
+                <Route path="/login" element={<Navigate to="/" />} />{" "}
+                {/* 로그인 페이지 못가게*/}
               </>
             ) : (
               <>

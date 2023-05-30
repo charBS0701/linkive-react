@@ -117,6 +117,7 @@ const Inquiry = (props) => {
 };
 
 const Setting = (props) => {
+  // props로 userInfo 있는데 여기서 또 받아오네. 페이지시트 받아오고 손 보자
   const [userInfo, setUserInfo] = useState({});
   const [isRedirect, setIsRedirect] = useState(false);
 

@@ -1,8 +1,8 @@
-import profile from "../../contents/profile.png";
-import checked from "../../contents/checked.png";
+import checked_img from "../../contents/checked.png";
 import edit_profile from "../../contents/edit_profile.png";
+import edit_img from "../../contents/edit.png";
 import styled, { css } from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import WithdrawButton from "./WithdrawButton";
 import Btn from "./Btn";
 import axios from "axios";
@@ -38,7 +38,7 @@ const InputNicknameContainer = styled.div`
   justify-content: space-between;
 `;
 
-const InputBox = ({ label, type, id, value, onChange }) => {
+const InfoRow = ({ label, img, value, can_edit }) => {
   return (
     <div
       style={{
@@ -52,24 +52,37 @@ const InputBox = ({ label, type, id, value, onChange }) => {
       }}
     >
       <label
-        htmlFor={id}
-        style={{ flex: "1", color: "#6368E3", fontWeight: "bold" }}
+        style={{
+          flex: "1",
+          color: "#6368E3",
+          fontWeight: "bold",
+          marginLeft: "10px",
+        }}
       >
         {label}
       </label>
-      <input
-        style={{ flex: "3", border: "none" }}
-        placeholder={label}
-        type={type}
-        id={id}
-        value={value}
-        onChange={onChange}
+      <span
+        style={{
+          flex: "3",
+          border: "none",
+          color: can_edit ? "inherit" : "#999999",
+          fontWeight: can_edit ? "bold" : "normal",
+        }}
+      >
+        {value}
+      </span>
+      <img
+        src={img}
+        width="27px"
+        height="27px"
+        alt={can_edit}
+        style={{ marginRight: "20px" }}
       />
     </div>
   );
 };
 
-const InputBoxContainer = styled.div`
+const InfoRowContainer = styled.div`
   width: 100%;
   border: solid;
   border-color: #6368e3;
@@ -94,18 +107,27 @@ const EditButton = () => {
     event.target.closest("form").submit();
   };
   return (
-    <Btn $colored onClick={handleClick}>
+    <Btn $big $colored onClick={handleClick}>
       수정하기
     </Btn>
   );
 };
 
-const EditProfile = () => {
-  const [nickname, setNickname] = useState("");
-  const [userId, setUserId] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+const EditProfile = ({ userInfo }) => {
+  userInfo = userInfo.userInfo; // 왜 이렇게 두번으로 접근 해야할까??
+  const originNickname = userInfo.nickname;
+  const email = userInfo.email;
+  const [userId, setUserId] = useState(userInfo.id);
+  const [nickname, setNickname] = useState(userInfo.nickname);
+  const [profileImg, setProfileImg] = useState(userInfo.profile_img_url);
   const [error, setError] = useState("");
+  console.log(profileImg);
+
+  useEffect(() => {
+    if (userInfo && userInfo.profile_img_url) {
+      setProfileImg(userInfo.profile_img_url);
+    }
+  }, [userInfo, userId, nickname, profileImg]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -113,8 +135,8 @@ const EditProfile = () => {
     const requestToken = Cookies.get("requestToken");
 
     // Validate form input
-    if (!userId || !password) {
-      setError("Please enter id and password");
+    if (!userId) {
+      setError("Please enter id");
       return;
     }
 
@@ -130,7 +152,6 @@ const EditProfile = () => {
           data: {
             nickname,
             id: userId,
-            password,
           },
         }
       );
@@ -147,12 +168,21 @@ const EditProfile = () => {
     <form onSubmit={handleSubmit}>
       <Container>
         <ProfileContainer>
-          <img src={edit_profile} width="80px" height="80px" alt="profile" />{" "}
+          <img
+            src={profileImg}
+            width="100px"
+            height="px"
+            alt="profile"
+            style={{
+              borderRadius: "50%",
+              objectFit: "cover",
+            }}
+          />{" "}
           {/* 프로필 사진 불러오고 누르면 수정할 수 있도록 */}
           <InputNicknameContainer>
             <input
               type="text"
-              placeholder="닉네임"
+              placeholder={originNickname}
               value={nickname}
               onChange={(event) => setNickname(event.target.value)}
               style={{
@@ -163,32 +193,24 @@ const EditProfile = () => {
                 border: "none",
               }}
             />
-            <img src={checked} alt="cheched" />
+            <img src={edit_img} alt="cheched" style={{width:"25px", height:"25px", padding:"5px 20px"}}/>
           </InputNicknameContainer>
         </ProfileContainer>
-        <InputBoxContainer>
-          <InputBox
+        <InfoRowContainer>
+          <InfoRow
             label="아이디"
-            type="text"
-            id="userId"
             value={userId}
-            onChange={(event) => setUserId(event.target.value)}
+            img={edit_img}
+            can_edit={true}
           />
-          <InputBox
-            label="비밀번호"
-            type="text"
-            id="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-          <InputBox
+          <InfoRow label="비밀번호" img={edit_img} can_edit={true} />
+          <InfoRow
             label="이메일"
-            type="email"
-            id="email"
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            img={checked_img}
+            can_edit={false}
           />
-        </InputBoxContainer>
+        </InfoRowContainer>
         <ButtonContainer>
           <WithdrawButton />
           <EditButton />

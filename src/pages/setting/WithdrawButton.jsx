@@ -17,9 +17,15 @@ const WithdrawButton = (props) => {
 
   return (
     <>
-      <Btn onClick={handleWithdraw}>탈퇴하기</Btn>
+      <Btn $big onClick={handleWithdraw}>
+        탈퇴하기
+      </Btn>
       {modalIsOpen && (
-        <WithdrawModal isOpen={handleWithdraw} onClose={handleClose} onLogout={props.onLogout}/>
+        <WithdrawModal
+          isOpen={handleWithdraw}
+          onClose={handleClose}
+          onLogout={props.onLogout}
+        />
       )}
     </>
   );
