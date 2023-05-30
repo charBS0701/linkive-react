@@ -43,7 +43,7 @@ const BtnProfile = ({ isLoggedIn }) => {
       <img
         src={profileImg}
         width="50vw"
-        alt="profile"
+        alt="profileImg"
         style={{
           borderRadius: "50%",
           objectFit: "cover",

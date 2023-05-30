@@ -9,7 +9,7 @@ import WithdrawModal from "./WithdrawModal";
 import InquireModal from "./InquireModal";
 import LogoutModal from "./LogoutModal";
 
-// 유저정보 
+// 유저정보
 
 const Pagesheet = (props) => {
   const text = props.children;
@@ -107,7 +107,11 @@ const Inquiry = (props) => {
         isOpen={inquireModalOpen}
         onClose={handleInquireModalClose}
       />
-      <LogoutModal isOpen={logoutModalOpen} onClose={handleLogoutModalClose} onLogout={props.onLogout}/>
+      <LogoutModal
+        isOpen={logoutModalOpen}
+        onClose={handleLogoutModalClose}
+        onLogout={props.onLogout}
+      />
     </div>
   );
 };
@@ -133,9 +137,8 @@ const Setting = (props) => {
   }, [isRedirect]);
 
   if (isRedirect) {
-    window.location.replace('/login');  // 로그인 안되어있으면 로그인 페이지로 이동 // react로 수정 필요
+    window.location.replace("/login"); // 로그인 안되어있으면 로그인 페이지로 이동 // react로 수정 필요
   }
-
 
   return (
     <div
@@ -146,7 +149,16 @@ const Setting = (props) => {
       }}
     >
       <div style={{ display: "flex", alignItems: "center" }}>
-        <img src={profile} width="80px" height="80px" alt="profile" />
+        <img
+          src={userInfo.profile_img_url}
+          width="80px"
+          height="80px"
+          alt="profileImg"
+          style={{
+            borderRadius: "50%",
+            objectFit: "cover",
+          }}
+        />
         <div
           style={{
             display: "flex",
