@@ -9,6 +9,7 @@ import {
 import Home from "./pages/home/Home";
 import Setting from "./pages/setting/Setting.jsx";
 import Login from "./pages/login/Login.jsx";
+import FindPassword from "./pages/login/FindPassword.jsx";
 import LinkMenu from "./pages/link/Link";
 import Header from "./pages/home/Header.jsx";
 import ViewLink from "./pages/viewLinkMemo/ViewLink";
@@ -47,6 +48,7 @@ function App() {
   useEffect(() => {
     // Check for access token
     const accessToken = getCookie("accessToken");
+    const refreshToken = getCookie("refreshToken");
 
     if (accessToken) {
       setIsLoggedIn(true);
@@ -56,7 +58,7 @@ function App() {
         .get("http://localhost:8123/users/userInfo", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
-            "refresh-token": getCookie("refreshToken"),
+            "refresh-token": refreshToken,
           },
         })
         .then((res) => {
@@ -74,7 +76,7 @@ function App() {
     <div style={{ margin: "3vh 5vw" }}>
       <Router>
         <div style={{ margin: "0 5vw" }}>
-          {isLoggedIn && <Header />}
+          {isLoggedIn && <Header isLoggedIn/>}
           <Routes>
             {isLoggedIn ? (
               <>
@@ -106,6 +108,7 @@ function App() {
                   path="/login"
                   element={<Login onLogin={() => setIsLoggedIn(true)} />}
                 />
+                <Route path="/login/findpassword" element={<FindPassword />} />
                 <Route path="*" element={<RedirectToLogin />} />
               </>
             )}
