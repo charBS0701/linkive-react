@@ -16,7 +16,16 @@ const Btn = styled.button`
     css`
       background-color: #6368e3;
       color: white;
-    `}
+    `
+  }
+  ${(props) =>
+    props.$big &&
+    css`
+      width: 200px;
+      height: 50px;
+      font-size: 1.2rem;
+    `
+  }
 `;
 
 export default Btn;

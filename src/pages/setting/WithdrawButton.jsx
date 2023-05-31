@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import WithdrawModal from "./WithdrawModal";
 import Btn from "./Btn";
 
-const WithdrawButton = () => {
+const WithdrawButton = (props) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const handleWithdraw = () => {
@@ -17,9 +17,15 @@ const WithdrawButton = () => {
 
   return (
     <>
-      <Btn onClick={handleWithdraw}>탈퇴하기</Btn>
+      <Btn $big onClick={handleWithdraw}>
+        탈퇴하기
+      </Btn>
       {modalIsOpen && (
-        <WithdrawModal isOpen={handleWithdraw} onClose={handleClose} />
+        <WithdrawModal
+          isOpen={handleWithdraw}
+          onClose={handleClose}
+          onLogout={props.onLogout}
+        />
       )}
     </>
   );

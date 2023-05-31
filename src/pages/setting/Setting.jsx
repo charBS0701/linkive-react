@@ -9,6 +9,8 @@ import WithdrawModal from "./WithdrawModal";
 import InquireModal from "./InquireModal";
 import LogoutModal from "./LogoutModal";
 
+// 유저정보
+
 const Pagesheet = (props) => {
   const text = props.children;
   let firstLine = text.slice(0, 2);
@@ -44,7 +46,7 @@ const Pagesheet = (props) => {
     </a>
   );
 };
-const Inquiry = (props) => {
+const ModalOpener = (props) => {
   const [withdrawModalOpen, setWithdrawModalOpen] = useState(false);
   const [inquireModalOpen, setinquireModalOpen] = useState(false);
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
@@ -99,18 +101,24 @@ const Inquiry = (props) => {
       <WithdrawModal
         isOpen={withdrawModalOpen}
         onClose={handleWithdrawModalClose}
+        onLogout={props.onLogout}
       />
       <InquireModal
         isOpen={inquireModalOpen}
         onClose={handleInquireModalClose}
       />
-      <LogoutModal isOpen={logoutModalOpen} onClose={handleLogoutModalClose} />
+      <LogoutModal
+        isOpen={logoutModalOpen}
+        onClose={handleLogoutModalClose}
+        onLogout={props.onLogout}
+      />
     </div>
   );
 };
 
-const Setting = () => {
-  const [user, setUser] = useState(null);
+const Setting = (props) => {
+  // props로 userInfo 있는데 여기서 또 받아오네. 페이지시트 받아오고 손 보자
+  const [userInfo, setUserInfo] = useState({});
   const [isRedirect, setIsRedirect] = useState(false);
 
   useEffect(() => {
@@ -119,8 +127,7 @@ const Setting = () => {
         withCredentials: true,
       })
       .then((response) => {
-        console.log(response.data);
-        setUser(response.data);
+        setUserInfo(response.data.userInfo);
       })
       .catch((error) => {
         console.error(error);
@@ -129,11 +136,10 @@ const Setting = () => {
         }
       });
   }, [isRedirect]);
-  
-  if (isRedirect) {
-    window.location.replace('/login');  // 로그인 안되어있으면 로그인 페이지로 이동 // react로 수정 필요
-  }
 
+  if (isRedirect) {
+    window.location.replace("/login"); // 로그인 안되어있으면 로그인 페이지로 이동 // react로 수정 필요
+  }
 
   return (
     <div
@@ -144,7 +150,16 @@ const Setting = () => {
       }}
     >
       <div style={{ display: "flex", alignItems: "center" }}>
-        <img src={profile} width="80px" height="80px" alt="profile" />
+        <img
+          src={userInfo.profile_img_url}
+          width="80px"
+          height="80px"
+          alt="profileImg"
+          style={{
+            borderRadius: "50%",
+            objectFit: "cover",
+          }}
+        />
         <div
           style={{
             display: "flex",
@@ -152,7 +167,7 @@ const Setting = () => {
             marginLeft: "30px",
           }}
         >
-          <text
+          <span
             style={{
               fontSize: "18px",
               marginBottom: "3px",
@@ -160,8 +175,8 @@ const Setting = () => {
             }}
           >
             닉네임
-          </text>
-          <text style={{ opacity: "50%" }}>@id1234</text>
+          </span>
+          <span style={{ opacity: "50%" }}>@{userInfo.nickname}</span>
         </div>
         <Link to="/setting/editProfile" style={{ marginLeft: "auto" }}>
           <img src={edit} width="30px" height="30px" alt="edit" />
@@ -269,9 +284,9 @@ const Setting = () => {
         >
           고객지원
         </span>
-        <Inquiry>문의하기</Inquiry>
-        <Inquiry>로그아웃</Inquiry>
-        <Inquiry>회원탈퇴</Inquiry>
+        <ModalOpener>문의하기</ModalOpener>
+        <ModalOpener>로그아웃</ModalOpener>
+        <ModalOpener>회원탈퇴</ModalOpener>
       </div>
     </div>
   );

@@ -43,15 +43,19 @@ const Content = styled.div`
   margin: 2% 5% 5%;
 `;
 
-const LogoutModal = ({ isOpen, onClose }) => {
+const LogoutModal = ({ isOpen, onClose, onLogout }) => {
+  
   if (!isOpen) return null;
+  
   const logout = () => {
     axios
-      .post("http://localhost:8123/users/logout")
+      .post("http://localhost:8123/users/logout", {}, { withCredentials: true })
       .then((response) => {
         // 요청 성공시 로직
         console.log(response);
         onClose();
+        window.location.href = '/login' // 로그인 페이지로 이동
+        onLogout();
       })
       .catch((error) => {
         // 요청 실패에 대한 처리

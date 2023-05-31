@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import axios from "axios";
-import Cookies from "js-cookie";
+import InputLine from "./InputLine";
+import Btn from "./Btn";
 
 const ModalContainer = styled.div`
   display: flex;
@@ -16,9 +17,9 @@ const ModalContainer = styled.div`
 `;
 
 const ModalBox = styled.div`
-  width: 30%;
+  width: 27%;
   background-color: #fff;
-  padding: 0.5% 3% 2%;
+  padding: 1% 3% 2%;
   border-radius: 10px;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
   text-align: left;
@@ -29,67 +30,46 @@ const ModalTitle = styled.h2`
   text-align: left; // 왼쪽 정렬
 `;
 
-const ModalInput = styled.input`
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-`;
+const FormContainer = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1%;
+  `;
 
-const ButtonContainer = styled.div`
+
+export const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 40%;
+  width: 50%;
+  margin-top: 15px;
 `;
 
-export const ModalButton = styled.button`
-  width: 100px;
-  background-color: white;
-  color: #6368e3;
-  border: solid 2px #6368e3;
-  border-radius: 25px;
-  padding: 10px 20px;
-  font-size: 1rem;
-  cursor: pointer;
-  margin-right: 10px; // 취소 버튼과 확인 버튼 사이 간격
 
-  ${(props) =>
-    props.$colored &&
-    css`
-      background-color: #6368e3;
-      color: white;
-    `}
-`;
-
-const WithdrawModal = ({ isOpen, onClose }) => {
+const WithdrawModal = ({ isOpen, onClose, onLogout }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   if (!isOpen) return null;
   const handleWithdraw = async (e) => {
     e.preventDefault();
-    const accessToken = Cookies.get("accessToken");
-    const requestToken = Cookies.get("requestToken");
     try {
-      const response = await axios.delete(
-        "http://localhost:8123/users/deleteUser",
+      const response = await axios.post(
+        "http://localhost:8123/users/delete",
         {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "refresh-token": requestToken,
-          },
-          data: {
-            email,
-            password,
-          },
+          email,
+          password,
+        },
+        {
+          withCredentials: true,
         }
       );
       if (response.status === 200) {
         console.log("Withdraw Success");
         onClose();
+        window.location.href = "/login"; // 로그인 페이지로 이동
+        onLogout();
       }
     } catch (error) {
       console.error(error);
@@ -109,28 +89,28 @@ const WithdrawModal = ({ isOpen, onClose }) => {
           계정 탈퇴를 원하시면 아래 정보를 입력 후 탈퇴 버튼을 선택해주세요.
         </div>
         <br />
-        <form onSubmit={handleWithdraw}>
-          <ModalInput
-            type="email"
-            placeholder="이메일을 입력하세요"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <ModalInput
-            type="password"
-            placeholder="비밀번호를 입력하세요"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <ButtonContainer>
-            <ModalButton onClick={onClose}>취소</ModalButton>
-            <ModalButton $colored type="submit">
-              확인
-            </ModalButton>
-          </ButtonContainer>
-        </form>
+        <FormContainer onSubmit={handleWithdraw}>
+            <InputLine
+              type="email"
+              placeholder="이메일을 입력하세요"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <InputLine
+              type="password"
+              placeholder="비밀번호를 입력하세요"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <ButtonContainer>
+              <Btn onClick={onClose}>취소</Btn>
+              <Btn $colored type="submit">
+                확인
+              </Btn>
+            </ButtonContainer>
+        </FormContainer>
       </ModalBox>
     </ModalContainer>
   );
