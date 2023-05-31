@@ -24,7 +24,7 @@ const LoginContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 50%;
-  padding: 5%;
+  padding: 4% 3% 3%;
 `;
 const LoginForm = styled.form`
   display: flex;
@@ -58,13 +58,6 @@ const Login = () => {
     }
   };
 
-  // 쿠키가 있다면 출력
-  const getCookie = (name) => {
-    return Cookies.get(name);
-  };
-  
-  console.log(`쿠키는 : ${getCookie("accessToken")}`);
-
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -74,8 +67,27 @@ const Login = () => {
       return;
     }
 
-    // Perform login request using fetch or Axios
-    // ...
+    // Perform login request using Axios
+    axios
+      .post("http://localhost:8123/users/login", { id, password },{ withCredentials: true })
+      .then((res) => {  
+        console.log(res);
+        console.log(res.data);
+        if (res.status === 200) {
+          if (res.data.accessToken) {
+            // 쿠키에 토큰 저장 // 서버에서 처리했음
+            // Cookies.set("accessToken", res.data.accessToken);
+            // Cookies.set("refreshToken", res.data.refreshToken);
+          }
+          // 메인페이지로 이동
+          window.location.replace("/");
+        }
+      })
+      .catch((error) => {
+        if (error.response.status === 401) {
+          alert("아이디 또는 비밀번호가 틀렸습니다.");
+        }
+      });
   };
 
   return (
@@ -140,7 +152,7 @@ const Login = () => {
             회원가입
           </Link>
         </div>
-        <hr style={{ width: "100%", margin: "7%" }} />
+        <hr style={{ width: "75%", margin: "7%" }} />
 
         <text
           style={{ fontSize: "20px", fontWeight: "530", marginBottom: "3%" }}
@@ -155,27 +167,18 @@ const Login = () => {
             width: "300px",
           }}
         >
-          <a
-            className="social_login_box google"
-            href="http://localhost:8123/users/auth/google"
-          >
+          <a href="http://localhost:8123/users/auth/google">
             <img src={googleBtn} alt="google_login" />
           </a>
-          <a
-            className="social_login_box google"
-            href="http://localhost:8123/users/auth/kakao"
-          >
-            <img src={kakaoBtn} alt="google_login" />
+          <a href="http://localhost:8123/users/auth/kakao">
+            <img src={kakaoBtn} alt="kakao_login" />
           </a>
-          <a
-            className="social_login_box google"
-            href="http://localhost:8123/users/auth/naver"
-          >
-            <img src={naverBtn} alt="google_login" />
+          <a href="http://localhost:8123/users/auth/naver">
+            <img src={naverBtn} alt="naver_login" />
           </a>
-          <a href="http://localhost:8123/users/checkAuth">
+          {/* <a href="http://localhost:8123/users/checkAuth">
             <button>checkAuth</button>
-          </a>
+          </a> */}
         </div>
       </LoginContainer>
     </Layout>

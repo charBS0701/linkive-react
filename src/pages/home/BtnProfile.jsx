@@ -3,17 +3,18 @@ import { Link } from "react-router-dom";
 import profile from "../../contents/profile.png";
 import profileLoggedIn from "../../contents/checked.png";
 
-const BtnProfile = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const BtnProfile = ({ isLoggedIn }) => {
+  console.log(isLoggedIn);
+  let profileImg = profile;
 
-  // useEffect(() => {
-  //   console.log(document);
-  //   const cookies = document.cookie.split("; ");
-  //   const isLoggedInCookie = cookies.find((cookie) => cookie.startsWith("accessToken="));
-  //   setIsLoggedIn(isLoggedInCookie ? isLoggedInCookie.split("=")[1] === "true" : false);
-  // }, []);
+  // 로그인 시 프로필 사진 변경
+  if (isLoggedIn) {
+    profileImg = profileLoggedIn;
+  } else {
+    profileImg = profile;
+  }
 
-  return (
+    return (
     <Link
       to="/setting"
       className="btn-profile"
@@ -23,7 +24,7 @@ const BtnProfile = () => {
         textDecoration: "none",
       }}
     >
-      <img src={profile} width="50vw" alt="profile" />
+      <img src={profileImg} width="50vw" alt="profile" />
     </Link>
   );
 };
