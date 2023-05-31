@@ -38,13 +38,14 @@ const FormContainer = styled.form`
   `;
 
 
-const ButtonContainer = styled.div`
+export const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 50%;
   margin-top: 15px;
 `;
+
 
 const WithdrawModal = ({ isOpen, onClose, onLogout }) => {
   const [email, setEmail] = useState("");

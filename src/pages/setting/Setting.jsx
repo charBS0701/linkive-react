@@ -46,7 +46,7 @@ const Pagesheet = (props) => {
     </a>
   );
 };
-const Inquiry = (props) => {
+const ModalOpener = (props) => {
   const [withdrawModalOpen, setWithdrawModalOpen] = useState(false);
   const [inquireModalOpen, setinquireModalOpen] = useState(false);
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
@@ -284,9 +284,9 @@ const Setting = (props) => {
         >
           고객지원
         </span>
-        <Inquiry>문의하기</Inquiry>
-        <Inquiry>로그아웃</Inquiry>
-        <Inquiry>회원탈퇴</Inquiry>
+        <ModalOpener>문의하기</ModalOpener>
+        <ModalOpener>로그아웃</ModalOpener>
+        <ModalOpener>회원탈퇴</ModalOpener>
       </div>
     </div>
   );

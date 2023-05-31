@@ -7,6 +7,7 @@ import WithdrawButton from "./WithdrawButton";
 import Btn from "./Btn";
 import axios from "axios";
 import Cookies from "js-cookie";
+import ChangePwModal from "./ChangePwModal";
 
 const Container = styled.div`
   display: flex;
@@ -39,6 +40,44 @@ const InputNicknameContainer = styled.div`
 `;
 
 const InfoRow = ({ label, img, value, can_edit }) => {
+  // 변경할 정보 입력하는 모달열기
+  const [changeNicknameModalOpen, setChangeNicknameModalOpen] = useState(false);
+  const [changePwModalOpen, setChangePwModalOpen] = useState(false);
+  const [changeIdModalOpen, setChangeIdModalOpen] = useState(false);
+
+  // 닉네임 변경
+  const openChangeNicknameModal = () => {
+    setChangeNicknameModalOpen(true);
+  };
+  const closeChangeNicknameModal = () => {
+    setChangeNicknameModalOpen(false);
+  };
+  // 비밀번호 변경
+  const openChangePwModal = () => {
+    setChangePwModalOpen(true);
+  };
+  const closeChangePwModal = () => {
+    setChangePwModalOpen(false);
+  };
+  // 아이디 변경
+  const openChangeIdModal = () => {
+    setChangeIdModalOpen(true);
+  };
+  const closeChangeIdModal = () => {
+    setChangeIdModalOpen(false);
+  };
+
+  const handleEditClick = () => {
+    if (label === "닉네임") {
+      openChangeNicknameModal();
+    } else if (label === "비밀번호") {
+      openChangePwModal();
+    } else if (label === "아이디") {
+      openChangeIdModal();
+    }
+  };
+
+
   return (
     <div
       style={{
@@ -77,8 +116,17 @@ const InfoRow = ({ label, img, value, can_edit }) => {
         height="27px"
         alt={can_edit}
         style={{ marginRight: "20px" }}
+        onClick={handleEditClick}
+      />
+      <ChangePwModal
+        isOpen={changePwModalOpen}
+        close={closeChangePwModal}
+        header="닉네임 변경"
+        label="닉네임"
+        value={value}
       />
     </div>
+
   );
 };
 

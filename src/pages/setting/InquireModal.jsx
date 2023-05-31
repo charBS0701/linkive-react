@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import palette from "../../styles/colorPalette";
 import Btn from "./Btn";
 
-const ModalContainer = styled.div`
+export const ModalContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,7 +15,7 @@ const ModalContainer = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
 `;
 
-const ModalBox = styled.div`
+export const ModalBox = styled.div`
   width: 30%;
   background-color: #fff;
   
@@ -26,7 +26,7 @@ const ModalBox = styled.div`
   back
 `;
 
-const ModalTitle = styled.div`
+export const ModalTitle = styled.div`
   border-radius: 10px 10px 0 0;
   width: 100%;
   padding: 3% 0%;
@@ -37,12 +37,12 @@ const ModalTitle = styled.div`
   color: white;
 `;
 
-const ContentBox = styled.div`
+export const ContentBox = styled.div`
   padding: 3% 10%;
 `;
 const DevEmail = styled.div``;
 
-const ModalContent = styled.div`
+export const ModalContent = styled.div`
   text-align: left;
 `;
 
@@ -52,7 +52,6 @@ const LightText = styled.span`
 
 const InquireModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
-
   return (
     <ModalContainer>
       <ModalBox>
