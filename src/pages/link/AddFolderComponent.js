@@ -1,3 +1,4 @@
+import React from 'react';
 import { useRef, useState, memo, useCallback } from 'react'
 
 import styles from './css/AddFolderComponent.module.css'

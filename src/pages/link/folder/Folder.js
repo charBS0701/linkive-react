@@ -1,5 +1,4 @@
 import SearchComponent from "../SearchComponent";
-import OptionsComponent from "../../../components/OptionsComponent";
 import SelectComponent from "../SelectComponent";
 
 import styles from './css/Folder.module.css';
@@ -22,7 +21,6 @@ function Folder() {
           <div className={styles.toolbar}>
               <SelectComponent />
           </div>
-
       </div>
     );
 }

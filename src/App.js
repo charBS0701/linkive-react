@@ -30,7 +30,6 @@ function App() {
               <Route path="/setting/editProfile" element={<EditProfilePage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/link/*" element={<LinkPage />} />
-              <Route path="/link" element={<Link />} />
               <Route path="/viewlink" element={<ViewLink />} />
               <Route path="/editlink" element={<EditLink />} />
               <Route path="/" element={<Home />} />

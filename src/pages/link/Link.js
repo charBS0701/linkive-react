@@ -1,7 +1,9 @@
+import React from 'react';
+
 import {memo, useState} from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import ItemComponent from './ItemComponent'
+import {ItemComponent, FolderItemComponent} from './ItemComponent'
 import TestFavicon from '../../contents/favicon_test.png'
 import SearchComponent from "./SearchComponent";
 import OptionsComponent from "../../components/OptionsComponent";
@@ -14,18 +16,27 @@ import styles from "./css/Link.module.css";
 
 import Search from './search/Search';
 import Folder from "./folder/Folder";
+import axios from "axios";
 
 function LinkComponent() {
     const [wrap, setWrap] = useState(false);
+    const [optionIdx, setOptionIdx] = useState(0);
 
     const itemList = (count) => {
         let data = [];
 
         for (let i = 0; i < count; i++) {
-            data.push(
+            data.push(optionIdx == 0 ?
                 <ItemComponent
                     src={"/images/img.png"}
                     title={"롯데월드"}
+                    favicon={TestFavicon}
+                    folder={"놀이공원"}
+                    linkNumber={i}
+                /> :
+                <FolderItemComponent
+                    src={"/images/img.png"}
+                    title={"테스트"}
                     favicon={TestFavicon}
                     folder={"놀이공원"}
                     linkNumber={i}
@@ -55,7 +66,7 @@ function LinkComponent() {
 
     const buttonsData = ["링크별", "폴더별"];
     const optionsOnChange = (idx) => {
-        console.log(idx);
+        setOptionIdx(idx);
     }
 
     return (
