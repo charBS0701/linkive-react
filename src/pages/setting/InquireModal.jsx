@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
-import axios from "axios";
-import Cookies from "js-cookie";
-import { ModalButton } from "./WithdrawModal";
 import palette from "../../styles/colorPalette";
+import Btn from "./Btn";
 
 const ModalContainer = styled.div`
   display: flex;
@@ -72,9 +70,9 @@ const InquireModal = ({ isOpen, onClose }) => {
             개발진 <LightText>chaqhdtjr7@gmail.com</LightText>
           </DevEmail>
           <br />
-          <ModalButton onClick={onClose} $colored>
+          <Btn onClick={onClose} $colored>
             확인
-          </ModalButton>
+          </Btn>
         </ContentBox>
       </ModalBox>
     </ModalContainer>
