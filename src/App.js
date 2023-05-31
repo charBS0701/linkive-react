@@ -16,6 +16,7 @@ import ViewLink from "./pages/viewLinkMemo/ViewLink";
 import EditLink from "./pages/editLinkMemo/EditLink";
 import "./styles/App.css";
 import EditProfilePage from "./pages/setting/EditProfilePage.jsx";
+import Cookies from "js-cookie";
 
 function RedirectToLogin() {
   // 로그인 안했을 때 로그인 페이지로 이동
@@ -28,28 +29,10 @@ function App() {
   // 유저정보 불러오기
   const [userInfo, setUserInfo] = useState({});
 
-  // httpOnly: true 일 때 쿠키의 토큰 확인 로직
-  const getCookie = (cname) => {
-    const name = cname + "=";
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const ca = decodedCookie.split(";");
-
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) === " ") {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) === 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-  };
-
   useEffect(() => {
     // Check for access token
-    const accessToken = getCookie("accessToken");
-    const refreshToken = getCookie("refreshToken");
+    const accessToken = Cookies.get("accessToken");
+    const refreshToken = Cookies.get("refreshToken");
 
     if (accessToken) {
       setIsLoggedIn(true);

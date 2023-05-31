@@ -39,7 +39,7 @@ const InputNicknameContainer = styled.div`
   justify-content: space-between;
 `;
 
-const InfoRow = ({ label, img, value, can_edit }) => {
+const InfoRow = ({ label, img, value, can_edit, userInfo}) => {
   // 변경할 정보 입력하는 모달열기
   const [changeNicknameModalOpen, setChangeNicknameModalOpen] = useState(false);
   const [changePwModalOpen, setChangePwModalOpen] = useState(false);
@@ -124,6 +124,7 @@ const InfoRow = ({ label, img, value, can_edit }) => {
         header="닉네임 변경"
         label="닉네임"
         value={value}
+        userInfo={userInfo}
       />
     </div>
 
@@ -169,7 +170,6 @@ const EditProfile = ({ userInfo }) => {
   const [nickname, setNickname] = useState(userInfo.nickname);
   const [profileImg, setProfileImg] = useState(userInfo.profile_img_url);
   const [error, setError] = useState("");
-  console.log(profileImg);
 
   useEffect(() => {
     if (userInfo && userInfo.profile_img_url) {
@@ -251,7 +251,7 @@ const EditProfile = ({ userInfo }) => {
             img={edit_img}
             can_edit={true}
           />
-          <InfoRow label="비밀번호" img={edit_img} can_edit={true} />
+          <InfoRow label="비밀번호" img={edit_img} can_edit={true} userInfo={userInfo}/>
           <InfoRow
             label="이메일"
             value={email}
