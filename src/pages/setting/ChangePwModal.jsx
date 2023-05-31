@@ -33,6 +33,15 @@ const ChangePwModal = ({ isOpen, close, onOk, userInfo }) => {
 
   const [currentPw, setCurrentPw] = useState("");
   const [isCurrentPwCorrect, setIsCurrentPwCorrect] = useState(false);
+  const [newPw, setNewPw] = useState("");
+  const [newPwCheck, setNewPwCheck] = useState("");
+  const [isValidPw, setIsValidPw] = useState(false);
+
+  const handleOkClick = () => {
+    // Call the onOk callback function and pass the newPw value
+    onOk(newPw);
+    close();
+  };
 
   const handleCurrentPwChange = async (e) => {
     const currentPw = e.target.value; // 유저가 입력한 현재 비밀번호
@@ -61,6 +70,48 @@ const ChangePwModal = ({ isOpen, close, onOk, userInfo }) => {
       console.log(error);
     }
   };
+  // 비밀번호 형식 검사 함수
+  const validatePwFormat = (password) => {
+    const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/;
+    return passwordRegex.test(password);
+  };
+  const handleNewPw = (e) => {
+    const newPw = e.target.value;
+    // 비밀번호 유효성 검사
+    let validFormat = false;
+    setNewPw(newPw);
+    validFormat = validatePwFormat(newPw);
+
+    if (validFormat) {
+      // newPwCheck 와 같은지 확인
+      if (newPw === newPwCheck) {
+        // 같으면
+        setIsValidPw(true);
+      } else {
+        // 다르면
+        setIsValidPw(false);
+      }
+    }
+  };
+  const handleNewPwCheck = (e) => {
+    const newPwCheck = e.target.value;
+    // 비밀번호 유효성 검사
+    let validFormat = false;
+    setNewPwCheck(newPwCheck);
+    validFormat = validatePwFormat(newPwCheck);
+
+    if (validFormat) {
+      // newPw 와 같은지 확인
+      if (newPw === newPwCheck) {
+        // 같으면
+        setIsValidPw(true);
+      } else {
+        // 다르면
+        setIsValidPw(false);
+      }
+    }
+  };
 
   if (!isOpen) return null;
   return (
@@ -84,18 +135,36 @@ const ChangePwModal = ({ isOpen, close, onOk, userInfo }) => {
             </InputLineContainer>
             {/* 비밀번호 보기 <img src={showPwIcon}/> */}
             <InputLineContainer>
-              <InputLine type="password" placeholder="변경할 비밀번호" />
-              <CheckImg src={checkImg} />
+              <InputLine
+                type="password"
+                placeholder="변경할 비밀번호"
+                value={newPw}
+                onChange={handleNewPw}
+              />
+              {isValidPw ? (
+                <CheckImg src={checkImg} />
+              ) : (
+                <CheckImg src={IncorrectImg} />
+              )}
             </InputLineContainer>
             <InputLineContainer style={{ marginBottom: "5%" }}>
-              <InputLine type="password" placeholder="비밀번호 확인" />
-              <CheckImg src={checkImg} />
+              <InputLine
+                type="password"
+                placeholder="비밀번호 확인"
+                value={newPwCheck}
+                onChange={handleNewPwCheck}
+              />
+              {isValidPw ? (
+                <CheckImg src={checkImg} />
+              ) : (
+                <CheckImg src={IncorrectImg} />
+              )}
             </InputLineContainer>
           </ModalContent>
           <Btn style={{ marginRight: "10%" }} onClick={close}>
             취소
           </Btn>
-          <Btn $colored onClick={close}>
+          <Btn $colored onClick={handleOkClick}>
             확인
           </Btn>
         </ContentBox>

@@ -39,7 +39,7 @@ const InputNicknameContainer = styled.div`
   justify-content: space-between;
 `;
 
-const InfoRow = ({ label, img, value, can_edit, userInfo}) => {
+const InfoRow = ({ label, img, value, can_edit, userInfo, handlePasswordChange}) => {
   // 변경할 정보 입력하는 모달열기
   const [changeNicknameModalOpen, setChangeNicknameModalOpen] = useState(false);
   const [changePwModalOpen, setChangePwModalOpen] = useState(false);
@@ -121,6 +121,7 @@ const InfoRow = ({ label, img, value, can_edit, userInfo}) => {
       <ChangePwModal
         isOpen={changePwModalOpen}
         close={closeChangePwModal}
+        onOk={handlePasswordChange} // Pass the callback function to the ChangePwModal
         header="닉네임 변경"
         label="닉네임"
         value={value}
@@ -150,13 +151,41 @@ const ButtonContainer = styled.div`
   justify-content: space-evenly;
 `;
 
-const EditButton = () => {
-  const handleClick = (event) => {
+const EditButton = ({accessToken, refreshToken, newPassword}) => {
+  const handleChangeUserInfo = async (event) => {
     event.preventDefault();
-    event.target.closest("form").submit();
+    
+    // 정보 수정 api 호출
+    // To do : 닉네임, 아이디, 프로필사진 변경
+    try {
+      const response = await axios.post(
+        "http://localhost:8123/users/changeUserInfo",
+        {
+          newNickname: "dum12",
+          newId: "du1r2",
+          newPassword: newPassword,
+          newProfileImg: "http://k.kakaocdn.net/dn/dGxpqk/btrVBQOZowS/hbRZhxNkPnfIGSikcys6V0/img_640x640.jpg"
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "refresh-token": refreshToken,
+          },
+        }
+      );
+      console.log(response);
+      if (response.status===200) {
+        alert("회원정보가 수정되었습니다.");
+        window.location.reload();
+      }
+    } catch (err) {
+      console.log(err);
+      alert("회원정보 수정에 실패했습니다.");
+    }
+
   };
   return (
-    <Btn $big $colored onClick={handleClick}>
+    <Btn $big $colored onClick={handleChangeUserInfo}>
       수정하기
     </Btn>
   );
@@ -171,55 +200,28 @@ const EditProfile = ({ userInfo }) => {
   const [profileImg, setProfileImg] = useState(userInfo.profile_img_url);
   const [error, setError] = useState("");
 
+  const [newPassword, setNewPassword] = useState(""); // State variable to hold the newPw value
+  const handlePasswordChange = (newPw) => {
+    setNewPassword(newPw);
+  };
+
   useEffect(() => {
     if (userInfo && userInfo.profile_img_url) {
       setProfileImg(userInfo.profile_img_url);
     }
   }, [userInfo, userId, nickname, profileImg]);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const accessToken = Cookies.get("accessToken");
-    const requestToken = Cookies.get("requestToken");
-
-    // Validate form input
-    if (!userId) {
-      setError("Please enter id");
-      return;
-    }
-
-    // Perform login request using fetch or Axios
-    try {
-      const response = await axios.post(
-        "http://localhost:8123/users/changeUserInfo",
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "refresh-token": requestToken,
-          },
-          data: {
-            nickname,
-            id: userId,
-          },
-        }
-      );
-      if (response.status === 200) {
-        // 수정이 완료되었습니다 알림창 띄우기
-        alert("수정이 완료되었습니다.");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const accessToken = Cookies.get("accessToken");
+  const refreshToken = Cookies.get("refreshToken");
 
   return (
-    <form onSubmit={handleSubmit}>
+    
       <Container>
         <ProfileContainer>
           <img
             src={profileImg}
             width="100px"
-            height="px"
+            height="100px"
             alt="profile"
             style={{
               borderRadius: "50%",
@@ -251,7 +253,7 @@ const EditProfile = ({ userInfo }) => {
             img={edit_img}
             can_edit={true}
           />
-          <InfoRow label="비밀번호" img={edit_img} can_edit={true} userInfo={userInfo}/>
+          <InfoRow label="비밀번호" img={edit_img} can_edit={true} userInfo={userInfo} handlePasswordChange={handlePasswordChange}/>
           <InfoRow
             label="이메일"
             value={email}
@@ -261,10 +263,9 @@ const EditProfile = ({ userInfo }) => {
         </InfoRowContainer>
         <ButtonContainer>
           <WithdrawButton />
-          <EditButton />
+          <EditButton accessToken={accessToken} refreshToken={refreshToken} newPassword={newPassword}/>
         </ButtonContainer>
       </Container>
-    </form>
   );
 };
 
