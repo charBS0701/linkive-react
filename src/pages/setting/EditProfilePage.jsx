@@ -175,7 +175,11 @@ const EditButton = ({accessToken, refreshToken, newPassword}) => {
       );
       console.log(response);
       if (response.status===200) {
-        alert("회원정보가 수정되었습니다.");
+        // 쿠키삭제
+        Cookies.remove('accessToken', { path: '' })
+        Cookies.remove('refreshToken', { path: '' })
+        
+        alert("회원정보가 수정되었습니다. 다시 로그인 해주세요.");
         window.location.reload();
       }
     } catch (err) {
