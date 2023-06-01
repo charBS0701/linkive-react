@@ -1,7 +1,8 @@
 import BtnHome from "./BtnHome";
 import BtnProfile from "./BtnProfile";
 
-const Header = () => {
+const Header = ({ isLoggedIn }) => {
+
   return (
     <div
       className="header"
@@ -12,7 +13,7 @@ const Header = () => {
       }}
     >
       <BtnHome />
-      <BtnProfile />
+      <BtnProfile isLoggedIn={isLoggedIn} />
     </div>
   );
 };
