@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import {
   Container,
   ProfileContainer,
@@ -10,7 +9,6 @@ import Btn from "../../components/Btn";
 import InputLine from "../../components/InputLine";
 import styled from "styled-components";
 import palette from "../../styles/colorPalette";
-import FindPwAfter from "./FindPwAfter";
 
 const ContentContainer = styled.div`
   width: 70%;
@@ -25,12 +23,32 @@ const InformMessage = styled.div`
   visible: none;
 `;
 
+const VerifyAfterContainer = styled.div`
+  border-top: 1px solid ${palette.lightGray};  
+  margin-top: 6%;
+  padding: 4% 0% 0% 0%;
+`;
+
+const ButtonContainer = styled.div`
+  width: 55%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & > button + {  // (&)현재요소의 (>)자식요소중에 (button)이 있는 경우 그(+)다음요소에 적용
+    margin-left: 20%;
+  }
+  `;
+
+
 const FindPassword = () => {
   const [id, setId] = useState("");
   const [email, setEmail] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
   const [userVerificationCode, setUserVerificationCode] = useState("");
   const [showInformMessage, setShowInformMessage] = useState(false);
+  const [isVerified, setIsVerified] = useState(false); // 인증이 완료되었는지 여부
+  const [pw, setPw] = useState("");
+  const [pwCheck, setPwCheck] = useState("");
 
   const handleIdChange = (event) => {
     setId(event.target.value);
@@ -54,7 +72,8 @@ const FindPassword = () => {
       body: JSON.stringify({ id, email }),
     };
 
-    try { // 아이디와 이메일이 일치하는지 확인
+    try {
+      // 아이디와 이메일이 일치하는지 확인
       const response = await fetch(
         "http://localhost:8123/users/checkIdwithEmail",
         requestOptions
@@ -68,11 +87,11 @@ const FindPassword = () => {
       }
       alert("이메일로 인증번호가 발송되었습니다.");
       setShowInformMessage(true);
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error:", error);
     }
-    try { // 인증번호 발송
+    try {
+      // 인증번호 발송
       const response = await fetch(
         "http://localhost:8123/users/verifyEmail/send",
         requestOptions
@@ -88,22 +107,58 @@ const FindPassword = () => {
     if (verificationCode == userVerificationCode) {
       // string == number
       alert("인증되었습니다.");
-      // 비밀번호 변경 페이지로 이동 <FindPwAfter />
-      
-
-
+      setIsVerified(true);
     } else {
       alert("인증번호가 일치하지 않습니다.");
     }
   };
 
+  const handlePwChange = (event) => {
+    setPw(event.target.value);
+  };
+  const handlePwCheckChange = (event) => {
+    setPwCheck(event.target.value);
+  };
+  const handleCancel = () => {
+    window.location.href = "/login";
+  };
+  const handlePwChangeSubmit = async () => {
+    if (pw !== pwCheck) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, pw }),
+    };
+    try {
+      const response = await fetch(
+        "http://localhost:8123/users/findPw",
+        requestOptions
+      );
+      if (response.status === 401) {
+        alert("해당 id의 user가 존재하지 않습니다.");
+        return;
+      } else if (response.status === 409) {
+        alert("비밀번호 변경에 실패하였습니다.");
+        return;
+      }
+      alert("비밀번호가 변경되었습니다.");
+      window.location.href = "/login";
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+
   return (
     <Container style={{ marginTop: "10%" }}>
-      <TitleComponent style={{ marginBottom: "2%", padding: "1.5% 3.5%" }}>
+      <TitleComponent style={{ marginBottom: "3%", padding: "1.5% 3.5%" }}>
         비밀번호 찾기
       </TitleComponent>
       <ProfileContainer>
-        <InfoRowContainer style={{ padding: "10% 0" }}>
+        <InfoRowContainer style={{ padding: "8% 0 7% 0", marginBottom:"1%" }}>
           <ContentContainer style={{}}>
             <div
               style={{
@@ -186,23 +241,106 @@ const FindPassword = () => {
                 인증하기
               </Btn>
             </div>
-
-            {showInformMessage ? (
-              <InformMessage>
-                회원님의 아이디로 이메일로 전송되었습니다.
-              </InformMessage>
+            {isVerified ? (
+              <VerifyAfterContainer>
+                <div
+                  style={{
+                    marginTop: "10px",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <InputLine
+                    name="pw"
+                    type="password"
+                    value={pw}
+                    onChange={handlePwChange}
+                    placeholder="변경할 비밀번호"
+                  />
+                  <Btn
+                    $empty
+                    style={{
+                      padding: "1.5%",
+                      width: "120px",
+                      marginLeft: "10px",
+                      borderRadius: "10px",
+                    }}
+                  >
+                    여백맞춤
+                  </Btn>
+                </div>
+                <div
+                  style={{
+                    marginTop: "10px",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <InputLine
+                    name="pwCheck"
+                    type="password"
+                    value={pwCheck}
+                    onChange={handlePwCheckChange}
+                    placeholder="비밀번호 확인"
+                  />
+                  <Btn
+                    $empty
+                    style={{
+                      padding: "1.5%",
+                      width: "120px",
+                      marginLeft: "10px",
+                      borderRadius: "10px",
+                    }}
+                  >
+                    여백맞춤
+                  </Btn>
+                </div>
+              </VerifyAfterContainer>
             ) : (
-              <InformMessage style={{ visibility: "hidden" }}>
-                회원님의 아이디로 이메일로 전송되었습니다.
-              </InformMessage>
+              <>
+                {showInformMessage ? (
+                  <InformMessage>
+                    회원님의 아이디로 이메일로 전송되었습니다.
+                  </InformMessage>
+                ) : (
+                  <InformMessage style={{ visibility: "hidden" }}>
+                    회원님의 아이디로 이메일로 전송되었습니다.
+                  </InformMessage>
+                )}
+                <div style={{ marginLeft: "2%" }}>
+                  본인확인 이메일 주소와 입력한 이메일 주소가 같아야,
+                  <br /> 인증번호를 받을 수 있습니다.
+                </div>
+              </>
             )}
-            <div style={{ marginLeft: "2%" }}>
-              본인확인 이메일 주소와 입력한 이메일 주소가 같아야,
-              <br /> 인증번호를 받을 수 있습니다.
-            </div>
           </ContentContainer>
         </InfoRowContainer>
       </ProfileContainer>
+      <ButtonContainer>
+        <Btn
+          onClick={handleCancel}
+          style={{
+            width: "110%",
+            padding: "2%",
+            marginLeft: "10px",
+            borderRadius: "10px",
+          }}
+        >
+          취소
+        </Btn>
+        <Btn
+          $colored
+          onClick={handlePwChangeSubmit}
+          style={{
+            width: "110%",
+            marginLeft: "20%",
+            padding: "2%",
+              borderRadius: "10px",
+          }}
+        >
+          확인
+        </Btn>
+        </ButtonContainer>
     </Container>
   );
 };
