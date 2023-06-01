@@ -1,14 +1,15 @@
+import React, { useState, useEffect, useRef } from "react";
 import checked_img from "../../contents/checked.png";
 import edit_profile from "../../contents/edit_profile.png";
 import edit_img from "../../contents/edit.png";
+import edit_black_img from "../../contents/edit_black_img.png";
 import styled, { css } from "styled-components";
-import { useState, useEffect } from "react";
 import WithdrawButton from "./WithdrawButton";
 import Btn from "../../components/Btn";
 import axios from "axios";
 import Cookies from "js-cookie";
 import ChangePwModal from "./ChangePwModal";
-import { isDisabled } from "@testing-library/user-event/dist/utils";
+import { validIdFormat, validNickFormat } from "../../utils/validFormat";
 
 export const Container = styled.div`
   display: flex;
@@ -40,44 +41,15 @@ const InputNicknameContainer = styled.div`
   justify-content: space-between;
 `;
 
-const InfoRow = ({ label, img, value, can_edit, userInfo, handleClick }) => {
-  // 변경할 정보 입력하는 모달열기
-  const [changeNicknameModalOpen, setChangeNicknameModalOpen] = useState(false);
-  const [changePwModalOpen, setChangePwModalOpen] = useState(false);
-  const [changeIdModalOpen, setChangeIdModalOpen] = useState(false);
-
-  // 닉네임 변경
-  const openChangeNicknameModal = () => {
-    setChangeNicknameModalOpen(true);
-  };
-  const closeChangeNicknameModal = () => {
-    setChangeNicknameModalOpen(false);
-  };
-  // 비밀번호 변경
-  const openChangePwModal = () => {
-    setChangePwModalOpen(true);
-  };
-  const closeChangePwModal = () => {
-    setChangePwModalOpen(false);
-  };
-  // 아이디 변경
-  const openChangeIdModal = () => {
-    setChangeIdModalOpen(true);
-  };
-  const closeChangeIdModal = () => {
-    setChangeIdModalOpen(false);
-  };
-
-  const handleEditClick = () => {
-    if (label === "닉네임") {
-      openChangeNicknameModal();
-    } else if (label === "비밀번호") {
-      openChangePwModal();
-    } else if (label === "아이디") {
-      openChangeIdModal();
-    }
-  };
-
+const InfoRow = ({
+  label,
+  img,
+  value,
+  setValue,
+  can_edit,
+  userInfo,
+  openChangePwModal,
+}) => {
   return (
     <div
       style={{
@@ -100,7 +72,14 @@ const InfoRow = ({ label, img, value, can_edit, userInfo, handleClick }) => {
       >
         {label}
       </label>
-        <EditInput initialValue={value} canEdit={can_edit}/>
+      <EditInput
+        initialValue={value}
+        setValue={setValue}
+        label={label}
+        can_edit={can_edit}
+        img={img}
+        openChangePwModal={openChangePwModal}
+      />
     </div>
   );
 };
@@ -124,92 +103,125 @@ const ButtonContainer = styled.div`
   justify-content: space-evenly;
 `;
 
-const EditInput = ({ initialValue }) => {
+const EditInput = ({
+  initialValue,
+  setValue,
+  label,
+  can_edit,
+  img,
+  openChangePwModal,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [value, setValue] = useState(initialValue);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (isEditing) {
+      inputRef.current.focus();
+    } else {
+      inputRef.current.blur();
+    }
+  }, [isEditing]);
 
   const handleInputChange = (event) => {
     setValue(event.target.value);
   };
 
   const handleEditClick = () => {
-    setIsEditing(true);
+    if (!can_edit) return;
+    if (label === "비밀번호") {
+      openChangePwModal();
+    } else {
+      setIsEditing((prevIsEditing) => !prevIsEditing);
+    }
   };
 
-  const handleBlur = () => {
-    setIsEditing(false);
-  };
+  // const handleBlur = () => {
+  //   setIsEditing(false);
+  // };
 
-return (
-  <div style={{ display: "flex", alignItems: "center" }}>
-    {isEditing ? (
+  return (
+    <div style={{ display: "flex", alignItems: "center" }}>
       <input
+        ref={inputRef}
+        readOnly={!isEditing}
         type="text"
-        value={value}
+        value={initialValue}
         onChange={handleInputChange}
-        onBlur={handleBlur}
-        autoFocus
+        // onBlur={handleBlur}
         style={{
-          marginLeft: "5%",
           fontSize: "25px",
           fontWeight: "bold",
           opacity: "50%",
           border: "none",
+          background: "transparent",
+          outline: "none",
         }}
       />
-    ) : (
-      <span
-        style={{
-          marginLeft: "5%",
-          fontSize: "25px",
-          fontWeight: "bold",
-          opacity: "50%",
-          border: "none",
-        }}
-      >
-        {value}
-      </span>
-    )}
-    <img
-      src={edit_img}
-      width="27px"
-      height="27px"
-      alt="edit"
-      style={{ marginRight: "20px" }}
-      onClick={handleEditClick}
-    />
-  </div>
-);
+      <img
+        src={isEditing ? edit_black_img : img}
+        width="27px"
+        height="27px"
+        alt="edit"
+        style={{ marginRight: "20px" }}
+        onClick={handleEditClick}
+      />
+    </div>
+  );
 };
 
-const EditButton = ({ accessToken, refreshToken, newPassword }) => {
+const EditButton = ({
+  accessToken,
+  refreshToken,
+  userId,
+  nickname,
+  newPassword,
+  profileImg
+}) => {
   const handleChangeUserInfo = async (event) => {
     event.preventDefault();
 
+    if (!validIdFormat(userId)) {
+      alert("아이디는 14글자 이내의 영소문자, 숫자, '_' 만 가능합니다.");
+      return;
+    }
+
     // 정보 수정 api 호출
     // To do : 닉네임, 아이디, 프로필사진 변경
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+      "refresh-token": refreshToken,
+    };
+    let body = {};
+    if (newPassword === "") {
+      body = {
+        newId: userId,
+        newNickname: nickname,
+        newProfileImg:
+        profileImg,
+      };
+    } else {
+      body = {
+        newId: userId,
+        newNickname: nickname,
+        newPassword: newPassword,
+        newProfileImg:
+        profileImg,
+      };
+    }
+
     try {
-      const response = await axios.post(
+      const response = await axios.patch(
         "http://localhost:8123/users/changeUserInfo",
+        body,
         {
-          newNickname: "dum12",
-          newId: "du1r2",
-          newPassword: newPassword,
-          newProfileImg:
-            "http://k.kakaocdn.net/dn/dGxpqk/btrVBQOZowS/hbRZhxNkPnfIGSikcys6V0/img_640x640.jpg",
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "refresh-token": refreshToken,
-          },
+          headers: headers,
         }
       );
       console.log(response);
       if (response.status === 200) {
         // 쿠키삭제
-        Cookies.remove("accessToken", { path: "" });
-        Cookies.remove("refreshToken", { path: "" });
+        Cookies.remove('accessToken', { path: '' })
+        Cookies.remove('refreshToken', { path: '' })
 
         alert("회원정보가 수정되었습니다. 다시 로그인 해주세요.");
         window.location.reload();
@@ -235,9 +247,15 @@ const EditProfile = ({ userInfo }) => {
   const [profileImg, setProfileImg] = useState(userInfo.profile_img_url);
   const [error, setError] = useState("");
 
+  // 비밀번호 변경 모달열기
+  const [changePwModalOpen, setChangePwModalOpen] = useState(false);
   const [newPassword, setNewPassword] = useState(""); // State variable to hold the newPw value
-  const handlePasswordChange = (newPw) => {
-    setNewPassword(newPw);
+  // 비밀번호 변경
+  const openChangePwModal = () => {
+    setChangePwModalOpen(true);
+  };
+  const closeChangePwModal = () => {
+    setChangePwModalOpen(false);
   };
 
   useEffect(() => {
@@ -248,10 +266,6 @@ const EditProfile = ({ userInfo }) => {
 
   const accessToken = Cookies.get("accessToken");
   const refreshToken = Cookies.get("refreshToken");
-
-  const clickNicknameChange = (event) => {
-
-  };
 
   return (
     <Container>
@@ -278,13 +292,19 @@ const EditProfile = ({ userInfo }) => {
         </InputNicknameContainer>
       </ProfileContainer>
       <InfoRowContainer>
-        <InfoRow label="아이디" value={userId} img={edit_img} can_edit={true} />
+        <InfoRow
+          label="아이디"
+          value={userId}
+          setValue={setUserId}
+          img={edit_img}
+          can_edit={true}
+        />
         <InfoRow
           label="비밀번호"
           img={edit_img}
           can_edit={true}
           userInfo={userInfo}
-          handleClick={handlePasswordChange}
+          openChangePwModal={openChangePwModal}
         />
         <InfoRow
           label="이메일"
@@ -298,9 +318,17 @@ const EditProfile = ({ userInfo }) => {
         <EditButton
           accessToken={accessToken}
           refreshToken={refreshToken}
+          userId={userId}
+          nickname={nickname}
           newPassword={newPassword}
+          profileImg={profileImg}
         />
       </ButtonContainer>
+      <ChangePwModal
+        isOpen={changePwModalOpen}
+        close={closeChangePwModal}
+        onOk={setNewPassword}
+      />
     </Container>
   );
 };

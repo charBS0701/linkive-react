@@ -9,7 +9,7 @@ import Btn from "../../components/Btn";
 import InputLine from "../../components/InputLine";
 import styled from "styled-components";
 import palette from "../../styles/colorPalette";
-import validPwFormat from "../../utils/validPwFormat";
+import {validPwFormat} from "../../utils/validFormat";
 
 const ContentContainer = styled.div`
   width: 70%;

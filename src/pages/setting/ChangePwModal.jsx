@@ -14,7 +14,7 @@ import checkImg from "../../contents/check_img.png";
 import IncorrectImg from "../../contents/incorrect_img.svg";
 import styled from "styled-components";
 import Cookies from "js-cookie";
-import validPwFormat from "../../utils/validPwFormat";
+import {validPwFormat} from "../../utils/validFormat";
 
 const CheckImg = styled.img`
   width: 27px;
