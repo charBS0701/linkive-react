@@ -1,0 +1,55 @@
+.li {
+    list-style: none;
+    float: left;
+    margin: 8px;
+    box-shadow: 1px 2px 10px black;
+    border-radius: 10px;
+}
+
+.mainImage {
+    border-radius: 10px 10px 0 0;
+}
+
+.faviconImage {
+    margin: 3px;
+}
+
+.folderIconImage {
+    margin-left: 3px;
+    margin-right: 8px;
+}
+
+.title {
+    margin-left: 3px;
+    font-size: 16px;
+}
+
+.folderName {
+    font-size: 8px
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin: 3px 6px 5px 6px;
+}
+
+.infoItem {
+    display: flex;
+    align-items: center;
+}
+
+.matchDiv {
+    margin: 2px 12px 5px 12px;
+}
+
+.bodyText {
+    font-size: 12px;
+}
+
+.matchText {
+    font-size: 12px;
+    color: #6368E3;
+}

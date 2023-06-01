@@ -1,30 +1,100 @@
-import React from "react";
-import ItemComponent from "./ItemComponent";
-import TestFavicon from "../../contents/favicon_test.png";
+import React from 'react';
 
-function Link() {
-  const itemList = (count) => {
-    let data = [];
+import {memo, useState} from 'react';
+import { Routes, Route } from 'react-router-dom';
 
-    for (let i = 0; i < count; i++) {
-      data.push(
-        <ItemComponent
-          src="/images/img.png"
-          title="롯데월드"
-          favicon={TestFavicon}
-          folder={"놀이공원"}
-        />
-      );
+import {ItemComponent, FolderItemComponent} from './ItemComponent'
+import TestFavicon from '../../contents/favicon_test.png'
+import SearchComponent from "./SearchComponent";
+import OptionsComponent from "../../components/OptionsComponent";
+import AddFolderComponent from "./AddFolderComponent";
+import SelectComponent from './SelectComponent';
+
+import MultiClassName from "../../utils/MultiClassName";
+
+import styles from "./css/Link.module.css";
+
+import Search from './search/Search';
+import Folder from "./folder/Folder";
+import axios from "axios";
+
+function LinkComponent() {
+    const [wrap, setWrap] = useState(false);
+    const [optionIdx, setOptionIdx] = useState(0);
+
+    const itemList = (count) => {
+        let data = [];
+
+        for (let i = 0; i < count; i++) {
+            data.push(optionIdx == 0 ?
+                <ItemComponent
+                    src={"/images/img.png"}
+                    title={"롯데월드"}
+                    favicon={TestFavicon}
+                    folder={"놀이공원"}
+                    linkNumber={i}
+                /> :
+                <FolderItemComponent
+                    src={"/images/img.png"}
+                    title={"테스트"}
+                    favicon={TestFavicon}
+                    folder={"놀이공원"}
+                    linkNumber={i}
+                />
+            );
+        }
+        return data;
+    };
+
+    const AddFolderButtonComponent = (p) =>{
+        return (
+            <button className={styles.addFolderButton} onClick={p.onClick}>
+                <span>폴더 추가</span>
+                <span className={styles.buttonCircle}>+</span>
+            </button>
+        )
     }
-    return data;
-  };
 
-  return (
-    <div>
-      <header>HEADER SPACE</header>
-      <ul>{itemList(8)}</ul>
-    </div>
-  );
+    const HeaderComponent = () => {
+        return (
+            <div className={MultiClassName([styles.onlyMargin, styles.toolbar])}>
+                <SearchComponent />
+                {wrap ? <AddFolderComponent state={{wrap, setWrap}}/> : <AddFolderButtonComponent onClick={() => setWrap(true)}/>}
+            </div>
+        );
+    };
+
+    const buttonsData = ["링크별", "폴더별"];
+    const optionsOnChange = (idx) => {
+        setOptionIdx(idx);
+    }
+
+    return (
+        <div>
+            <HeaderComponent />
+            <div className={MultiClassName([styles.onlyMargin, styles.buttonsLine])}>
+                    <span>
+                        <OptionsComponent data={buttonsData} default={0} onChange={optionsOnChange}/>
+                    </span>
+                <SelectComponent />
+            </div>
+            <ul>
+                {itemList(8)}
+            </ul>
+        </div>
+    );
 }
 
-export default Link;
+
+
+function Link() {
+    return (
+        <Routes>
+            <Route path={'search'} element={<Search />}/>
+            <Route path={'folder'} element={<Folder />}/>
+            <Route path={''} element={<LinkComponent />}/>
+        </Routes>
+    );
+};
+
+export default memo(Link);
