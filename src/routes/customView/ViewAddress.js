@@ -86,9 +86,11 @@ const StyledViewLotNum = styled.div`
 const ViewAddress = () => {
 
     //모드
-    const [mode, setMode] = useState("view");
+    const [mode, setMode] = useState("edit");
     const [road, setRoad] = useState("경상북도 경주시 보문로 544");
     const [lot, setLot] = useState("천군동 191-5 경주월드")
+
+    
 
     let content = null;
     // edit 모드일 때
@@ -97,7 +99,7 @@ const ViewAddress = () => {
             <StyledBorder>
                 <StyledAddrIcon src="image/ic_address.png"/>
                 <StyledEditInput>주소 추가</StyledEditInput>
-                <StyledEditAddBtn>
+                <StyledEditAddBtn >
                     <StyledEditAddIcon src="image/ic_add_view.png"/>
                 </StyledEditAddBtn>
                 <StyledEditTrashIcon

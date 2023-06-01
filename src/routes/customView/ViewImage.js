@@ -1,4 +1,3 @@
-import "../../css/customView/ViewImage.css";
 import { useState, useRef } from "react";
 import styled from "styled-components";
 import palette from "../../styles/colorPalette";
@@ -77,7 +76,16 @@ const StyledEditMenu = styled.div`
 const StyledEditMenuEditImg = styled.img`
     width: 30px;
     height: 30px;
-    margin-left: 17px;
+`;
+
+const StyledEditMenuEditBtn = styled.button`
+    width: 50%;
+    border: none;
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // margin-left: 17px;
 `;
 
 const StyledEditMenuLine = styled.div`
@@ -86,16 +94,26 @@ const StyledEditMenuLine = styled.div`
     height: 100%;
 `;
 
+const StyledEditMenuTrashBtn = styled.button`
+    border: none;
+    background: none;
+    margin: 0;
+    // margin-right: 14px;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
 const StyledEditMenuTrashImage = styled.img`
     width: 32px;
     height: 32px;
-    margin-right: 14px;
 `;
 
 const ViewImage = () => {
     
     //모드
-    const [mode, setMode] = useState("view");
+    const [mode, setMode] = useState("add");
 
     // const AddInputRef = useRef<HTMLInputElement>(null);
     const AddInputRef = useRef(null);
@@ -116,7 +134,7 @@ const ViewImage = () => {
                 thumbnail: url,
                 type: fileList[0].type.slice(0, 5),
             });
-            // setMode("edit");
+            setMode("edit");
         }
     };
 
@@ -141,11 +159,17 @@ const ViewImage = () => {
         content = 
             <StyledBorder>
                 <StyledEditBorder>
-                    <StyledImage src={image}/>
+                    <StyledImage src={image.thumbnail}/>
                     <StyledEditMenu>
-                    <StyledEditMenuEditImg src="image/ic_viewimage_edit.png"/>
-                    <StyledEditMenuLine/>
-                    <StyledEditMenuTrashImage src="image/ic_trash.png"/>
+                        <StyledAddInput type="file" accept="image/jpg, image/jpeg, image/png" 
+                            ref={AddInputRef} onChange={uploadImage} />
+                        <StyledEditMenuEditBtn type = "button" onClick={handleClickFileInput}>
+                            <StyledEditMenuEditImg src="image/ic_viewimage_edit.png"/>
+                        </StyledEditMenuEditBtn >
+                        <StyledEditMenuLine/>
+                        <StyledEditMenuTrashBtn>
+                            <StyledEditMenuTrashImage src="image/ic_trash.png"/>
+                        </StyledEditMenuTrashBtn>
                 </StyledEditMenu>
                 </StyledEditBorder>
             </StyledBorder>

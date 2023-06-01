@@ -7,6 +7,8 @@ import ViewCheck from "../../routes/customView/ViewCheck";
 import ViewAddress from "../../routes/customView/ViewAddress";
 import ViewImage from "../../routes/customView/ViewImage";
 import styled from "styled-components";
+import BtnAddLink from "../home/BtnAddLink";
+import MapContainer from "../../routes/customView/MapContainer";
 
 const StyledMargin = styled.div`
     margin-bottom: 30px;
@@ -15,7 +17,7 @@ const StyledMargin = styled.div`
 const EditCustomView = () => {
     return (
         <div>
-            <ViewImage />
+            <MapContainer/>
         </div>
     )
 }
