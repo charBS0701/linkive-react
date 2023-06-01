@@ -13,6 +13,7 @@ import Login from "./pages/login/Login";
 import { default as LinkPage } from "./pages/link/Link"; // Prevent name collision
 import Header from "./pages/home/Header";
 import FindPassword from "./pages/login/FindPassword.jsx";
+import FindPwAfter from "./pages/login/FindPwAfter.jsx";
 import LinkMenu from "./pages/link/Link";
 import ViewLink from "./pages/viewLinkMemo/ViewLink";
 import EditLink from "./pages/editLinkMemo/EditLink";
@@ -105,6 +106,7 @@ function App() {
                     path="/login/findpassword"
                     element={<FindPassword />}
                   />
+                  <Route path="/login/findpassword/after" element={<FindPwAfter/>} />
                   <Route path="*" element={<RedirectToLogin />} />
                 </>
               )}

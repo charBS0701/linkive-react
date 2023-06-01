@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   ProfileContainer,
@@ -26,6 +26,8 @@ const InformMessage = styled.div`
 `;
 
 const FindPassword = () => {
+  const navigate = useNavigate();
+
   const [id, setId] = useState("");
   const [email, setEmail] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
@@ -88,10 +90,7 @@ const FindPassword = () => {
     if (verificationCode == userVerificationCode) {
       // string == number
       alert("인증되었습니다.");
-      // 비밀번호 변경 페이지로 이동 <FindPwAfter />
-      
-
-
+      navigate('/login/findPassword/after', { replace: true });
     } else {
       alert("인증번호가 일치하지 않습니다.");
     }
