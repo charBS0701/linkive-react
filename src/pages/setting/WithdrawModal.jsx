@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import axios from "axios";
-import InputLine from "./InputLine";
-import Btn from "./Btn";
+import InputLine from "../../components/InputLine";
+import Btn from "../../components/Btn";
 
 const ModalContainer = styled.div`
   display: flex;

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import axios from "axios";
-import Btn from "./Btn";
+import Btn from "../../components/Btn";
 import xImg from "../../contents/x.png";
 import Cookies from "js-cookie";
 

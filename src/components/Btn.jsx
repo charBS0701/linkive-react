@@ -26,6 +26,12 @@ const Btn = styled.button`
       font-size: 1.2rem;
     `
   }
+  ${(props) =>
+    props.$empty &&
+    css`
+    visibility: hidden;
+    `
+  }
 `;
 
 export default Btn;

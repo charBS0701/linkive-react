@@ -7,8 +7,8 @@ import {
   ModalContent,
 } from "./InquireModal";
 import axios from "axios";
-import Btn from "./Btn";
-import InputLine from "./InputLine";
+import Btn from "../../components/Btn";
+import InputLine from "../../components/InputLine";
 import showPwIcon from "../../contents/showPwIcon.png";
 import checkImg from "../../contents/check_img.png";
 import IncorrectImg from "../../contents/incorrect_img.svg";

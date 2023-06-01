@@ -4,12 +4,13 @@ import edit_img from "../../contents/edit.png";
 import styled, { css } from "styled-components";
 import { useState, useEffect } from "react";
 import WithdrawButton from "./WithdrawButton";
-import Btn from "./Btn";
+import Btn from "../../components/Btn";
 import axios from "axios";
 import Cookies from "js-cookie";
 import ChangePwModal from "./ChangePwModal";
+import { isDisabled } from "@testing-library/user-event/dist/utils";
 
-const Container = styled.div`
+export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,7 +18,7 @@ const Container = styled.div`
   margin: 0 auto;
 `;
 
-const ProfileContainer = styled.div`
+export const ProfileContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -39,7 +40,7 @@ const InputNicknameContainer = styled.div`
   justify-content: space-between;
 `;
 
-const InfoRow = ({ label, img, value, can_edit, userInfo, handlePasswordChange}) => {
+const InfoRow = ({ label, img, value, can_edit, userInfo, handleClick }) => {
   // 변경할 정보 입력하는 모달열기
   const [changeNicknameModalOpen, setChangeNicknameModalOpen] = useState(false);
   const [changePwModalOpen, setChangePwModalOpen] = useState(false);
@@ -77,7 +78,6 @@ const InfoRow = ({ label, img, value, can_edit, userInfo, handlePasswordChange})
     }
   };
 
-
   return (
     <div
       style={{
@@ -100,39 +100,12 @@ const InfoRow = ({ label, img, value, can_edit, userInfo, handlePasswordChange})
       >
         {label}
       </label>
-      <span
-        style={{
-          flex: "3",
-          border: "none",
-          color: can_edit ? "inherit" : "#999999",
-          fontWeight: can_edit ? "bold" : "normal",
-        }}
-      >
-        {value}
-      </span>
-      <img
-        src={img}
-        width="27px"
-        height="27px"
-        alt={can_edit}
-        style={{ marginRight: "20px" }}
-        onClick={handleEditClick}
-      />
-      <ChangePwModal
-        isOpen={changePwModalOpen}
-        close={closeChangePwModal}
-        onOk={handlePasswordChange} // Pass the callback function to the ChangePwModal
-        header="닉네임 변경"
-        label="닉네임"
-        value={value}
-        userInfo={userInfo}
-      />
+        <EditInput initialValue={value} canEdit={can_edit}/>
     </div>
-
   );
 };
 
-const InfoRowContainer = styled.div`
+export const InfoRowContainer = styled.div`
   width: 100%;
   border: solid;
   border-color: #6368e3;
@@ -151,10 +124,68 @@ const ButtonContainer = styled.div`
   justify-content: space-evenly;
 `;
 
-const EditButton = ({accessToken, refreshToken, newPassword}) => {
+const EditInput = ({ initialValue }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [value, setValue] = useState(initialValue);
+
+  const handleInputChange = (event) => {
+    setValue(event.target.value);
+  };
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleBlur = () => {
+    setIsEditing(false);
+  };
+
+return (
+  <div style={{ display: "flex", alignItems: "center" }}>
+    {isEditing ? (
+      <input
+        type="text"
+        value={value}
+        onChange={handleInputChange}
+        onBlur={handleBlur}
+        autoFocus
+        style={{
+          marginLeft: "5%",
+          fontSize: "25px",
+          fontWeight: "bold",
+          opacity: "50%",
+          border: "none",
+        }}
+      />
+    ) : (
+      <span
+        style={{
+          marginLeft: "5%",
+          fontSize: "25px",
+          fontWeight: "bold",
+          opacity: "50%",
+          border: "none",
+        }}
+      >
+        {value}
+      </span>
+    )}
+    <img
+      src={edit_img}
+      width="27px"
+      height="27px"
+      alt="edit"
+      style={{ marginRight: "20px" }}
+      onClick={handleEditClick}
+    />
+  </div>
+);
+};
+
+const EditButton = ({ accessToken, refreshToken, newPassword }) => {
   const handleChangeUserInfo = async (event) => {
     event.preventDefault();
-    
+
     // 정보 수정 api 호출
     // To do : 닉네임, 아이디, 프로필사진 변경
     try {
@@ -164,7 +195,8 @@ const EditButton = ({accessToken, refreshToken, newPassword}) => {
           newNickname: "dum12",
           newId: "du1r2",
           newPassword: newPassword,
-          newProfileImg: "http://k.kakaocdn.net/dn/dGxpqk/btrVBQOZowS/hbRZhxNkPnfIGSikcys6V0/img_640x640.jpg"
+          newProfileImg:
+            "http://k.kakaocdn.net/dn/dGxpqk/btrVBQOZowS/hbRZhxNkPnfIGSikcys6V0/img_640x640.jpg",
         },
         {
           headers: {
@@ -174,11 +206,11 @@ const EditButton = ({accessToken, refreshToken, newPassword}) => {
         }
       );
       console.log(response);
-      if (response.status===200) {
+      if (response.status === 200) {
         // 쿠키삭제
-        Cookies.remove('accessToken', { path: '' })
-        Cookies.remove('refreshToken', { path: '' })
-        
+        Cookies.remove("accessToken", { path: "" });
+        Cookies.remove("refreshToken", { path: "" });
+
         alert("회원정보가 수정되었습니다. 다시 로그인 해주세요.");
         window.location.reload();
       }
@@ -186,7 +218,6 @@ const EditButton = ({accessToken, refreshToken, newPassword}) => {
       console.log(err);
       alert("회원정보 수정에 실패했습니다.");
     }
-
   };
   return (
     <Btn $big $colored onClick={handleChangeUserInfo}>
@@ -218,58 +249,59 @@ const EditProfile = ({ userInfo }) => {
   const accessToken = Cookies.get("accessToken");
   const refreshToken = Cookies.get("refreshToken");
 
+  const clickNicknameChange = (event) => {
+
+  };
+
   return (
-    
-      <Container>
-        <ProfileContainer>
-          <img
-            src={profileImg}
-            width="100px"
-            height="100px"
-            alt="profile"
-            style={{
-              borderRadius: "50%",
-              objectFit: "cover",
-            }}
-          />{" "}
-          {/* 프로필 사진 불러오고 누르면 수정할 수 있도록 */}
-          <InputNicknameContainer>
-            <input
-              type="text"
-              placeholder={originNickname}
-              value={nickname}
-              onChange={(event) => setNickname(event.target.value)}
-              style={{
-                marginLeft: "5%",
-                fontSize: "25px",
-                fontWeight: "bold",
-                opacity: "50%",
-                border: "none",
-              }}
-            />
-            <img src={edit_img} alt="cheched" style={{width:"25px", height:"25px", padding:"5px 20px"}}/>
-          </InputNicknameContainer>
-        </ProfileContainer>
-        <InfoRowContainer>
-          <InfoRow
-            label="아이디"
-            value={userId}
-            img={edit_img}
-            can_edit={true}
+    <Container>
+      <ProfileContainer>
+        <img
+          src={profileImg}
+          width="100px"
+          height="100px"
+          alt="profile"
+          style={{
+            borderRadius: "50%",
+            objectFit: "cover",
+          }}
+        />{" "}
+        {/* 프로필 사진 불러오고 누르면 수정할 수 있도록 */}
+        <InputNicknameContainer>
+          <EditInput
+            active="disabled"
+            type="text"
+            placeholder={originNickname}
+            value={nickname}
+            onChange={(event) => setNickname(event.target.value)}
           />
-          <InfoRow label="비밀번호" img={edit_img} can_edit={true} userInfo={userInfo} handlePasswordChange={handlePasswordChange}/>
-          <InfoRow
-            label="이메일"
-            value={email}
-            img={checked_img}
-            can_edit={false}
-          />
-        </InfoRowContainer>
-        <ButtonContainer>
-          <WithdrawButton />
-          <EditButton accessToken={accessToken} refreshToken={refreshToken} newPassword={newPassword}/>
-        </ButtonContainer>
-      </Container>
+        </InputNicknameContainer>
+      </ProfileContainer>
+      <InfoRowContainer>
+        <InfoRow label="아이디" value={userId} img={edit_img} can_edit={true} />
+        <InfoRow
+          label="비밀번호"
+          img={edit_img}
+          can_edit={true}
+          userInfo={userInfo}
+          handleClick={handlePasswordChange}
+        />
+        <InfoRow
+          label="이메일"
+          value={email}
+          img={checked_img}
+          can_edit={false}
+        />
+      </InfoRowContainer>
+      <ButtonContainer>
+        <WithdrawButton />
+        <EditButton
+          accessToken={accessToken}
+          refreshToken={refreshToken}
+          newPassword={newPassword}
+        />
+      </ButtonContainer>
+    </Container>
   );
 };
 

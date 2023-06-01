@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import WithdrawModal from "./WithdrawModal";
-import Btn from "./Btn";
+import Btn from "../../components/Btn";
 
 const WithdrawButton = (props) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
