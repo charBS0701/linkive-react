@@ -14,6 +14,7 @@ import checkImg from "../../contents/check_img.png";
 import IncorrectImg from "../../contents/incorrect_img.svg";
 import styled from "styled-components";
 import Cookies from "js-cookie";
+import validPwFormat from "../../utils/validPwFormat";
 
 const CheckImg = styled.img`
   width: 27px;
@@ -91,17 +92,12 @@ const ChangePwModal = ({ isOpen, close, onOk, userInfo }) => {
       console.log(error);
     }
   };
-  // 비밀번호 형식 검사 함수
-  const validatePwFormat = (password) => {
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/;
-    return passwordRegex.test(password);
-  };
+
   const handleNewPw = (e) => {
     const newPw = e.target.value;
     // 비밀번호 유효성 검사
     setNewPw(newPw);
-    setIsValidFormat(validatePwFormat(newPw));
+    setIsValidFormat(validPwFormat(newPw));
   };
 
   const handleNewPwCheck = (e) => {

@@ -9,6 +9,7 @@ import Btn from "../../components/Btn";
 import InputLine from "../../components/InputLine";
 import styled from "styled-components";
 import palette from "../../styles/colorPalette";
+import validPwFormat from "../../utils/validPwFormat";
 
 const ContentContainer = styled.div`
   width: 70%;
@@ -49,6 +50,7 @@ const FindPassword = () => {
   const [isVerified, setIsVerified] = useState(false); // 인증이 완료되었는지 여부
   const [pw, setPw] = useState("");
   const [pwCheck, setPwCheck] = useState("");
+  const [isValidFormat, setIsValidFormat] = useState(false);
 
   const handleIdChange = (event) => {
     setId(event.target.value);
@@ -115,6 +117,7 @@ const FindPassword = () => {
 
   const handlePwChange = (event) => {
     setPw(event.target.value);
+    setIsValidFormat(validPwFormat(event.target.value));
   };
   const handlePwCheckChange = (event) => {
     setPwCheck(event.target.value);
@@ -123,29 +126,33 @@ const FindPassword = () => {
     window.location.href = "/login";
   };
   const handlePwChangeSubmit = async () => {
+    if (!isValidFormat) {
+      alert("비밀번호는 8~16자리의 영문, 숫자, 특수문자 조합이어야 합니다.");
+      return;
+    }
     if (pw !== pwCheck) {
       alert("비밀번호가 일치하지 않습니다.");
       return;
     }
     const requestOptions = {
-      method: "PUT",
+      method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, pw }),
+      body: JSON.stringify({ id, newPassword:pw }),
     };
     try {
       const response = await fetch(
-        "http://localhost:8123/users/findPw",
+        "http://localhost:8123/users/findPassword",
         requestOptions
       );
       if (response.status === 401) {
         alert("해당 id의 user가 존재하지 않습니다.");
         return;
-      } else if (response.status === 409) {
-        alert("비밀번호 변경에 실패하였습니다.");
+      }
+      if (response.status === 200) {
+        alert("비밀번호가 변경되었습니다.");
+        window.location.href = "/login";
         return;
       }
-      alert("비밀번호가 변경되었습니다.");
-      window.location.href = "/login";
     } catch (error) {
       console.error("Error:", error);
     }
@@ -316,6 +323,7 @@ const FindPassword = () => {
           </ContentContainer>
         </InfoRowContainer>
       </ProfileContainer>
+      {isVerified && (
       <ButtonContainer>
         <Btn
           onClick={handleCancel}
@@ -341,6 +349,7 @@ const FindPassword = () => {
           확인
         </Btn>
         </ButtonContainer>
+      )}
     </Container>
   );
 };
