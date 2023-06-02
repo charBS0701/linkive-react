@@ -54,6 +54,9 @@ const LogoutModal = ({ isOpen, onClose, onLogout }) => {
     Cookies.remove('accessToken', { path: '' })
     Cookies.remove('refreshToken', { path: '' })
 
+    // 백엔드에서도 로그아웃 처리
+    axios.delete("http://localhost:8123/users/logout", { withCredentials: true })
+
     alert("로그아웃 되었습니다.");
     window.location.reload();
 

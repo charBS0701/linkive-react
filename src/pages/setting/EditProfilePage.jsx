@@ -152,13 +152,15 @@ const EditInput = ({
   // };
 
   return (
-    <div style={{ display: "flex", 
-    // name 이 있으면 양 끝으로 정렬 
-    justifyContent:"space-between",
-    width : name === undefined ? "80%" : "100%",
-    paddingLeft: name === undefined ? "0px" : "3%"
-
-   }}>
+    <div
+      style={{
+        display: "flex",
+        // name 이 있으면 양 끝으로 정렬
+        justifyContent: "space-between",
+        width: name === undefined ? "80%" : "100%",
+        paddingLeft: name === undefined ? "0px" : "3%",
+      }}
+    >
       <input
         ref={inputRef}
         readOnly={!isEditing}
@@ -242,6 +244,10 @@ const EditButton = ({
         // 쿠키삭제
         Cookies.remove("accessToken", { path: "" });
         Cookies.remove("refreshToken", { path: "" });
+        // 백엔드에서도 로그아웃 처리
+        axios.delete("http://localhost:8123/users/logout", {
+          withCredentials: true,
+        });
 
         alert("회원정보가 수정되었습니다. 다시 로그인 해주세요.");
         window.location.reload();
@@ -295,7 +301,7 @@ const EditProfile = ({ userInfo }) => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
-  }
+  };
 
   useEffect(() => {
     if (userInfo && userInfo.profile_img_url) {
@@ -309,12 +315,12 @@ const EditProfile = ({ userInfo }) => {
   return (
     <Container>
       <ProfileContainer>
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={handleUpload}
-        style={{ display: "none" }}
-      />
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleUpload}
+          style={{ display: "none" }}
+        />
         <img
           onClick={handleClick}
           // onChange={(e) => setProfileImg(e.target.value)}
