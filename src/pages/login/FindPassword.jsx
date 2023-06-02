@@ -11,7 +11,7 @@ import styled from "styled-components";
 import palette from "../../styles/colorPalette";
 import {validPwFormat} from "../../utils/validFormat";
 
-const ContentContainer = styled.div`
+export const ContentContainer = styled.div`
   width: 70%;
 `;
 

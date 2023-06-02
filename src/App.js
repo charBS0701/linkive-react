@@ -21,6 +21,7 @@ import EditProfilePage from "./pages/setting/EditProfilePage.jsx";
 import Cookies from "js-cookie";
 import { initState, reducer } from "./store/CustomDialogStore";
 import CustomDialog from "./components/CustomDialog";
+import FindId from "./pages/login/FindId";
 
 function RedirectToLogin() {
   // 로그인 안했을 때 로그인 페이지로 이동
@@ -100,6 +101,10 @@ function App() {
                   <Route
                     path="/login"
                     element={<Login onLogin={() => setIsLoggedIn(true)} />}
+                  />
+                                    <Route
+                    path="/login/findid"
+                    element={<FindId />}
                   />
                   <Route
                     path="/login/findpassword"
