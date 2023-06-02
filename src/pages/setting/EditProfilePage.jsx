@@ -79,6 +79,7 @@ const InfoRow = ({
         can_edit={can_edit}
         img={img}
         openChangePwModal={openChangePwModal}
+        userInfo={userInfo}
       />
     </div>
   );
@@ -110,9 +111,11 @@ const EditInput = ({
   can_edit,
   img,
   openChangePwModal,
+  userInfo
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef(null);
+
 
   useEffect(() => {
     if (isEditing) {
@@ -128,6 +131,10 @@ const EditInput = ({
 
   const handleEditClick = () => {
     if (!can_edit) return;
+    if (!(userInfo.socialLogin==="")) {
+      alert("소셜로그인 사용자는 정보를 수정할 수 없습니다.");
+      return;
+    }
     if (label === "비밀번호") {
       openChangePwModal();
     } else {
@@ -151,7 +158,7 @@ const EditInput = ({
         style={{
           fontSize: "25px",
           fontWeight: "bold",
-          opacity: "50%",
+          opacity: isEditing ? "100%" : "50%",
           border: "none",
           background: "transparent",
           outline: "none",
@@ -298,6 +305,7 @@ const EditProfile = ({ userInfo }) => {
           setValue={setUserId}
           img={edit_img}
           can_edit={true}
+          userInfo={userInfo}
         />
         <InfoRow
           label="비밀번호"
@@ -311,6 +319,7 @@ const EditProfile = ({ userInfo }) => {
           value={email}
           img={checked_img}
           can_edit={false}
+          userInfo={userInfo}
         />
       </InfoRowContainer>
       <ButtonContainer>
