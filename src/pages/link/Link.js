@@ -1,14 +1,11 @@
-import React from 'react';
-
-import {memo, useState} from 'react';
+import React, { memo, useState} from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import {ItemComponent, FolderItemComponent} from './ItemComponent'
-import TestFavicon from '../../contents/favicon_test.png'
 import SearchComponent from "./SearchComponent";
 import OptionsComponent from "../../components/OptionsComponent";
 import AddFolderComponent from "./AddFolderComponent";
 import SelectComponent from './SelectComponent';
+import ItemListComponent from "./ItemListComponent";
 
 import MultiClassName from "../../utils/MultiClassName";
 
@@ -16,35 +13,15 @@ import styles from "./css/Link.module.css";
 
 import Search from './search/Search';
 import Folder from "./folder/Folder";
-import axios from "axios";
 
 function LinkComponent() {
     const [wrap, setWrap] = useState(false);
     const [optionIdx, setOptionIdx] = useState(0);
 
-    const itemList = (count) => {
-        let data = [];
-
-        for (let i = 0; i < count; i++) {
-            data.push(optionIdx == 0 ?
-                <ItemComponent
-                    src={"/images/img.png"}
-                    title={"롯데월드"}
-                    favicon={TestFavicon}
-                    folder={"놀이공원"}
-                    linkNumber={i}
-                /> :
-                <FolderItemComponent
-                    src={"/images/img.png"}
-                    title={"테스트"}
-                    favicon={TestFavicon}
-                    folder={"놀이공원"}
-                    linkNumber={i}
-                />
-            );
-        }
-        return data;
-    };
+    const buttonsData = ["링크별", "폴더별"];
+    const optionsOnChange = (idx) => {
+        setOptionIdx(idx);
+    }
 
     const AddFolderButtonComponent = (p) =>{
         return (
@@ -64,11 +41,6 @@ function LinkComponent() {
         );
     };
 
-    const buttonsData = ["링크별", "폴더별"];
-    const optionsOnChange = (idx) => {
-        setOptionIdx(idx);
-    }
-
     return (
         <div>
             <HeaderComponent />
@@ -79,7 +51,7 @@ function LinkComponent() {
                 <SelectComponent />
             </div>
             <ul>
-                {itemList(8)}
+                <ItemListComponent option={optionIdx} />
             </ul>
         </div>
     );
@@ -90,8 +62,8 @@ function LinkComponent() {
 function Link() {
     return (
         <Routes>
-            <Route path={'search'} element={<Search />}/>
-            <Route path={'folder'} element={<Folder />}/>
+            <Route path={'search'} element={<Search/>}/>
+            <Route path={'folder/:num'} element={<Folder/>}/>
             <Route path={''} element={<LinkComponent />}/>
         </Routes>
     );

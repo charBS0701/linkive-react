@@ -69,15 +69,15 @@ const Login = () => {
 
     // Perform login request using Axios
     axios
-      .post("http://localhost:8123/users/login", { id, password },{ withCredentials: true })
+      .post("api/users/login", { id, password },{ withCredentials: true })
       .then((res) => {  
         console.log(res);
         console.log(res.data);
         if (res.status === 200) {
           if (res.data.accessToken) {
             // 쿠키에 토큰 저장 // 서버에서 처리했음
-            // Cookies.set("accessToken", res.data.accessToken);
-            // Cookies.set("refreshToken", res.data.refreshToken);
+             Cookies.set("accessToken", res.data.accessToken);
+             Cookies.set("refreshToken", res.data.refreshToken);
           }
           // 메인페이지로 이동
           window.location.replace("/");

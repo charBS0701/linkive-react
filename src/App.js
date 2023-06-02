@@ -12,8 +12,9 @@ import "./styles/App.css";
 import EditProfilePage from "./pages/setting/EditProfilePage";
 
 import { initState, reducer } from "./store/CustomDialogStore";
-import React, {createContext, useReducer} from "react";
+import {createContext, useReducer} from "react";
 import CustomDialog from "./components/CustomDialog";
+import Link from './pages/link/Link'
 
 export const DialogDispatch = createContext(initState);
 
