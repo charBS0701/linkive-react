@@ -17,7 +17,8 @@ const WithdrawButton = (props) => {
 
   return (
     <>
-      <Btn $big onClick={handleWithdraw}>
+      <Btn $big onClick={handleWithdraw}
+      >
         탈퇴하기
       </Btn>
       {modalIsOpen && (

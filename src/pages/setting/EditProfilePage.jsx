@@ -176,6 +176,8 @@ const EditInput = ({
         }}
       />
       <img
+        onMouseOver={(e) => (e.currentTarget.style.opacity = "50%")}
+        onMouseOut={(e) => (e.currentTarget.style.opacity = "100%")}
         src={isEditing ? edit_black_img : img}
         width="27px"
         height="27px"
@@ -207,7 +209,6 @@ const EditButton = ({
     }
 
     // 정보 수정 api 호출
-    // To do : 닉네임, 아이디, 프로필사진 변경
     const headers = {
       Authorization: `Bearer ${accessToken}`,
       "refresh-token": refreshToken,
@@ -264,6 +265,7 @@ const EditProfile = ({ userInfo }) => {
   const [userId, setUserId] = useState(userInfo.id);
   const [nickname, setNickname] = useState(userInfo.nickname);
   const [profileImg, setProfileImg] = useState(userInfo.profile_img_url);
+  const fileInputRef = useRef(null);
   const [error, setError] = useState("");
 
   // 비밀번호 변경 모달열기
@@ -276,10 +278,28 @@ const EditProfile = ({ userInfo }) => {
   const closeChangePwModal = () => {
     setChangePwModalOpen(false);
   };
+  const handleUpload = (event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setProfileImg(reader.result);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+  const handleClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  }
 
   useEffect(() => {
     if (userInfo && userInfo.profile_img_url) {
-      setProfileImg(userInfo.profile_img_url);
+      setProfileImg(profileImg);
     }
   }, [userInfo, userId, nickname, profileImg]);
 
@@ -289,8 +309,19 @@ const EditProfile = ({ userInfo }) => {
   return (
     <Container>
       <ProfileContainer>
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleUpload}
+        style={{ display: "none" }}
+      />
         <img
+          onClick={handleClick}
+          // onChange={(e) => setProfileImg(e.target.value)}
           src={profileImg}
+          // 마우스 올라가면 투명도 50%로
+          onMouseOver={(e) => (e.currentTarget.style.opacity = "50%")}
+          onMouseOut={(e) => (e.currentTarget.style.opacity = "100%")}
           width="100px"
           height="100px"
           alt="profile"
@@ -298,8 +329,7 @@ const EditProfile = ({ userInfo }) => {
             borderRadius: "50%",
             objectFit: "cover",
           }}
-        />{" "}
-        {/* 프로필 사진 불러오고 누르면 수정할 수 있도록 */}
+        />
         <InputNicknameContainer>
           <InfoRow
             value={nickname}

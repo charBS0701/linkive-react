@@ -10,6 +10,11 @@ const Btn = styled.button`
   font-size: 1rem;
   cursor: pointer;
   margin-right: 10px; // 취소 버튼과 확인 버튼 사이 간격
+  // 마우스 올라가면 50% 투명
+  &:hover {
+    opacity: 0.5;
+  }
+  
 
   ${(props) =>
     props.$colored &&
