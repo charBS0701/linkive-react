@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import WithdrawModal from "./WithdrawModal";
-import Btn from "./Btn";
+import Btn from "../../components/Btn";
 
 const WithdrawButton = (props) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -17,7 +17,8 @@ const WithdrawButton = (props) => {
 
   return (
     <>
-      <Btn $big onClick={handleWithdraw}>
+      <Btn $big onClick={handleWithdraw}
+      >
         탈퇴하기
       </Btn>
       {modalIsOpen && (

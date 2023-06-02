@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import WithdrawModal from "./WithdrawModal";
 import InquireModal from "./InquireModal";
 import LogoutModal from "./LogoutModal";
+import TitleComponent from "../../components/TitleComponent";
 
 // 유저정보
 
@@ -194,16 +195,7 @@ const Setting = (props) => {
           alignItems: "center",
         }}
       >
-        <span
-          style={{
-            color: "white",
-            backgroundColor: "#6368E3",
-            borderRadius: "30px",
-            padding: "7px 20px",
-          }}
-        >
-          Page Sheet
-        </span>
+        <TitleComponent>Page Sheet</TitleComponent>
         <div
           style={{
             margin: "3% 3%",
@@ -271,19 +263,8 @@ const Setting = (props) => {
           alignItems: "center",
         }}
       >
-        <span
-          style={{
-            color: "white",
-            alignContent: "center",
-            backgroundColor: "#6368E3",
-            borderRadius: "30px",
-            padding: "8px 20px",
-            marginTop: "2%",
-            marginBottom: "7%",
-          }}
-        >
-          고객지원
-        </span>
+
+        <TitleComponent style={{marginTop:"2%", marginBottom:"7%"}}>고객지원</TitleComponent>
         <ModalOpener>문의하기</ModalOpener>
         <ModalOpener>로그아웃</ModalOpener>
         <ModalOpener>회원탈퇴</ModalOpener>
