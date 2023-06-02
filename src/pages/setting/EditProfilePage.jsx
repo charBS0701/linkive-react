@@ -31,10 +31,10 @@ export const ProfileContainer = styled.div`
 const InputNicknameContainer = styled.div`
   border: solid;
   border-color: #6368e3;
-  border-radius: 30px;
-  width: 70%;
+  border-radius: 40px;
+  width: 60%;
   margin: 5%;
-  padding: 2%;
+  padding: 1% 3%;
   text-justify: center;
   display: flex;
   flex-direction: row;
@@ -49,29 +49,33 @@ const InfoRow = ({
   can_edit,
   userInfo,
   openChangePwModal,
+  name,
 }) => {
   return (
     <div
       style={{
         fontSize: "20px",
         display: "flex",
-        width: "80%",
-        borderBottom: "solid",
+        width: name === undefined ? "80%" : "100%",
+        borderBottom: name === undefined ? "solid" : "none",
         borderBottomWidth: "1px",
         borderColor: "#D4D4D4",
         padding: "3% 0",
       }}
     >
-      <label
-        style={{
-          flex: "1",
-          color: "#6368E3",
-          fontWeight: "bold",
-          marginLeft: "10px",
-        }}
-      >
-        {label}
-      </label>
+      {/* name이 있으면(nickname수정) */}
+      {name !== undefined ? null : (
+        <label
+          style={{
+            flex: "1",
+            color: "#6368E3",
+            fontWeight: "bold",
+            marginLeft: "10px",
+          }}
+        >
+          {label}
+        </label>
+      )}
       <EditInput
         initialValue={value}
         setValue={setValue}
@@ -80,6 +84,7 @@ const InfoRow = ({
         img={img}
         openChangePwModal={openChangePwModal}
         userInfo={userInfo}
+        name={name}
       />
     </div>
   );
@@ -111,11 +116,11 @@ const EditInput = ({
   can_edit,
   img,
   openChangePwModal,
-  userInfo
+  userInfo,
+  name,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef(null);
-
 
   useEffect(() => {
     if (isEditing) {
@@ -131,7 +136,7 @@ const EditInput = ({
 
   const handleEditClick = () => {
     if (!can_edit) return;
-    if (!(userInfo.socialLogin==="")) {
+    if (!(userInfo.socialLogin === null)) {
       alert("소셜로그인 사용자는 정보를 수정할 수 없습니다.");
       return;
     }
@@ -147,7 +152,13 @@ const EditInput = ({
   // };
 
   return (
-    <div style={{ display: "flex", alignItems: "center" }}>
+    <div style={{ display: "flex", 
+    // name 이 있으면 양 끝으로 정렬 
+    justifyContent:"space-between",
+    width : name === undefined ? "80%" : "100%",
+    paddingLeft: name === undefined ? "0px" : "3%"
+
+   }}>
       <input
         ref={inputRef}
         readOnly={!isEditing}
@@ -182,11 +193,14 @@ const EditButton = ({
   userId,
   nickname,
   newPassword,
-  profileImg
+  profileImg,
 }) => {
   const handleChangeUserInfo = async (event) => {
     event.preventDefault();
-
+    if (!validNickFormat(nickname)) {
+      alert("닉네임은 10글자 이내의 한글, 영문, 숫자만 가능합니다.");
+      return;
+    }
     if (!validIdFormat(userId)) {
       alert("아이디는 14글자 이내의 영소문자, 숫자, '_' 만 가능합니다.");
       return;
@@ -203,16 +217,14 @@ const EditButton = ({
       body = {
         newId: userId,
         newNickname: nickname,
-        newProfileImg:
-        profileImg,
+        newProfileImg: profileImg,
       };
     } else {
       body = {
         newId: userId,
         newNickname: nickname,
         newPassword: newPassword,
-        newProfileImg:
-        profileImg,
+        newProfileImg: profileImg,
       };
     }
 
@@ -227,8 +239,8 @@ const EditButton = ({
       console.log(response);
       if (response.status === 200) {
         // 쿠키삭제
-        Cookies.remove('accessToken', { path: '' })
-        Cookies.remove('refreshToken', { path: '' })
+        Cookies.remove("accessToken", { path: "" });
+        Cookies.remove("refreshToken", { path: "" });
 
         alert("회원정보가 수정되었습니다. 다시 로그인 해주세요.");
         window.location.reload();
@@ -289,13 +301,21 @@ const EditProfile = ({ userInfo }) => {
         />{" "}
         {/* 프로필 사진 불러오고 누르면 수정할 수 있도록 */}
         <InputNicknameContainer>
-          <EditInput
-            active="disabled"
-            type="text"
-            placeholder={originNickname}
+          <InfoRow
             value={nickname}
-            onChange={(event) => setNickname(event.target.value)}
+            setValue={setNickname}
+            img={edit_img}
+            can_edit={true}
+            userInfo={userInfo}
+            name="nickname"
           />
+          {/* <EditInput
+              active="disabled"
+              type="text"
+              placeholder={originNickname}
+              value={nickname}
+              onChange={(event) => setNickname(event.target.value)}
+            /> */}
         </InputNicknameContainer>
       </ProfileContainer>
       <InfoRowContainer>
