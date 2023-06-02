@@ -1,78 +1,119 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createContext, useReducer } from "react";
+
 import axios from "axios";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import Home from "./pages/home/Home";
 import Setting from "./pages/setting/Setting";
 import Login from "./pages/login/Login";
-import { default as LinkPage} from "./pages/link/Link"; // Prevent name collision
+import { default as LinkPage } from "./pages/link/Link"; // Prevent name collision
 import Header from "./pages/home/Header";
+import FindPassword from "./pages/login/FindPassword.jsx";
+import LinkMenu from "./pages/link/Link";
 import ViewLink from "./pages/viewLinkMemo/ViewLink";
 import EditLink from "./pages/editLinkMemo/EditLink";
+import EditCustomView from "./pages/editCustomView/EditCustomView";
 import "./styles/App.css";
-import EditProfilePage from "./pages/setting/EditProfilePage";
-
+import ViewTitle from "./routes/customView/ViewTitle";
+import EditProfilePage from "./pages/setting/EditProfilePage.jsx";
+import Cookies from "js-cookie";
 import { initState, reducer } from "./store/CustomDialogStore";
-import {createContext, useReducer} from "react";
 import CustomDialog from "./components/CustomDialog";
 import Link from './pages/link/Link'
+
+function RedirectToLogin() {
+  // 로그인 안했을 때 로그인 페이지로 이동
+  return <Navigate to="/login" />;
+}
 
 export const DialogDispatch = createContext(initState);
 
 function App() {
+  // 로그인 여부 확인
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // 유저정보 불러오기
+  const [userInfo, setUserInfo] = useState({});
 
-  // httpOnly: true 일 때 쿠키의 토큰 확인 로직
-  const getCookie = (cname) => {
-    const name = cname + "=";
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const ca = decodedCookie.split(";");
-  
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) === " ") {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) === 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-  };
-  
   useEffect(() => {
-    // acessToken 있는지 확인
-    const accessToken = getCookie("accessToken");
+    // Check for access token
+    const accessToken = Cookies.get("accessToken");
+    const refreshToken = Cookies.get("refreshToken");
+
     if (accessToken) {
       setIsLoggedIn(true);
-      // console.log("Access token found:", accessToken);
-      console.log("User is logged in!");
+
+      // 유저정보 불러오기
+      axios
+        .get("http://localhost:8123/users/userInfo", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "refresh-token": refreshToken,
+          },
+        })
+        .then((res) => {
+          setUserInfo(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
-      // console.log("Access token not found.");
-      console.log("User is not logged in. Login required.");
+      setIsLoggedIn(false);
     }
-  }, []);
+  }, [isLoggedIn]);
   const [state, dispatch] = useReducer(reducer, initState);
 
   return (
     <div style={{ margin: "3vh 5vw" }}>
       <Router>
-        <DialogDispatch.Provider value={{state, dispatch}}>
+        <DialogDispatch.Provider value={{ state, dispatch }}>
           <div style={{ margin: "0 5vw" }}>
-            {window.location.pathname !== "/login" && (
-              <Header isLoggedIn={isLoggedIn} />
-            )}{" "}
-            {/* 여기에 조건 추가 */}
+            {isLoggedIn && <Header isLoggedIn={isLoggedIn} />}
             <Routes>
-              <Route path="/setting" element={<Setting />} />
-              <Route path="/setting/editProfile" element={<EditProfilePage />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/link/*" element={<Link />} />
-              <Route path="/viewlink" element={<ViewLink />} />
-              <Route path="/editlink" element={<EditLink />} />
-              <Route path="/" element={<Home />} />
+              {isLoggedIn ? (
+                <>
+                  <Route path="/" element={<Home />} /> {/* 메인페이지 */}
+                  <Route
+                    path="/setting"
+                    element={
+                      <Setting
+                        onLogout={() => {
+                          setIsLoggedIn(false);
+                          setUserInfo({});
+                        }}
+                        userInfo={userInfo}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/setting/editProfile"
+                    element={<EditProfilePage userInfo={userInfo} />} // 유저정보 수정 페이지
+                  />
+                  <Route path="/link" element={<LinkMenu />} />
+                  <Route path="/viewlink" element={<ViewLink />} />
+                  <Route path="/editlink" element={<EditLink />} />
+                  <Route path="/login" element={<Navigate to="/" />} />{" "}
+                  {/* 로그인 페이지 못가게*/}
+                </>
+              ) : (
+                <>
+                  <Route
+                    path="/login"
+                    element={<Login onLogin={() => setIsLoggedIn(true)} />}
+                  />
+                  <Route
+                    path="/login/findpassword"
+                    element={<FindPassword />}
+                  />
+                  <Route path="*" element={<RedirectToLogin />} />
+                </>
+              )}
             </Routes>
           </div>
-          <CustomDialog />  
+          <CustomDialog />
         </DialogDispatch.Provider>
       </Router>
     </div>

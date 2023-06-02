@@ -1,20 +1,36 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import profile from "../../contents/profile.png";
-import profileLoggedIn from "../../contents/checked.png";
+import axios from "axios";
 
 const BtnProfile = ({ isLoggedIn }) => {
-  console.log(isLoggedIn);
-  let profileImg = profile;
+  const [profileImg, setProfileImg] = useState(profile);
 
-  // 로그인 시 프로필 사진 변경
-  if (isLoggedIn) {
-    profileImg = profileLoggedIn;
-  } else {
-    profileImg = profile;
-  }
+  useEffect(() => {
+    const fetchProfileImage = async () => {
+      if (isLoggedIn) {
+        try {
+          const response = await axios.get(
+            "http://localhost:8123/users/profileImg",
+            {
+              withCredentials: true,
+            }
+          );
+          // 로그인 시 프로필 사진 변경
+          if (response.data.profileImg !== null) {
+            setProfileImg(response.data.profileImg);
+          }
+        } catch (error) {
+          console.error(error);
+          setProfileImg(profile);
+        }
+      }
+    };
 
-    return (
+    fetchProfileImage();
+  }, [isLoggedIn]);
+
+  return (
     <Link
       to="/setting"
       className="btn-profile"
@@ -24,8 +40,19 @@ const BtnProfile = ({ isLoggedIn }) => {
         textDecoration: "none",
       }}
     >
-      <img src={profileImg} width="50vw" alt="profile" />
+      <img
+        src={profileImg}
+        width="50vw"
+        alt="profileImg"
+        style={{
+          borderRadius: "50%",
+          objectFit: "cover",
+          width: "50px",
+          height: "50px",
+        }}
+      />
     </Link>
   );
 };
+
 export default BtnProfile;

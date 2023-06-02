@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import googleBtn from "../../contents/googleBtn.png";
 import naverBtn from "../../contents/naverBtn.png";
 import kakaoBtn from "../../contents/kakaoBtn.png";
-import Cookies from "js-cookie";
+// import { useNavigate } from "react-router-dom";
 
 const Layout = styled.div`
   display: flex;
@@ -44,10 +44,12 @@ const LoginBtn = styled.button({
   boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
 });
 
-const Login = () => {
+const Login = ({onLogin}) => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  // const navigate = useNavigate();
+
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -73,6 +75,7 @@ const Login = () => {
       .then((res) => {  
         console.log(res);
         console.log(res.data);
+        console.log(res.status);
         if (res.status === 200) {
           if (res.data.accessToken) {
             // 쿠키에 토큰 저장 // 서버에서 처리했음
@@ -80,7 +83,11 @@ const Login = () => {
              Cookies.set("refreshToken", res.data.refreshToken);
           }
           // 메인페이지로 이동
-          window.location.replace("/");
+          console.log("로그인 성공");
+          onLogin();
+          // navigate("/");
+          window.location.href = "/";
+
         }
       })
       .catch((error) => {
@@ -154,11 +161,11 @@ const Login = () => {
         </div>
         <hr style={{ width: "75%", margin: "7%" }} />
 
-        <text
+        <span
           style={{ fontSize: "20px", fontWeight: "530", marginBottom: "3%" }}
         >
           이메일 아이디로 로그인
-        </text>
+        </span>
 
         <div
           style={{
@@ -176,9 +183,6 @@ const Login = () => {
           <a href="http://localhost:8123/users/auth/naver">
             <img src={naverBtn} alt="naver_login" />
           </a>
-          {/* <a href="http://localhost:8123/users/checkAuth">
-            <button>checkAuth</button>
-          </a> */}
         </div>
       </LoginContainer>
     </Layout>

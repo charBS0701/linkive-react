@@ -1,0 +1,12 @@
+.viewText{
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 20px;
+    resize: none;
+    overflow: hidden;
+}
+
+.viewText::placeholder{
+    color: #9B9B9B;
+}
