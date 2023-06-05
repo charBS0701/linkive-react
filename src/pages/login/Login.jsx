@@ -71,7 +71,7 @@ const Login = ({onLogin}) => {
 
     // Perform login request using Axios
     axios
-      .post("http://localhost:8123/users/login", { id, password },{ withCredentials: true })
+      .post(`${process.env.REACT_APP_SERVER}/users/login`, { id, password },{ withCredentials: true })
       .then((res) => {  
         console.log(res);
         console.log(res.data);
@@ -90,11 +90,12 @@ const Login = ({onLogin}) => {
 
         }
       })
-      .catch((error) => {
-        if (error.response.status === 401) {
-          alert("아이디 또는 비밀번호가 틀렸습니다.");
-        }
-      });
+      // .catch((error) => {
+      //   if (error.response.status?.value === 401) {
+      //     alert("아이디 또는 비밀번호가 틀렸습니다.");
+      //   }
+      //   console.log(error);
+      // });
   };
 
   return (
@@ -174,13 +175,13 @@ const Login = ({onLogin}) => {
             width: "300px",
           }}
         >
-          <a href="http://localhost:8123/users/auth/google">
+          <a href={`${process.env.REACT_APP_SERVER}/users/auth/google`}>
             <img src={googleBtn} alt="google_login" />
           </a>
-          <a href="http://localhost:8123/users/auth/kakao">
+          <a href={`${process.env.REACT_APP_SERVER}/users/auth/kakao`}>
             <img src={kakaoBtn} alt="kakao_login" />
           </a>
-          <a href="http://localhost:8123/users/auth/naver">
+          <a href={`${process.env.REACT_APP_SERVER}/users/auth/naver`}>
             <img src={naverBtn} alt="naver_login" />
           </a>
         </div>

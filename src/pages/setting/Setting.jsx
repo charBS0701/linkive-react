@@ -121,10 +121,13 @@ const Setting = (props) => {
   // props로 userInfo 있는데 여기서 또 받아오네. 페이지시트 받아오고 손 보자
   const [userInfo, setUserInfo] = useState({});
   const [isRedirect, setIsRedirect] = useState(false);
+  const [pagesheet, setPagesheet] = useState([]);
+
 
   useEffect(() => {
+    // 유저정보 불러오기
     axios
-      .get("http://localhost:8123/users/userInfo", {
+      .get(`${process.env.REACT_APP_SERVER}/users/userInfo`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -136,6 +139,19 @@ const Setting = (props) => {
           setIsRedirect(true);
         }
       });
+      // 페이지시트 불러오기
+      axios
+      .post(`${process.env.REACT_APP_SERVER}/pagesheets`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(`pagesheet ${response.data}`);
+        setPagesheet(response.data.pagesheets);
+      })
+      .catch((error) => {
+        console.log(`pagesheet error`);
+        console.error(error);
+      });      
   }, [isRedirect]);
 
   if (isRedirect) {

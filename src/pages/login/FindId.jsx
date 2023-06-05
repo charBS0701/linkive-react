@@ -49,7 +49,7 @@ const FindId = () => {
           },
           body: JSON.stringify({ email }),
         };
-        fetch("http://localhost:8123/users/findId", requestOptions);
+        fetch(`${process.env.REACT_APP_SERVER}/users/findId`, requestOptions);
         // 로그인화면으로 이동
         window.location.href = "/login";
       }
@@ -73,7 +73,7 @@ const FindId = () => {
     try {
       // 아이디와 이메일이 일치하는지 확인
       const response = await fetch(
-        "http://localhost:8123/users/checkIsEmail",
+        `${process.env.REACT_APP_SERVER}/users/checkIsEmail`,
         requestOptions
       );
       const result = await response.json();
@@ -89,7 +89,7 @@ const FindId = () => {
     try {
       // 인증번호 발송
       const response = await fetch(
-        "http://localhost:8123/users/verifyEmail/send",
+        `${process.env.REACT_APP_SERVER}/verifyEmail/send`,
         requestOptions
       );
       const data = await response.json();
