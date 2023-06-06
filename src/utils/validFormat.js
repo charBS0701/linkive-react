@@ -1,4 +1,4 @@
-// 아이디 형식 검사 함수
+// 아이디 형식 검사 함수 (영문 소문자, 숫자, _ 사용, 1~14자리)
 export const validIdFormat = (id) => {
   const idRegex = /^[a-z0-9_]{1,14}$/;
   return idRegex.test(id);
@@ -13,6 +13,6 @@ export const validPwFormat = (password) => {
 
 // 닉네임 형식 검사 함수
 export const validNickFormat = (nick) => {
-  const nickRegex = /^[a-z0-9_]{1,14}$/;
+  const nickRegex = /^([가-힣]|[a-zA-Z]|\d){1,10}$/;
   return nickRegex.test(nick);
 };
