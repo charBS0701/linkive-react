@@ -16,3 +16,10 @@ export const validNickFormat = (nick) => {
   const nickRegex = /^([가-힣]|[a-zA-Z]|\d){1,10}$/;
   return nickRegex.test(nick);
 };
+
+// 이메일 형식 검사 함수
+export const validEmailFormat = (email) => {
+  const emailRegex =
+    /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+(\.[A-Za-z]+)?$/;
+  return emailRegex.test(email);
+}
