@@ -66,8 +66,6 @@ const HiddenMsg = ({
   isDuplicatedEmail,
   label,
 }) => {
-
-
   if (label === "id") {
     if (isInvalid === true) {
       return <WarningMsg>14글자 이내 영소문자, 숫자, '_' 조합</WarningMsg>;
@@ -244,7 +242,16 @@ const Signin = () => {
     if (!isDuplicatedEmail) {
       alert("이미 사용중인 이메일입니다.");
     }
-    if (agree && !isInvalid && !isDuplicatedId && !isInvalidNick && isPwValid && isPwSame && isValidEmail && !isDuplicatedEmail) {
+    if (
+      agree &&
+      !isInvalid &&
+      !isDuplicatedId &&
+      !isInvalidNick &&
+      isPwValid &&
+      isPwSame &&
+      isValidEmail &&
+      !isDuplicatedEmail
+    ) {
       axios
         .post("/api/users/signup", {
           id: id,
@@ -302,20 +309,14 @@ const Signin = () => {
 
           <InputName label="nickname">닉네임</InputName>
           <InputLine onChange={handleNickChange} />
-          <HiddenMsg
-            isInvalidNick={isInvalidNick}
-            label="nickname"
-          />
+          <HiddenMsg isInvalidNick={isInvalidNick} label="nickname" />
 
           <InputName>비밀번호</InputName>
-          <InputLine onChange={handlePwChange} />
-          <HiddenMsg
-            isPwValid={isPwValid}
-            label="password"
-          />
+          <InputLine onChange={handlePwChange} type="password" />
+          <HiddenMsg isPwValid={isPwValid} label="password" />
 
           <InputName>비밀번호 확인</InputName>
-          <InputLine onChange={handlePwCheckChange} />
+          <InputLine onChange={handlePwCheckChange} type="password" />
           <HiddenMsg
             isPwValid={isPwValid}
             isPwSame={isPwSame}
