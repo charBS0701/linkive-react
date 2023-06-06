@@ -11,7 +11,7 @@ const BtnProfile = ({ isLoggedIn }) => {
       if (isLoggedIn) {
         try {
           const response = await axios.get(
-            `${process.env.REACT_APP_SERVER}/users/profileImg`,
+            `api/users/profileImg`,
             {
               withCredentials: true,
             }
