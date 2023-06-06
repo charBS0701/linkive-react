@@ -10,13 +10,13 @@ import kakaoBtn from "../../contents/kakaoBtn.png";
 // import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
-const Layout = styled.div`
+export const Layout = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 3%;
 }`;
-const LoginContainer = styled.div`
+export const LoginContainer = styled.div`
   display: flex;
   border: solid;
   border-color: #6368e3;
@@ -27,7 +27,7 @@ const LoginContainer = styled.div`
   width: 50%;
   padding: 4% 3% 3%;
 `;
-const LoginForm = styled.form`
+export const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -155,7 +155,7 @@ const Login = ({onLogin}) => {
           </Link>
           |
           <Link
-            to="/login/SignIn"
+            to="/signIn"
             style={{ color: "black", textDecoration: "none" }}
           >
             회원가입

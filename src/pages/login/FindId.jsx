@@ -89,7 +89,7 @@ const FindId = () => {
     try {
       // 인증번호 발송
       const response = await fetch(
-        `/api/verifyEmail/send`,
+        `/api/users/verifyEmail/send`,
         requestOptions
       );
       const data = await response.json();

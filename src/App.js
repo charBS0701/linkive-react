@@ -1,4 +1,10 @@
-import React, {useEffect, useState, createContext, useReducer, useMemo} from "react";
+import React, {
+  useEffect,
+  useState,
+  createContext,
+  useReducer,
+  useMemo,
+} from "react";
 
 import axios from "axios";
 import {
@@ -24,6 +30,7 @@ import Cookies from "js-cookie";
 import { initState, reducer } from "./store/CustomDialogStore";
 import CustomDialog from "./components/CustomDialog";
 import FindId from "./pages/login/FindId";
+import Signin from "./pages/login/Signin";
 
 function RedirectToLogin() {
   // 로그인 안했을 때 로그인 페이지로 이동
@@ -100,14 +107,15 @@ function App() {
                 </>
               ) : (
                 <>
+                <Route
+                    path="/signin"
+                    element={<Signin />}
+                  />
                   <Route
                     path="/login"
                     element={<Login onLogin={() => setIsLoggedIn(true)} />}
                   />
-                                    <Route
-                    path="/login/findid"
-                    element={<FindId />}
-                  />
+                  <Route path="/login/findid" element={<FindId />} />
                   <Route
                     path="/login/findpassword"
                     element={<FindPassword />}
