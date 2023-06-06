@@ -39,6 +39,12 @@ export const reducer = (state, action) => {
                 ...state,
                 inputData: action.inputData
             }
+        case 'SET_LIST_DATA':
+            return {
+                ...state,
+                listData: action.listData,
+                onClickItem: action.onClickItem
+            }
         case 'SET_RESOLVE':
             return {
                 ...state,

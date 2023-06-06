@@ -13,6 +13,7 @@ import styles from "./css/Link.module.css";
 
 import Search from './search/Search';
 import Folder from "./folder/Folder";
+import BtnAddLink from "../home/BtnAddLink";
 
 function LinkComponent() {
     const [wrap, setWrap] = useState(false);
@@ -36,10 +37,12 @@ function LinkComponent() {
         return (
             <div className={MultiClassName([styles.onlyMargin, styles.toolbar])}>
                 <SearchComponent />
-                {wrap ? <AddFolderComponent state={{wrap, setWrap}}/> : <AddFolderButtonComponent onClick={() => setWrap(true)}/>}
+                <BtnAddLink />
             </div>
         );
     };
+
+    //{wrap ? <AddFolderComponent state={{wrap, setWrap}}/> : <AddFolderButtonComponent onClick={() => setWrap(true)}/>}
 
     return (
         <div>

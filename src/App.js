@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createContext, useReducer } from "react";
+import React, {useEffect, useState, createContext, useReducer, useMemo} from "react";
 
 import axios from "axios";
 import {
@@ -23,7 +23,6 @@ import EditProfilePage from "./pages/setting/EditProfilePage.jsx";
 import Cookies from "js-cookie";
 import { initState, reducer } from "./store/CustomDialogStore";
 import CustomDialog from "./components/CustomDialog";
-import Link from './pages/link/Link'
 
 function RedirectToLogin() {
   // 로그인 안했을 때 로그인 페이지로 이동
@@ -38,7 +37,7 @@ function App() {
   // 유저정보 불러오기
   const [userInfo, setUserInfo] = useState({});
 
-  useEffect(() => {
+  useMemo(() => {
     // Check for access token
     const accessToken = Cookies.get("accessToken");
     const refreshToken = Cookies.get("refreshToken");
@@ -48,7 +47,7 @@ function App() {
 
       // 유저정보 불러오기
       axios
-        .get("http://localhost:8123/users/userInfo", {
+        .post("api/users/userInfo", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
             "refresh-token": refreshToken,
@@ -92,7 +91,7 @@ function App() {
                     path="/setting/editProfile"
                     element={<EditProfilePage userInfo={userInfo} />} // 유저정보 수정 페이지
                   />
-                  <Route path="/link" element={<LinkMenu />} />
+                  <Route path="/link/*" element={<LinkMenu />} />
                   <Route path="/viewlink" element={<ViewLink />} />
                   <Route path="/editlink" element={<EditLink />} />
                   <Route path="/login" element={<Navigate to="/" />} />{" "}

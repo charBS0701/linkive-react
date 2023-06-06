@@ -6,7 +6,7 @@ import { getTokens } from "../../utils/getTokens";
 
 import TestFavicon from "../../contents/favicon_test.png";
 
-import LinkiveLogo from "../../contents/logo_linkive.png";
+import LinkiveLogo from "../../contents/logo_small.png";
 
 function ItemListComponent(props) {
     const [items, setItems] = useState([]);
@@ -25,12 +25,8 @@ function ItemListComponent(props) {
 
                         data.push(
                             <ItemComponent
-                                src={(current.thumbnail ? current.thumbnail : LinkiveLogo)}
-                                title={current.title}
-                                favicon={TestFavicon}
-                                folder={null}
-                                linkNumber={i}
-                                memoNum={current.memo_num}
+                                key={i}
+                                data={current}
                             />
                         );
                     }
@@ -46,10 +42,8 @@ function ItemListComponent(props) {
 
                         data.push(
                             <FolderItemComponent
-                                src={(current.thumbnail ? current.thumbnail : LinkiveLogo)}
-                                title={res.data.folderList[i].name}
-                                favicon={TestFavicon}
-                                linkNumber={i}
+                                key={i}
+                                data={current}
                             />
                         );
                     }

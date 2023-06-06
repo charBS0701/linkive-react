@@ -8,6 +8,7 @@ import googleBtn from "../../contents/googleBtn.png";
 import naverBtn from "../../contents/naverBtn.png";
 import kakaoBtn from "../../contents/kakaoBtn.png";
 // import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Layout = styled.div`
   display: flex;

@@ -193,7 +193,7 @@ const StyledAfterAddBtnImg = styled.img`
 
 const BtnAddLink = () => {
     //모드
-    const [mode, setMode] = useState("addLink");
+    const [mode, setMode] = useState("default");
 
     // 리스트가 열렸는지 닫혔는지
     const [isOpen, setIsOpen] = useState(false);

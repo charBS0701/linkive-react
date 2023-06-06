@@ -129,3 +129,29 @@
 
     vertical-align: middle;
 }
+
+.colorCircle {
+    border: none;
+    border-radius: 50%;
+
+    float: left;
+    margin-left: 4px;
+    width: 23px;
+    height: 23px;
+}
+
+.horizontalUl {
+    list-style: none;
+
+    margin-top: 8px;
+}
+
+.colorDesc {
+    margin-left: 40px;
+}
+
+.imgDiv {
+    margin: 8px 0 8px 0;
+
+    text-align: center;
+}
