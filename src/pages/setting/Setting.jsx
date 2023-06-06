@@ -103,6 +103,7 @@ const ModalOpener = (props) => {
         isOpen={withdrawModalOpen}
         onClose={handleWithdrawModalClose}
         onLogout={props.onLogout}
+        socialLogin={props.socialLogin}
       />
       <InquireModal
         isOpen={inquireModalOpen}
@@ -121,10 +122,13 @@ const Setting = (props) => {
   // props로 userInfo 있는데 여기서 또 받아오네. 페이지시트 받아오고 손 보자
   const [userInfo, setUserInfo] = useState({});
   const [isRedirect, setIsRedirect] = useState(false);
+  const [pagesheet, setPagesheet] = useState([]);
+
 
   useEffect(() => {
+    // 유저정보 불러오기
     axios
-      .get("http://localhost:8123/users/userInfo", {
+      .get(`${process.env.REACT_APP_SERVER}/users/userInfo`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -136,6 +140,19 @@ const Setting = (props) => {
           setIsRedirect(true);
         }
       });
+      // 페이지시트 불러오기
+      axios
+      .post(`${process.env.REACT_APP_SERVER}/pagesheets`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(`pagesheet ${response.data}`);
+        setPagesheet(response.data.pagesheets);
+      })
+      .catch((error) => {
+        console.log(`pagesheet error`);
+        console.error(error);
+      });      
   }, [isRedirect]);
 
   if (isRedirect) {
@@ -267,7 +284,7 @@ const Setting = (props) => {
         <TitleComponent style={{marginTop:"2%", marginBottom:"7%"}}>고객지원</TitleComponent>
         <ModalOpener>문의하기</ModalOpener>
         <ModalOpener>로그아웃</ModalOpener>
-        <ModalOpener>회원탈퇴</ModalOpener>
+        <ModalOpener socialLogin={userInfo.socialLogin}>회원탈퇴</ModalOpener>
       </div>
     </div>
   );

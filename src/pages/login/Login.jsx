@@ -91,11 +91,12 @@ const Login = ({onLogin}) => {
 
         }
       })
-      .catch((error) => {
-        if (error.response.status === 401) {
-          alert("아이디 또는 비밀번호가 틀렸습니다.");
-        }
-      });
+      // .catch((error) => {
+      //   if (error.response.status?.value === 401) {
+      //     alert("아이디 또는 비밀번호가 틀렸습니다.");
+      //   }
+      //   console.log(error);
+      // });
   };
 
   return (
@@ -175,13 +176,13 @@ const Login = ({onLogin}) => {
             width: "300px",
           }}
         >
-          <a href="http://localhost:8123/users/auth/google">
+          <a href={`/api/users/auth/google`}>
             <img src={googleBtn} alt="google_login" />
           </a>
-          <a href="http://localhost:8123/users/auth/kakao">
+          <a href={`/api/users/auth/kakao`}>
             <img src={kakaoBtn} alt="kakao_login" />
           </a>
-          <a href="http://localhost:8123/users/auth/naver">
+          <a href={`/api/users/auth/naver`}>
             <img src={naverBtn} alt="naver_login" />
           </a>
         </div>

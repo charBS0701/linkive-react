@@ -35,8 +35,7 @@ const FormContainer = styled.form`
   flex-direction: column;
   align-items: center;
   margin-top: 1%;
-  `;
-
+`;
 
 export const ButtonContainer = styled.div`
   display: flex;
@@ -46,8 +45,7 @@ export const ButtonContainer = styled.div`
   margin-top: 15px;
 `;
 
-
-const WithdrawModal = ({ isOpen, onClose, onLogout }) => {
+const WithdrawModal = ({ isOpen, onClose, onLogout, socialLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -55,8 +53,9 @@ const WithdrawModal = ({ isOpen, onClose, onLogout }) => {
   const handleWithdraw = async (e) => {
     e.preventDefault();
     try {
+      // socialLogin이 true면 비밀번호를 입력하지 않아도 탈퇴 가능
       const response = await axios.post(
-        "http://localhost:8123/users/delete",
+        `/api/users/delete`,
         {
           email,
           password,
@@ -90,26 +89,31 @@ const WithdrawModal = ({ isOpen, onClose, onLogout }) => {
         </div>
         <br />
         <FormContainer onSubmit={handleWithdraw}>
-            <InputLine
-              type="email"
-              placeholder="이메일을 입력하세요"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <InputLine
-              type="password"
-              placeholder="비밀번호를 입력하세요"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <ButtonContainer>
-              <Btn onClick={onClose}>취소</Btn>
-              <Btn $colored type="submit">
-                확인
-              </Btn>
-            </ButtonContainer>
+          <InputLine
+            type="email"
+            placeholder="이메일을 입력하세요"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          {
+            !socialLogin(
+              <InputLine
+                type="password"
+                placeholder="비밀번호를 입력하세요"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            )
+          }
+
+          <ButtonContainer>
+            <Btn onClick={onClose}>취소</Btn>
+            <Btn $colored type="submit">
+              확인
+            </Btn>
+          </ButtonContainer>
         </FormContainer>
       </ModalBox>
     </ModalContainer>

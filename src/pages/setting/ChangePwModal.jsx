@@ -72,7 +72,7 @@ const ChangePwModal = ({ isOpen, close, onOk, userInfo }) => {
     // DB에 비밀번호 비교 요청
     try {
       const response = await axios.post(
-        "http://localhost:8123/users/checkCurrentPw",
+        `/api/users/checkCurrentPw`,
         {
           currentPassword: currentPw,
         },
