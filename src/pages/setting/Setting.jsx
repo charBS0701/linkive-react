@@ -12,7 +12,35 @@ import TitleComponent from "../../components/TitleComponent";
 
 // 유저정보
 
-const Pagesheet = (props) => {
+const Pagesheet = ({pagesheetNum, name, layout}) => {
+  return (
+    <a
+      href="/"
+      style={{
+        fontSize: "18px",
+        width: "120px",
+        height: "100px",
+        textDecoration: "none",
+        margin: "0 1%",
+        color: "#7AABE4",
+        borderRadius: "15px",
+        border: "solid #7AABE4",
+
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "column",
+        whiteSpace: "nowrap",
+      }}
+    >
+      <div>{name}</div>
+    </a>
+  );
+};
+
+  
+
+const DummyPagesheet = (props) => {
   const text = props.children;
   let firstLine = text.slice(0, 2);
   let secondLine = text.slice(2);
@@ -122,8 +150,7 @@ const Setting = (props) => {
   // props로 userInfo 있는데 여기서 또 받아오네. 페이지시트 받아오고 손 보자
   const [userInfo, setUserInfo] = useState({});
   const [isRedirect, setIsRedirect] = useState(false);
-  const [pagesheet, setPagesheet] = useState([]);
-
+  const [pagesheets, setPagesheets] = useState([]);
 
   useEffect(() => {
     // 유저정보 불러오기
@@ -140,19 +167,18 @@ const Setting = (props) => {
           setIsRedirect(true);
         }
       });
-      // 페이지시트 불러오기
-      axios
+    // 페이지시트 불러오기
+    axios
       .post(`api/pagesheets`, {
         withCredentials: true,
       })
       .then((response) => {
-        console.log(`pagesheet ${response.data}`);
-        setPagesheet(response.data.pagesheets);
+        setPagesheets(response.data.pagesheets);
       })
       .catch((error) => {
         console.log(`pagesheet error`);
         console.error(error);
-      });      
+      });
   }, [isRedirect]);
 
   if (isRedirect) {
@@ -245,11 +271,14 @@ const Setting = (props) => {
                   기본
                 </span>
               </div>
-              <Pagesheet>여행</Pagesheet>
-              <Pagesheet>공부</Pagesheet>
-              <Pagesheet>개발</Pagesheet>
-              <Pagesheet>일기</Pagesheet>
-              <Pagesheet>체크리스트</Pagesheet>
+              {pagesheets.map((pagesheet, index) => (
+                <Pagesheet
+                  pagesheetNum={pagesheet.pagesheet_num}
+                  name={pagesheet.name}
+                  layout={pagesheet.layout}
+                  key={index}
+                />
+              ))}
             </div>
             <div style={{ display: "inline-flex" }}>
               <div
@@ -265,10 +294,10 @@ const Setting = (props) => {
                   커스텀
                 </span>
               </div>
-              <Pagesheet>여행</Pagesheet>
-              <Pagesheet>공부</Pagesheet>
-              <Pagesheet>체크리스트</Pagesheet>
-              <Pagesheet>+</Pagesheet>
+              <DummyPagesheet>여행</DummyPagesheet>
+              <DummyPagesheet>공부</DummyPagesheet>
+              <DummyPagesheet>체크리스트</DummyPagesheet>
+              <DummyPagesheet>+</DummyPagesheet>
             </div>
           </div>
         </div>
@@ -280,8 +309,9 @@ const Setting = (props) => {
           alignItems: "center",
         }}
       >
-
-        <TitleComponent style={{marginTop:"2%", marginBottom:"7%"}}>고객지원</TitleComponent>
+        <TitleComponent style={{ marginTop: "2%", marginBottom: "7%" }}>
+          고객지원
+        </TitleComponent>
         <ModalOpener>문의하기</ModalOpener>
         <ModalOpener>로그아웃</ModalOpener>
         <ModalOpener socialLogin={userInfo.socialLogin}>회원탈퇴</ModalOpener>
