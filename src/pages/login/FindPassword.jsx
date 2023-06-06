@@ -77,7 +77,7 @@ const FindPassword = () => {
     try {
       // 아이디와 이메일이 일치하는지 확인
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER}/users/checkIdwithEmail`,
+        `/api/users/checkIdwithEmail`,
         requestOptions
       );
       if (response.status === 401) {
@@ -95,7 +95,7 @@ const FindPassword = () => {
     try {
       // 인증번호 발송
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER}/verifyEmail/send`,
+        `/api/verifyEmail/send`,
         requestOptions
       );
       const data = await response.json();
@@ -141,7 +141,7 @@ const FindPassword = () => {
     };
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER}/users/findPassword`,
+        `/api/users/findPassword`,
         requestOptions
       );
       if (response.status === 401) {

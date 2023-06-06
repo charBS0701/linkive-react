@@ -233,7 +233,7 @@ const EditButton = ({
 
     try {
       const response = await axios.patch(
-        `${process.env.REACT_APP_SERVER}/users/changeUserInfo`,
+        `/api/users/changeUserInfo`,
         body,
         {
           headers: headers,
@@ -245,7 +245,7 @@ const EditButton = ({
         Cookies.remove("accessToken", { path: "" });
         Cookies.remove("refreshToken", { path: "" });
         // 백엔드에서도 로그아웃 처리
-        axios.delete(`${process.env.REACT_APP_SERVER}/users/logout`, {
+        axios.delete(`/api/users/logout`, {
           withCredentials: true,
         });
 

@@ -55,7 +55,7 @@ const LogoutModal = ({ isOpen, onClose, onLogout }) => {
     Cookies.remove('refreshToken', { path: '' })
 
     // 백엔드에서도 로그아웃 처리
-    axios.delete(`${process.env.REACT_APP_SERVER}/users/logout`, { withCredentials: true })
+    axios.delete(`/api/users/logout`, { withCredentials: true })
 
     alert("로그아웃 되었습니다.");
     window.location.reload();
@@ -63,7 +63,7 @@ const LogoutModal = ({ isOpen, onClose, onLogout }) => {
 
     // 로그아웃 요청
     // axios
-    //   .post(`${process.env.REACT_APP_SERVER}/users/logout`, {}, { withCredentials: true })
+    //   .post(`/api/users/logout`, {}, { withCredentials: true })
     //   .then((response) => {
     //     // 요청 성공시 로직
     //     console.log(response);

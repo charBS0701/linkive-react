@@ -48,7 +48,7 @@ function App() {
 
       // 유저정보 불러오기
       axios
-        .get(`${process.env.REACT_APP_SERVER}/users/userInfo`, {
+        .get(`/api/users/userInfo`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
             "refresh-token": refreshToken,

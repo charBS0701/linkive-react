@@ -55,7 +55,7 @@ const WithdrawModal = ({ isOpen, onClose, onLogout, socialLogin }) => {
     try {
       // socialLogin이 true면 비밀번호를 입력하지 않아도 탈퇴 가능
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER}/users/delete`,
+        `/api/users/delete`,
         {
           email,
           password,

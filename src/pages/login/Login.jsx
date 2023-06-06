@@ -71,7 +71,7 @@ const Login = ({onLogin}) => {
 
     // Perform login request using Axios
     axios
-      .post(`${process.env.REACT_APP_SERVER}/users/login`, { id, password },{ withCredentials: true })
+      .post(`/api/users/login`, { id, password },{ withCredentials: true })
       .then((res) => {  
         console.log(res);
         console.log(res.data);
@@ -175,13 +175,13 @@ const Login = ({onLogin}) => {
             width: "300px",
           }}
         >
-          <a href={`${process.env.REACT_APP_SERVER}/users/auth/google`}>
+          <a href={`/api/users/auth/google`}>
             <img src={googleBtn} alt="google_login" />
           </a>
-          <a href={`${process.env.REACT_APP_SERVER}/users/auth/kakao`}>
+          <a href={`/api/users/auth/kakao`}>
             <img src={kakaoBtn} alt="kakao_login" />
           </a>
-          <a href={`${process.env.REACT_APP_SERVER}/users/auth/naver`}>
+          <a href={`/api/users/auth/naver`}>
             <img src={naverBtn} alt="naver_login" />
           </a>
         </div>
