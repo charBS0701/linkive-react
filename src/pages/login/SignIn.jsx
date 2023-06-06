@@ -108,7 +108,6 @@ const WarningMsg = styled.div`
   font-size: 15px;
   margin-bottom: 5%;
   padding-left: 3%;
-  // visibility: hidden;
 `;
 
 const OkMsg = styled.div`
@@ -202,9 +201,9 @@ const Signin = () => {
 
     // email 중복 체크
     axios
-      .post("/api/users/checkIsEmail", { email: email })
+      .post("/api/users/checkValidEmail", { email: email })
       .then((res) => {
-        if (res.status === 401) {
+        if (res.status === 200) {
           setIsDuplicatedEmail(false);
         } else {
           setIsDuplicatedEmail(true);
@@ -239,7 +238,7 @@ const Signin = () => {
     if (!isValidEmail) {
       alert("이메일 형식을 확인해주세요.");
     }
-    if (!isDuplicatedEmail) {
+    if (isDuplicatedEmail) {
       alert("이미 사용중인 이메일입니다.");
     }
     if (
@@ -250,7 +249,7 @@ const Signin = () => {
       isPwValid &&
       isPwSame &&
       isValidEmail &&
-      !isDuplicatedEmail
+      isDuplicatedEmail
     ) {
       axios
         .post("/api/users/signup", {
