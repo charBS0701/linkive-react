@@ -22,7 +22,8 @@ function useCustomDialog() {
 
     const onCloseDialog = (value) => {
         closeModal();
-        state.resolve(value);
+        if(state.resolve)
+            state.resolve(value);
         dispatch({type: "CLEAR"});
     }
 
@@ -56,7 +57,28 @@ function useCustomDialog() {
         });
     }
 
-    return { dispatch, alert, confirm, input, setFolderName, setButtonText, onCloseDialog };
+    const list = (data, onclick) => {
+        dispatch({type: "INIT", dtype: "List"});
+        dispatch({type: "SET_LIST_DATA", listData: data, onClickItem: onclick});
+        showModal();
+
+        return new Promise(res => {
+            dispatch({type: "SET_RESOLVE", resolve: res});
+        })
+    }
+
+    const editFolder = (title, ) => {
+        dispatch({type: "INIT", title: title, dtype: 'Folder'});
+        dispatch({type: "SET_BUTTON_TEXT", buttonText: ["취소", "확인"]});
+
+        showModal();
+
+        return new Promise(res => {
+            dispatch({type: "SET_RESOLVE", resolve: res})
+        });
+    }
+
+    return { dispatch, alert, confirm, input, list, editFolder, setFolderName, setButtonText, onCloseDialog };
 }
 
 export default useCustomDialog;

@@ -8,6 +8,7 @@ import googleBtn from "../../contents/googleBtn.png";
 import naverBtn from "../../contents/naverBtn.png";
 import kakaoBtn from "../../contents/kakaoBtn.png";
 // import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Layout = styled.div`
   display: flex;
@@ -71,7 +72,7 @@ const Login = ({onLogin}) => {
 
     // Perform login request using Axios
     axios
-      .post("http://localhost:8123/users/login", { id, password },{ withCredentials: true })
+      .post("api/users/login", { id, password },{ withCredentials: true })
       .then((res) => {  
         console.log(res);
         console.log(res.data);
@@ -79,8 +80,8 @@ const Login = ({onLogin}) => {
         if (res.status === 200) {
           if (res.data.accessToken) {
             // 쿠키에 토큰 저장 // 서버에서 처리했음
-            // Cookies.set("accessToken", res.data.accessToken);
-            // Cookies.set("refreshToken", res.data.refreshToken);
+             Cookies.set("accessToken", res.data.accessToken);
+             Cookies.set("refreshToken", res.data.refreshToken);
           }
           // 메인페이지로 이동
           console.log("로그인 성공");
