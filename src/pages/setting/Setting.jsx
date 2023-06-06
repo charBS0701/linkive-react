@@ -128,7 +128,7 @@ const Setting = (props) => {
   useEffect(() => {
     // 유저정보 불러오기
     axios
-      .get(`${process.env.REACT_APP_SERVER}/users/userInfo`, {
+      .get(`api/users/userInfo`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -142,7 +142,7 @@ const Setting = (props) => {
       });
       // 페이지시트 불러오기
       axios
-      .post(`${process.env.REACT_APP_SERVER}/pagesheets`, {
+      .post(`api/pagesheets`, {
         withCredentials: true,
       })
       .then((response) => {
