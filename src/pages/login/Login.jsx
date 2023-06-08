@@ -45,12 +45,11 @@ const LoginBtn = styled.button({
   boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
 });
 
-const Login = ({onLogin}) => {
+const Login = ({ onLogin }) => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   // const navigate = useNavigate();
-
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -72,31 +71,30 @@ const Login = ({onLogin}) => {
 
     // Perform login request using Axios
     axios
-      .post("api/users/login", { id, password },{ withCredentials: true })
-      .then((res) => {  
+      .post("api/users/login", { id, password }, { withCredentials: true })
+      .then((res) => {
         console.log(res);
         console.log(res.data);
         console.log(res.status);
         if (res.status === 200) {
           if (res.data.accessToken) {
             // 쿠키에 토큰 저장 // 서버에서 처리했음
-             Cookies.set("accessToken", res.data.accessToken);
-             Cookies.set("refreshToken", res.data.refreshToken);
+            Cookies.set("accessToken", res.data.accessToken);
+            Cookies.set("refreshToken", res.data.refreshToken);
           }
           // 메인페이지로 이동
           console.log("로그인 성공");
           onLogin();
           // navigate("/");
           window.location.href = "/";
-
         }
       })
-      // .catch((error) => {
-      //   if (error.response.status?.value === 401) {
-      //     alert("아이디 또는 비밀번호가 틀렸습니다.");
-      //   }
-      //   console.log(error);
-      // });
+      .catch((error) => {
+        if (error.response.status === 401) {
+          alert("아이디 또는 비밀번호가 틀렸습니다.");
+        }
+        console.log(error);
+      });
   };
 
   return (
@@ -154,10 +152,7 @@ const Login = ({onLogin}) => {
             비밀번호 찾기
           </Link>
           |
-          <Link
-            to="/signIn"
-            style={{ color: "black", textDecoration: "none" }}
-          >
+          <Link to="/signIn" style={{ color: "black", textDecoration: "none" }}>
             회원가입
           </Link>
         </div>
