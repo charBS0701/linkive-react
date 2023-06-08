@@ -79,6 +79,10 @@ const ModalOpener = (props) => {
   const [withdrawModalOpen, setWithdrawModalOpen] = useState(false);
   const [inquireModalOpen, setinquireModalOpen] = useState(false);
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
+  const [socialLogin, setSocialLogin] = useState(props.socialLogin);
+  if(!socialLogin){
+    setSocialLogin("none");
+  }
 
   // 회원탈퇴
   const handleWithdrawModalOpen = () => {
@@ -131,7 +135,7 @@ const ModalOpener = (props) => {
         isOpen={withdrawModalOpen}
         onClose={handleWithdrawModalClose}
         onLogout={props.onLogout}
-        socialLogin={props.socialLogin}
+        socialLogin={socialLogin}
       />
       <InquireModal
         isOpen={inquireModalOpen}

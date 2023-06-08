@@ -48,6 +48,7 @@ export const ButtonContainer = styled.div`
 const WithdrawModal = ({ isOpen, onClose, onLogout, socialLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  console.log(socialLogin);
 
   if (!isOpen) return null;
   const handleWithdraw = async (e) => {
@@ -65,8 +66,8 @@ const WithdrawModal = ({ isOpen, onClose, onLogout, socialLogin }) => {
         }
       );
       if (response.status === 200) {
-        console.log("Withdraw Success");
         onClose();
+        alert("그동안 Linkive를 이용해주셔서 감사합니다.")
         window.location.href = "/login"; // 로그인 페이지로 이동
         onLogout();
       }
@@ -97,14 +98,15 @@ const WithdrawModal = ({ isOpen, onClose, onLogout, socialLogin }) => {
             onChange={(e) => setEmail(e.target.value)}
           />
           {
-            !socialLogin(
+            // 소셜로그인 값이 "none"이면 비밀번호도 입력받음
+            socialLogin === "none" && (
               <InputLine
-                type="password"
-                placeholder="비밀번호를 입력하세요"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              type="password"
+              placeholder="비밀번호를 입력하세요"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
             )
           }
 
