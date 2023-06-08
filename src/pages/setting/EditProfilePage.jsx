@@ -197,7 +197,7 @@ const EditButton = ({
   userId,
   nickname,
   newPassword,
-  profileImg,
+  img,
 }) => {
   const handleChangeUserInfo = async (event) => {
     event.preventDefault();
@@ -210,6 +210,30 @@ const EditButton = ({
       return;
     }
 
+    // 서버에 이미지 업로드
+    const formData = new FormData();
+    let newImgPath = "http://linkive.site/";
+    formData.append("img", img);
+    console.log(img);
+    const options = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${accessToken}`,
+        "refresh-token": refreshToken,
+      },
+    };
+    try {
+      const response = await axios.post(
+        `/api/images/upload`,
+        formData,
+        options
+      );
+      newImgPath = newImgPath + response.data.file_info.path;
+    } catch (err) {
+      console.log("파일업로드 에러");
+      console.log(err);
+    }
+
     // 정보 수정 api 호출
     const headers = {
       Authorization: `Bearer ${accessToken}`,
@@ -220,26 +244,21 @@ const EditButton = ({
       body = {
         newId: userId,
         newNickname: nickname,
-        newProfileImg: profileImg,
+        newProfileImg: newImgPath,
       };
     } else {
       body = {
         newId: userId,
         newNickname: nickname,
         newPassword: newPassword,
-        newProfileImg: profileImg,
+        newProfileImg: newImgPath,
       };
     }
 
     try {
-      const response = await axios.patch(
-        `/api/users/changeUserInfo`,
-        body,
-        {
-          headers: headers,
-        }
-      );
-      console.log(response);
+      const response = await axios.patch(`/api/users/changeUserInfo`, body, {
+        headers: headers,
+      });
       if (response.status === 200) {
         // 쿠키삭제
         Cookies.remove("accessToken", { path: "" });
@@ -248,7 +267,6 @@ const EditButton = ({
         axios.delete(`/api/users/logout`, {
           withCredentials: true,
         });
-
         alert("회원정보가 수정되었습니다. 다시 로그인 해주세요.");
         window.location.reload();
       }
@@ -272,6 +290,7 @@ const EditProfile = ({ userInfo }) => {
   const [nickname, setNickname] = useState(userInfo.nickname);
   const [profileImg, setProfileImg] = useState(userInfo.profile_img_url);
   const fileInputRef = useRef(null);
+  const [img, setImg] = useState(null);
   const [error, setError] = useState("");
 
   // 비밀번호 변경 모달열기
@@ -284,30 +303,32 @@ const EditProfile = ({ userInfo }) => {
   const closeChangePwModal = () => {
     setChangePwModalOpen(false);
   };
+
+  // 변경할 이미지 입력
   const handleUpload = (event) => {
-    const file = event.target.files[0];
-
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        setProfileImg(reader.result);
-      };
-
-      reader.readAsDataURL(file);
-    }
+    setImg(event.target.files[0]);
   };
+
   const handleClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
   };
 
+  // useEffect(() => {}, [userInfo, userId, nickname, profileImg]);
+
+  // 이미지 미리보기(업로드 전)
   useEffect(() => {
-    if (userInfo && userInfo.profile_img_url) {
-      setProfileImg(profileImg);
+    if (img) {
+      console.log(img);
+      // 이미지 미리보기
+      const reader = new FileReader();
+      reader.readAsDataURL(img);
+      reader.onloadend = () => {
+        setProfileImg(reader.result);
+      };
     }
-  }, [userInfo, userId, nickname, profileImg]);
+  }, [img]);
 
   const accessToken = Cookies.get("accessToken");
   const refreshToken = Cookies.get("refreshToken");
@@ -317,13 +338,14 @@ const EditProfile = ({ userInfo }) => {
       <ProfileContainer>
         <input
           type="file"
+          name="img"
           ref={fileInputRef}
           onChange={handleUpload}
           style={{ display: "none" }}
         />
         <img
           onClick={handleClick}
-          // onChange={(e) => setProfileImg(e.target.value)}
+          onChange={(e) => setProfileImg(e.target.value)}
           src={profileImg}
           // 마우스 올라가면 투명도 50%로
           onMouseOver={(e) => (e.currentTarget.style.opacity = "50%")}
@@ -386,7 +408,7 @@ const EditProfile = ({ userInfo }) => {
           userId={userId}
           nickname={nickname}
           newPassword={newPassword}
-          profileImg={profileImg}
+          img={img}
         />
       </ButtonContainer>
       <ChangePwModal
