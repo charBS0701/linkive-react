@@ -9,6 +9,7 @@ import ViewImage from "../../routes/customView/ViewImage";
 import styled from "styled-components";
 import BtnAddLink from "../home/BtnAddLink";
 import MapContainer from "../../routes/customView/MapContainer";
+import LandingPage from "../../routes/customView/LandingPage";
 
 const StyledMargin = styled.div`
     margin-bottom: 30px;
@@ -17,7 +18,7 @@ const StyledMargin = styled.div`
 const EditCustomView = () => {
     return (
         <div>
-            <MapContainer/>
+            <ViewAddress/>
         </div>
     )
 }

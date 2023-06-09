@@ -107,9 +107,10 @@ const StyledAfterFolderListBorder = styled.div`
     grid-row: 2/4;
     align-self: start;
     box-sizing: border-box;
+    border-radius: 20px;
     // padding-left: 19px;
     border: 1px solid #6368E3;
-    border-radius: 20px;
+    
     cursor: pointer;
 
     position: relative;
@@ -193,7 +194,7 @@ const StyledAfterAddBtnImg = styled.img`
 
 const BtnAddLink = () => {
     //모드
-    const [mode, setMode] = useState("addLink");
+    const [mode, setMode] = useState("default");
 
     // 리스트가 열렸는지 닫혔는지
     const [isOpen, setIsOpen] = useState(false);

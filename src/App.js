@@ -66,56 +66,13 @@ function App() {
   const [state, dispatch] = useReducer(reducer, initState);
 
   return (
-    <div style={{ margin: "3vh 5vw" }}>
-      <Router>
-        <DialogDispatch.Provider value={{ state, dispatch }}>
-          <div style={{ margin: "0 5vw" }}>
-            {isLoggedIn && <Header isLoggedIn={isLoggedIn} />}
-            <Routes>
-              {isLoggedIn ? (
-                <>
-                  <Route path="/" element={<Home />} /> {/* 메인페이지 */}
-                  <Route
-                    path="/setting"
-                    element={
-                      <Setting
-                        onLogout={() => {
-                          setIsLoggedIn(false);
-                          setUserInfo({});
-                        }}
-                        userInfo={userInfo}
-                      />
-                    }
-                  />
-                  <Route
-                    path="/setting/editProfile"
-                    element={<EditProfilePage userInfo={userInfo} />} // 유저정보 수정 페이지
-                  />
-                  <Route path="/link" element={<LinkMenu />} />
-                  <Route path="/viewlink" element={<ViewLink />} />
-                  <Route path="/editlink" element={<EditLink />} />
-                  <Route path="/login" element={<Navigate to="/" />} />{" "}
-                  {/* 로그인 페이지 못가게*/}
-                </>
-              ) : (
-                <>
-                  <Route
-                    path="/login"
-                    element={<Login onLogin={() => setIsLoggedIn(true)} />}
-                  />
-                  <Route
-                    path="/login/findpassword"
-                    element={<FindPassword />}
-                  />
-                  <Route path="*" element={<RedirectToLogin />} />
-                </>
-              )}
-            </Routes>
-          </div>
-          <CustomDialog />
-        </DialogDispatch.Provider>
-      </Router>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/setting" element={<Setting />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<EditCustomView />} />
+      </Routes>
+    </Router>
   );
 }
 
