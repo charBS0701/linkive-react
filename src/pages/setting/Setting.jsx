@@ -276,12 +276,15 @@ const Setting = (props) => {
                 </span>
               </div>
               {pagesheets.map((pagesheet, index) => (
+                // 5번까지만(기본페이지시트)
+                index < 5 && (
                 <Pagesheet
                   pagesheetNum={pagesheet.pagesheet_num}
                   name={pagesheet.name}
                   layout={pagesheet.layout}
                   key={index}
                 />
+                )
               ))}
             </div>
             <div style={{ display: "inline-flex" }}>
@@ -298,10 +301,17 @@ const Setting = (props) => {
                   커스텀
                 </span>
               </div>
-              <DummyPagesheet>여행</DummyPagesheet>
-              <DummyPagesheet>공부</DummyPagesheet>
-              <DummyPagesheet>체크리스트</DummyPagesheet>
-              <DummyPagesheet>+</DummyPagesheet>
+              {pagesheets.map((pagesheet, index) => (
+                // 5번까지만(기본페이지시트)
+                index >= 5 && (
+                <Pagesheet
+                  pagesheetNum={pagesheet.pagesheet_num}
+                  name={pagesheet.name}
+                  layout={pagesheet.layout}
+                  key={index}
+                />
+                )
+              ))}
             </div>
           </div>
         </div>
