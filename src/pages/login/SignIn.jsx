@@ -216,9 +216,6 @@ const Signin = () => {
 
   const submitSignin = (e) => {
     e.preventDefault();
-    console.log(
-      `id: ${id} nickname: ${nickname} password: ${password} email: ${email} agree: ${agree}`
-    );
     if (!agree) {
       alert("약관에 동의해주세요.");
     }
@@ -249,7 +246,7 @@ const Signin = () => {
       isPwValid &&
       isPwSame &&
       isValidEmail &&
-      isDuplicatedEmail
+      !isDuplicatedEmail
     ) {
       axios
         .post("/api/users/signup", {

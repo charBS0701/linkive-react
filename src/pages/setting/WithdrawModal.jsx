@@ -48,7 +48,6 @@ export const ButtonContainer = styled.div`
 const WithdrawModal = ({ isOpen, onClose, onLogout, socialLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  console.log(socialLogin);
 
   if (!isOpen) return null;
   const handleWithdraw = async (e) => {

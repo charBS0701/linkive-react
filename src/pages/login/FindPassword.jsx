@@ -87,7 +87,7 @@ const FindPassword = () => {
         alert("아이디와 이메일이 일치하지 않습니다");
         return;
       }
-      alert("이메일로 인증번호가 발송되었습니다.");
+      alert("회원님의 이메일로 인증번호가 전송되었습니다.");
       setShowInformMessage(true);
     } catch (error) {
       console.error("Error:", error);
@@ -95,7 +95,7 @@ const FindPassword = () => {
     try {
       // 인증번호 발송
       const response = await fetch(
-        `/api/verifyEmail/send`,
+        `/api/users/verifyEmail/send`,
         requestOptions
       );
       const data = await response.json();
@@ -307,11 +307,11 @@ const FindPassword = () => {
               <>
                 {showInformMessage ? (
                   <InformMessage>
-                    회원님의 아이디로 이메일로 전송되었습니다.
+                    회원님의 이메일로 인증번호가 전송되었습니다.
                   </InformMessage>
                 ) : (
                   <InformMessage style={{ visibility: "hidden" }}>
-                    회원님의 아이디로 이메일로 전송되었습니다.
+                    회원님의 이메일로 인증번호가 전송되었습니다.
                   </InformMessage>
                 )}
                 <div style={{ marginLeft: "2%" }}>

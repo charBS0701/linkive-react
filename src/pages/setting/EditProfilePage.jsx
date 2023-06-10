@@ -198,9 +198,22 @@ const EditButton = ({
   nickname,
   newPassword,
   img,
+  userInfo,
 }) => {
   const handleChangeUserInfo = async (event) => {
     event.preventDefault();
+    
+    // 변경내용이 없으면
+    if (
+      userId === userInfo.id &&
+      nickname === userInfo.nickname &&
+      newPassword === "" &&
+      img === null
+    ) {
+      alert("변경할 내용이 없습니다.");
+      return;
+    }
+    
     if (!validNickFormat(nickname)) {
       alert("닉네임은 10글자 이내의 한글, 영문, 숫자만 가능합니다.");
       return;
@@ -209,56 +222,56 @@ const EditButton = ({
       alert("아이디는 14글자 이내의 영소문자, 숫자, '_' 만 가능합니다.");
       return;
     }
-
     // 서버에 이미지 업로드
-    const formData = new FormData();
     let newImgPath = "http://linkive.site/";
-    formData.append("img", img);
-    console.log(img);
-    const options = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${accessToken}`,
-        "refresh-token": refreshToken,
-      },
-    };
-    try {
-      const response = await axios.post(
-        `/api/images/upload`,
-        formData,
-        options
-      );
-      newImgPath = newImgPath + response.data.file_info.path;
-    } catch (err) {
-      console.log("파일업로드 에러");
-      console.log(err);
+    if (img !== null) {
+      console.log("이미지 업로드")
+      const formData = new FormData();
+      formData.append("img", img);
+      console.log(img);
+      const options = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${accessToken}`,
+          "refresh-token": refreshToken,
+        },
+      };
+      try {
+        const response = await axios.post(
+          `/api/images/upload`,
+          formData,
+          options
+        );
+        newImgPath = newImgPath + response.data.file_info.path;
+      } catch (err) {
+        console.log("파일업로드 에러");
+        console.log(err);
+      }
     }
+
 
     // 정보 수정 api 호출
     const headers = {
       Authorization: `Bearer ${accessToken}`,
       "refresh-token": refreshToken,
     };
-    let body = {};
+    let body = {
+      newId: userId,
+      newNickname: nickname,
+      newPassword: newPassword,
+      newProfileImg: img ? newImgPath : userInfo.profile_img_url,
+    };
+
     if (newPassword === "") {
-      body = {
-        newId: userId,
-        newNickname: nickname,
-        newProfileImg: newImgPath,
-      };
-    } else {
-      body = {
-        newId: userId,
-        newNickname: nickname,
-        newPassword: newPassword,
-        newProfileImg: newImgPath,
-      };
+      delete body["newPassword"];
     }
 
     try {
+      // 백엔드에 회원정보 수정 요청
       const response = await axios.patch(`/api/users/changeUserInfo`, body, {
         headers: headers,
       });
+      console.log(body);
       if (response.status === 200) {
         // 쿠키삭제
         Cookies.remove("accessToken", { path: "" });
@@ -284,14 +297,12 @@ const EditButton = ({
 
 const EditProfile = ({ userInfo }) => {
   userInfo = userInfo.userInfo; // 왜 이렇게 두번으로 접근 해야할까??
-  const originNickname = userInfo.nickname;
   const email = userInfo.email;
   const [userId, setUserId] = useState(userInfo.id);
   const [nickname, setNickname] = useState(userInfo.nickname);
   const [profileImg, setProfileImg] = useState(userInfo.profile_img_url);
   const fileInputRef = useRef(null);
   const [img, setImg] = useState(null);
-  const [error, setError] = useState("");
 
   // 비밀번호 변경 모달열기
   const [changePwModalOpen, setChangePwModalOpen] = useState(false);
@@ -314,8 +325,6 @@ const EditProfile = ({ userInfo }) => {
       fileInputRef.current.click();
     }
   };
-
-  // useEffect(() => {}, [userInfo, userId, nickname, profileImg]);
 
   // 이미지 미리보기(업로드 전)
   useEffect(() => {
@@ -409,6 +418,7 @@ const EditProfile = ({ userInfo }) => {
           nickname={nickname}
           newPassword={newPassword}
           img={img}
+          userInfo={userInfo}
         />
       </ButtonContainer>
       <ChangePwModal
