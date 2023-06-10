@@ -63,7 +63,6 @@ const HiddenMsg = ({
   isPwValid,
   isPwSame,
   isValidEmail,
-  isDuplicatedEmail,
   label,
 }) => {
   if (label === "id") {
@@ -95,10 +94,8 @@ const HiddenMsg = ({
   } else if (label === "email") {
     if (isValidEmail === false) {
       return <WarningMsg>이메일 형식이 올바르지 않습니다.</WarningMsg>;
-    } else if (isDuplicatedEmail === true) {
-      return <WarningMsg>이미 사용중인 이메일입니다.</WarningMsg>;
     } else {
-      return <OkMsg>사용 가능한 이메일입니다.</OkMsg>;
+      return <OkMsg>사용 가능한 이메일 형식입니다.</OkMsg>;
     }
   }
 };
@@ -125,6 +122,9 @@ const CheckboxContainer = styled.div`
   width: 20%;
 `;
 
+const Verify = styled.div`
+`;
+
 const Signin = () => {
   const [id, setId] = useState("");
   const [nickname, setNickname] = useState("");
@@ -139,9 +139,13 @@ const Signin = () => {
   const [isPwValid, setIsPwValid] = useState(false);
   const [isPwSame, setIsPwSame] = useState(false);
   const [isValidEmail, setIsValidEmail] = useState(false);
-  const [isDuplicatedEmail, setIsDuplicatedEmail] = useState(false);
+  const [verifyCode, setVerifyCode] = useState("");
+  const [verifyCodeSent, setVerifyCodeSent] = useState(false);
+  const [userVerifyCode, setUserVerifyCode] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
 
   useEffect(() => {
+    console.log("id: ", id);
     // id 형식 체크
     if (validIdFormat(id) === true) {
       setIsinvalid(false);
@@ -155,11 +159,10 @@ const Signin = () => {
       .then((res) => {
         if (res.status === 200) {
           setIsDuplicatedId(false);
-        } else {
-          setIsDuplicatedId(true);
         }
       })
       .catch((err) => {
+        setIsDuplicatedId(true);
         console.log(err);
       });
   }, [id]);
@@ -198,20 +201,6 @@ const Signin = () => {
     } else {
       setIsValidEmail(false);
     }
-
-    // email 중복 체크
-    axios
-      .post("/api/users/checkValidEmail", { email: email })
-      .then((res) => {
-        if (res.status === 200) {
-          setIsDuplicatedEmail(false);
-        } else {
-          setIsDuplicatedEmail(true);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   }, [email]);
 
   const submitSignin = (e) => {
@@ -235,9 +224,6 @@ const Signin = () => {
     if (!isValidEmail) {
       alert("이메일 형식을 확인해주세요.");
     }
-    if (isDuplicatedEmail) {
-      alert("이미 사용중인 이메일입니다.");
-    }
     if (
       agree &&
       !isInvalid &&
@@ -246,7 +232,7 @@ const Signin = () => {
       isPwValid &&
       isPwSame &&
       isValidEmail &&
-      !isDuplicatedEmail
+      isVerified
     ) {
       axios
         .post("/api/users/signup", {
@@ -256,7 +242,7 @@ const Signin = () => {
           email: email,
         })
         .then((res) => {
-          if (res.status === 200) {
+          if (res.status === 201) {
             alert("회원가입이 완료되었습니다.");
             window.location.href = "/login";
           }
@@ -291,6 +277,58 @@ const Signin = () => {
     setAgree(e.target.checked);
   };
 
+  const handleVerifyRequest = async (e) => {
+    e.preventDefault();
+    // 이메일 형식 체크
+    if (!isValidEmail) {
+      alert("이메일 형식을 확인해주세요.");
+      return;
+    }
+    // 이메일 중복확인
+    try {
+      const reponse = await axios({
+        method: "post",
+        url: "/api/users/checkValidEmail",
+        data: { email: email },
+      });
+      if (reponse.status === 200) {
+        alert("해당 이메일로 인증번호를 전송했습니다.");
+        setVerifyCodeSent(true);
+        // 인증번호 요청
+        try {
+          const response = await axios({
+            method: "post",
+            url: "/api/users/verifyEmail/send",
+            headers: { "email-auth-type": "create" },
+            data: { email: email },
+          });
+          if (response.status === 200) {
+            console.log(verifyCodeSent);
+            setVerifyCode(response.data.verificationCode);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    } catch (err) {
+      alert("이미 사용중인 이메일입니다.");
+      console.log(err);
+    }
+  };
+
+  const handleVerifyCodeChange = (e) => {
+    setUserVerifyCode(e.target.value);
+  };
+  const handleVerify = (e) => {
+    e.preventDefault();
+    if (verifyCode == userVerifyCode) {
+      alert("인증되었습니다.");
+      setIsVerified(true);
+    } else {
+      alert("인증번호가 일치하지 않습니다.");
+    }
+  };
+
   return (
     <Layout>
       <Container style={{ padding: "3%" }}>
@@ -320,12 +358,56 @@ const Signin = () => {
           />
 
           <InputName>이메일</InputName>
-          <InputLine onChange={handleEmailChange} />
-          <HiddenMsg
-            isValidEmail={isValidEmail}
-            isDuplicatedEmail={isDuplicatedEmail}
-            label="email"
-          />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <InputLine onChange={handleEmailChange} />
+            <Btn
+              onClick={handleVerifyRequest}
+              $colored
+              style={{
+                marginRight: "0",
+                marginLeft: "3%",
+                padding: "0",
+                borderRadius: "10px",
+                height: "45px",
+              }}
+            >
+              인증요청
+            </Btn>
+          </div>
+          <HiddenMsg isValidEmail={isValidEmail} label="email" />
+          {verifyCodeSent && (
+            <Verify>
+              <InputName>인증번호</InputName>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <InputLine onChange={handleVerifyCodeChange} />
+                <Btn
+                  onClick={handleVerify}
+                  $colored
+                  style={{
+                    marginRight: "0",
+                    marginLeft: "3%",
+                    padding: "0",
+                    borderRadius: "10px",
+                    height: "45px",
+                  }}
+                >
+                  인증확인
+                </Btn>
+              </div>
+            </Verify>
+          )}
         </SigninBox>
       </Container>
       <CheckboxContainer>

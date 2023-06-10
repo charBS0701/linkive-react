@@ -199,7 +199,7 @@ const Setting = (props) => {
     >
       <div style={{ display: "flex", alignItems: "center" }}>
         <img
-          src={userInfo.profile_img_url}
+          src={userInfo.profile_img_url || profile}
           width="80px"
           height="80px"
           alt="profileImg"

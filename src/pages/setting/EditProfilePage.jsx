@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import checked_img from "../../contents/checked.png";
 import edit_profile from "../../contents/edit_profile.png";
 import edit_img from "../../contents/edit.png";
+import profile from "../../contents/profile.png";
 import edit_black_img from "../../contents/edit_black_img.png";
 import styled, { css } from "styled-components";
 import WithdrawButton from "./WithdrawButton";
@@ -355,7 +356,7 @@ const EditProfile = ({ userInfo }) => {
         <img
           onClick={handleClick}
           onChange={(e) => setProfileImg(e.target.value)}
-          src={profileImg}
+          src={profileImg || profile}
           // 마우스 올라가면 투명도 50%로
           onMouseOver={(e) => (e.currentTarget.style.opacity = "50%")}
           onMouseOut={(e) => (e.currentTarget.style.opacity = "100%")}
