@@ -1,5 +1,4 @@
 import styled from "styled-components";
-// import "../../css/customView/ViewCheck.css";
 import React, { useState } from "react";
 
 const StyledBorder = styled.div`

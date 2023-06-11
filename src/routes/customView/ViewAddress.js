@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useState } from "react";
-import "../../css/customView/ViewAddress.css";
 import LandingPage from "./LandingPage";
 
 const StyledBorder = styled.div`

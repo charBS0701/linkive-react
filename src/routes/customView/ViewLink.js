@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import "../../css/customView/ViewLink.css";
 import { useState } from "react";
 
 const StyledBorder = styled.div`

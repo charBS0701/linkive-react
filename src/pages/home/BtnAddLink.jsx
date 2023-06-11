@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import palette from "../../styles/colorPalette";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const StyledBeforeBtn = styled.button`
     width: 164px;
@@ -193,6 +195,40 @@ const StyledAfterAddBtnImg = styled.img`
 
 
 const BtnAddLink = () => {
+
+    // useEffect(() => {
+        // Check for access token
+        // const accessToken = Cookies.get("accessToken");
+        // const refreshToken = Cookies.get("refreshToken");
+        // const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InN1bWluIiwiZW1haWwiOiJzdW1pbkBuYXZlci5jb20iLCJuaWNrbmFtZSI6InN1bWluIiwic29jaWFsTG9naW4iOm51bGwsImlhdCI6MTY4NjQ5ODUyOCwiZXhwIjoxNjg5MDkwNTI4fQ.hvZFWRTTpx0ms31FO15Dv_2O7EJQbXHuRAwsHRTTyiw";
+        // const refreshToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InN1bWluIiwiZW1haWwiOiJzdW1pbkBuYXZlci5jb20iLCJuaWNrbmFtZSI6InN1bWluIiwic29jaWFsTG9naW4iOm51bGwsImlhdCI6MTY4NjQ5ODUyOCwiZXhwIjoxNjg3MTAzMzI4fQ.AmE4LWlj_V6B8ibEHD3rBVVcX9YpzX4Dk33om0Mau00";
+        // console.log(accessToken);
+    
+    //     if (accessToken) {
+    //     //   setIsLoggedIn(true);
+    
+    //     // 유저정보 불러오기
+    //       axios
+    //         .post("http://linkive.site/api/folders", {
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 Authorization: `JWT ${accessToken}`,
+    //                 "refresh-token": refreshToken,
+    //             }
+    //         })
+    //         .then((res) => {
+    //         //   setUserInfo(res.data);
+    //             console.log(res.data);
+    //         })
+    //         .catch((err) => {
+    //           console.log(err);
+    //         });
+    //     } else {
+    //     //   setIsLoggedIn(false);
+    //     }
+    //   }, []);
+    //   const [state, dispatch] = useReducer(reducer, initState);
+
     //모드
     const [mode, setMode] = useState("default");
 
