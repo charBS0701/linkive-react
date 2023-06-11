@@ -78,13 +78,18 @@ const StyledEditAddBtn = styled.button`
     background: none;
 `;
 
+const StyledEditTrashBtn = styled.button`
+    background-color: transparent;
+    border: none;
+    grid-column: 3/4;
+    margin-right: 21px;
+    margin-left: auto;
+`;
+
 const StyledEditTrashIcon = styled.img`
     width: 32px;
     height: 32px;
     /*flex-shrink: 0; /* 아이템 크기 고정 */
-    margin-right: 21px;
-    grid-column: 3/4;
-    margin-left: auto;
 `;
 
 const StyledView = styled.div`
@@ -105,10 +110,10 @@ const StyledViewLotNum = styled.div`
     color: #9B9B9B;
 `;
 
-const ViewAddress = () => {
+const ViewAddress = (props) => {
 
     //모드
-    const [mode, setMode] = useState("edit");
+    const [mode, setMode] = useState(props.state);
     const [road, setRoad] = useState("경상북도 경주시 보문로 544");
     const [lot, setLot] = useState("천군동 191-5 경주월드")
 
@@ -129,6 +134,11 @@ const ViewAddress = () => {
         setMode("add");
     }
 
+    // 아이템 삭제 버튼 구현
+    const handleclickTrashBtn = () => {
+        props.onClickTrashBtn();
+    }
+
     let content = null;
     // edit 모드일 때
     if (mode === "edit"){
@@ -139,9 +149,10 @@ const ViewAddress = () => {
                 <StyledEditAddBtn onClick={SetAdd}>
                     <StyledEditAddIcon src="image/ic_add_view.png"/>
                 </StyledEditAddBtn>
-                <StyledEditTrashIcon
-                    src="image/ic_trash.png"
-                />
+                <StyledEditTrashBtn onClick={handleclickTrashBtn}>
+                    <StyledEditTrashIcon src="image/ic_trash.png" />
+                </StyledEditTrashBtn>
+                
             </StyledBorder>
     }
     // 주소 검색 가능 뷰

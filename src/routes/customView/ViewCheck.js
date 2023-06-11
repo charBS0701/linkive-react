@@ -56,7 +56,6 @@ const StyledCheckContent = styled.textarea`
         color: #9B9B9B;
     }
     font-family: 'NanumSquare_acR';
-
 `;
 
 const StyledViewContent = styled.div`
@@ -69,10 +68,10 @@ const StyledViewContent = styled.div`
     font-family: 'NanumSquare_acR';
 `;
 
-const ViewCheck = () => {
+const ViewCheck = (props) => {
 
     // 모드
-    const [mode, setMode] = useState("view");
+    const [mode, setMode] = useState(props.state);
     
     // 내용
     const [value, setValue] = useState("체크 리스트");
@@ -109,6 +108,13 @@ const ViewCheck = () => {
         }
     }
 
+    // 빈 값일 때 backspace 키 입력 시 아이템 삭제
+    const handleKeyDown = (event) => {
+        if (event.key === 'Backspace' && event.target.value === '') {
+            props.onBackspaceDelete();
+        }
+    };
+
     let content = null;
     //edit 모드
     if (mode === "edit"){
@@ -124,6 +130,7 @@ const ViewCheck = () => {
                     className="viewCheckContent"
                     placeholder="글을 입력해주세요."
                     onChange={autoResizeTextarea}
+                    onKeyDown={handleKeyDown} // 백스페이스 키 이벤트 핸들러 추가
                 />
             </StyledBorder>
         );

@@ -23,6 +23,7 @@ import EditProfilePage from "./pages/setting/EditProfilePage.jsx";
 import Cookies from "js-cookie";
 import { initState, reducer } from "./store/CustomDialogStore";
 import CustomDialog from "./components/CustomDialog";
+import BtnAddLink from "./pages/home/BtnAddLink";
 
 function RedirectToLogin() {
   // 로그인 안했을 때 로그인 페이지로 이동
@@ -70,7 +71,7 @@ function App() {
       <Routes>
         <Route path="/setting" element={<Setting />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/" element={<EditCustomView />} />
+        <Route path="/" element={<BtnAddLink />} />
       </Routes>
     </Router>
   );

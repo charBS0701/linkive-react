@@ -70,13 +70,18 @@ const StyledViewLinkAddr = styled.div`
 `;
 
 
-const ViewLink = () => {
+const ViewLink = (props) => {
 
     // 모드
-    const [mode, setMode] = useState("view");
+    const [mode, setMode] = useState(props.state);
 
     const [title, setTitle] = useState("주소 제목");
     const [addr, setAddr] = useState("https://www.gjw.co.kr/Contents/contents");
+
+    // 아이템 삭제 버튼 구현
+    const handleclickTrashBtn = () => {
+        props.onClickTrashBtn();
+    }
 
     let content = null;
     // edit 모드일 때
@@ -86,7 +91,7 @@ const ViewLink = () => {
             <StyledBorder>
                 <StyledLinkIcon src="image/ic_link.png"/>
                 <StyledEditInput placeholder="링크 추가" />
-                <StyledEditTrashBtn>
+                <StyledEditTrashBtn onClick={handleclickTrashBtn}>
                     <StyledEditTrashIcon src="image/ic_trash.png"/>
                 </StyledEditTrashBtn>
             </StyledBorder>
