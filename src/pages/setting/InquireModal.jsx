@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import palette from "../../styles/colorPalette";
-import Btn from "./Btn";
+import Btn from "../../components/Btn";
 
 export const ModalContainer = styled.div`
   display: flex;

@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import axios from "axios";
-import Btn from "./Btn";
+import Btn from "../../components/Btn";
 import xImg from "../../contents/x.png";
+import Cookies from "js-cookie";
 
 const ModalContainer = styled.div`
   display: flex;
@@ -48,19 +49,32 @@ const LogoutModal = ({ isOpen, onClose, onLogout }) => {
   if (!isOpen) return null;
   
   const logout = () => {
-    axios
-      .post("http://localhost:8123/users/logout", {}, { withCredentials: true })
-      .then((response) => {
-        // 요청 성공시 로직
-        console.log(response);
-        onClose();
-        window.location.href = '/login' // 로그인 페이지로 이동
-        onLogout();
-      })
-      .catch((error) => {
-        // 요청 실패에 대한 처리
-        console.log(error);
-      });
+    // 프론트에서 로그아웃 처리
+    // 쿠키삭제
+    Cookies.remove('accessToken', { path: '' })
+    Cookies.remove('refreshToken', { path: '' })
+
+    // 백엔드에서도 로그아웃 처리
+    axios.delete(`/api/users/logout`, { withCredentials: true })
+
+    alert("로그아웃 되었습니다.");
+    window.location.reload();
+
+
+    // 로그아웃 요청
+    // axios
+    //   .post(`/api/users/logout`, {}, { withCredentials: true })
+    //   .then((response) => {
+    //     // 요청 성공시 로직
+    //     console.log(response);
+    //     onClose();
+    //     window.location.href = '/login' // 로그인 페이지로 이동
+    //     onLogout();
+    //   })
+    //   .catch((error) => {
+    //     // 요청 실패에 대한 처리
+    //     console.log(error);
+    //   });
   };
 
   return (

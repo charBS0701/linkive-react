@@ -1,4 +1,10 @@
-import React, { useEffect, useState, createContext, useReducer } from "react";
+import React, {
+  useEffect,
+  useState,
+  createContext,
+  useReducer,
+  useMemo,
+} from "react";
 
 import axios from "axios";
 import {
@@ -23,6 +29,8 @@ import EditProfilePage from "./pages/setting/EditProfilePage.jsx";
 import Cookies from "js-cookie";
 import { initState, reducer } from "./store/CustomDialogStore";
 import CustomDialog from "./components/CustomDialog";
+import FindId from "./pages/login/FindId";
+import Signin from "./pages/login/Signin";
 import BtnAddLink from "./pages/home/BtnAddLink";
 
 function RedirectToLogin() {
@@ -38,7 +46,7 @@ function App() {
   // 유저정보 불러오기
   const [userInfo, setUserInfo] = useState({});
 
-  useEffect(() => {
+  useMemo(() => {
     // Check for access token
     const accessToken = Cookies.get("accessToken");
     const refreshToken = Cookies.get("refreshToken");
@@ -48,7 +56,7 @@ function App() {
 
       // 유저정보 불러오기
       axios
-        .get("http://localhost:8123/users/userInfo", {
+        .get(`/api/users/userInfo`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
             "refresh-token": refreshToken,
@@ -67,13 +75,56 @@ function App() {
   const [state, dispatch] = useReducer(reducer, initState);
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/setting" element={<Setting />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<BtnAddLink />} />
-      </Routes>
-    </Router>
+    <div style={{ margin: "3vh 5vw" }}>
+      <Router>
+        <DialogDispatch.Provider value={{ state, dispatch }}>
+          <div style={{ margin: "0 5vw" }}>
+            {isLoggedIn && <Header isLoggedIn={isLoggedIn} />}
+            <Routes>
+              {isLoggedIn ? (
+                <>
+                  <Route path="/" element={<Home />} /> {/* 메인페이지 */}
+                  <Route
+                    path="/setting"
+                    element={
+                      <Setting
+                        onLogout={() => {
+                          setIsLoggedIn(false);
+                          setUserInfo({});
+                        }}
+                        userInfo={userInfo}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/setting/editProfile"
+                    element={<EditProfilePage userInfo={userInfo} />} // 유저정보 수정 페이지
+                  />
+                  <Route path="/link" element={<LinkMenu />} />
+                  <Route path="/viewlink" element={<ViewLink />} />
+                  <Route path="/editlink" element={<EditLink />} />
+                  <Route path="/login" element={<Navigate to="/" />} />{" "}
+                  {/* 로그인 페이지 못가게*/}
+                </>
+              ) : (
+                <>
+                  <Route
+                    path="/login"
+                    element={<Login onLogin={() => setIsLoggedIn(true)} />}
+                  />
+                  <Route
+                    path="/login/findpassword"
+                    element={<FindPassword />}
+                  />
+                  <Route path="*" element={<RedirectToLogin />} />
+                </>
+              )}
+            </Routes>
+          </div>
+          <CustomDialog />
+        </DialogDispatch.Provider>
+      </Router>
+    </div>
   );
 }
 

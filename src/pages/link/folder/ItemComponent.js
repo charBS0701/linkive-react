@@ -3,7 +3,7 @@ import React from "react";
 import styles from "./css/ItemComponent.module.css";
 import FolderIcon from "../../../contents/folder_icon.png";
 
-function ItemComponent(props) {
+export function ItemComponent(props) {
     return (
         <li className={styles.li} value={props.key}>
             <img className={styles.mainImage} src={props.src} alt={props.alt} width={240} height={200}/>
@@ -26,5 +26,3 @@ function ItemComponent(props) {
         </li>
     )
 }
-
-export default ItemComponent;

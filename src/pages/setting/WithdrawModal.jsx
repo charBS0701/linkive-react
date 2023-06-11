@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import axios from "axios";
-import InputLine from "./InputLine";
-import Btn from "./Btn";
+import InputLine from "../../components/InputLine";
+import Btn from "../../components/Btn";
 
 const ModalContainer = styled.div`
   display: flex;
@@ -35,8 +35,7 @@ const FormContainer = styled.form`
   flex-direction: column;
   align-items: center;
   margin-top: 1%;
-  `;
-
+`;
 
 export const ButtonContainer = styled.div`
   display: flex;
@@ -46,8 +45,7 @@ export const ButtonContainer = styled.div`
   margin-top: 15px;
 `;
 
-
-const WithdrawModal = ({ isOpen, onClose, onLogout }) => {
+const WithdrawModal = ({ isOpen, onClose, onLogout, socialLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -55,8 +53,9 @@ const WithdrawModal = ({ isOpen, onClose, onLogout }) => {
   const handleWithdraw = async (e) => {
     e.preventDefault();
     try {
+      // socialLogin이 true면 비밀번호를 입력하지 않아도 탈퇴 가능
       const response = await axios.post(
-        "http://localhost:8123/users/delete",
+        `/api/users/delete`,
         {
           email,
           password,
@@ -66,8 +65,8 @@ const WithdrawModal = ({ isOpen, onClose, onLogout }) => {
         }
       );
       if (response.status === 200) {
-        console.log("Withdraw Success");
         onClose();
+        alert("그동안 Linkive를 이용해주셔서 감사합니다.")
         window.location.href = "/login"; // 로그인 페이지로 이동
         onLogout();
       }
@@ -90,26 +89,32 @@ const WithdrawModal = ({ isOpen, onClose, onLogout }) => {
         </div>
         <br />
         <FormContainer onSubmit={handleWithdraw}>
-            <InputLine
-              type="email"
-              placeholder="이메일을 입력하세요"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <InputLine
+          <InputLine
+            type="email"
+            placeholder="이메일을 입력하세요"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          {
+            // 소셜로그인 값이 "none"이면 비밀번호도 입력받음
+            socialLogin === "none" && (
+              <InputLine
               type="password"
               placeholder="비밀번호를 입력하세요"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <ButtonContainer>
-              <Btn onClick={onClose}>취소</Btn>
-              <Btn $colored type="submit">
-                확인
-              </Btn>
-            </ButtonContainer>
+            )
+          }
+
+          <ButtonContainer>
+            <Btn onClick={onClose}>취소</Btn>
+            <Btn $colored type="submit">
+              확인
+            </Btn>
+          </ButtonContainer>
         </FormContainer>
       </ModalBox>
     </ModalContainer>

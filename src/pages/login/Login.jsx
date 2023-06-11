@@ -8,14 +8,15 @@ import googleBtn from "../../contents/googleBtn.png";
 import naverBtn from "../../contents/naverBtn.png";
 import kakaoBtn from "../../contents/kakaoBtn.png";
 // import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
-const Layout = styled.div`
+export const Layout = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 3%;
 }`;
-const LoginContainer = styled.div`
+export const LoginContainer = styled.div`
   display: flex;
   border: solid;
   border-color: #6368e3;
@@ -26,7 +27,7 @@ const LoginContainer = styled.div`
   width: 50%;
   padding: 4% 3% 3%;
 `;
-const LoginForm = styled.form`
+export const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,12 +45,11 @@ const LoginBtn = styled.button({
   boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
 });
 
-const Login = ({onLogin}) => {
+const Login = ({ onLogin }) => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   // const navigate = useNavigate();
-
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -71,29 +71,29 @@ const Login = ({onLogin}) => {
 
     // Perform login request using Axios
     axios
-      .post("http://localhost:8123/users/login", { id, password },{ withCredentials: true })
-      .then((res) => {  
+      .post("api/users/login", { id, password }, { withCredentials: true })
+      .then((res) => {
         console.log(res);
         console.log(res.data);
         console.log(res.status);
         if (res.status === 200) {
           if (res.data.accessToken) {
             // 쿠키에 토큰 저장 // 서버에서 처리했음
-            // Cookies.set("accessToken", res.data.accessToken);
-            // Cookies.set("refreshToken", res.data.refreshToken);
+            Cookies.set("accessToken", res.data.accessToken);
+            Cookies.set("refreshToken", res.data.refreshToken);
           }
           // 메인페이지로 이동
           console.log("로그인 성공");
           onLogin();
           // navigate("/");
           window.location.href = "/";
-
         }
       })
       .catch((error) => {
         if (error.response.status === 401) {
           alert("아이디 또는 비밀번호가 틀렸습니다.");
         }
+        console.log(error);
       });
   };
 
@@ -152,10 +152,7 @@ const Login = ({onLogin}) => {
             비밀번호 찾기
           </Link>
           |
-          <Link
-            to="/login/SignIn"
-            style={{ color: "black", textDecoration: "none" }}
-          >
+          <Link to="/signIn" style={{ color: "black", textDecoration: "none" }}>
             회원가입
           </Link>
         </div>
@@ -174,13 +171,13 @@ const Login = ({onLogin}) => {
             width: "300px",
           }}
         >
-          <a href="http://localhost:8123/users/auth/google">
+          <a href={`/api/users/auth/google`}>
             <img src={googleBtn} alt="google_login" />
           </a>
-          <a href="http://localhost:8123/users/auth/kakao">
+          <a href={`/api/users/auth/kakao`}>
             <img src={kakaoBtn} alt="kakao_login" />
           </a>
-          <a href="http://localhost:8123/users/auth/naver">
+          <a href={`/api/users/auth/naver`}>
             <img src={naverBtn} alt="naver_login" />
           </a>
         </div>

@@ -8,6 +8,9 @@ import FavoriteIcon from "../contents/favorite_icon.png";
 import styles from "./CustomDialog.module.css";
 import EyeIcon from "../contents/eye_icon.png";
 import HiddenIcon from "../contents/hidden_icon.png";
+import CheckIcon from "../contents/check_img.png";
+
+import LinkiveLogo from "../contents/logo_linkive.png";
 
 // Functions
 import useCustomDialog from "../hooks/useCustomDialog";
@@ -86,7 +89,7 @@ function CustomDialog() {
                 <div className={styles.inputDiv}>
                     <input className={styles.input} type={show ? "text" : "password"} value={value} onChange={onChangeInput} index={p.index} placeholder={p.placeholder}/>
                     <span className={styles.hideButton} onClick={toggleShow}><img src={show ? EyeIcon : HiddenIcon} className={styles.hideImage}/></span>
-                </div>:
+                </div> :
                 <div className={styles.inputDiv}>
                     <input className={styles.input} type="text" value={value} onChange={onChangeInput} index={p.index} placeholder={p.placeholder}/>
                 </div>
@@ -146,14 +149,13 @@ function CustomDialog() {
         );
     };
 
-    const DialogComponent = memo(() => (
-        <dialog className={styles.dialog} ref={dialogRef}>
+    const DefaultDialog = () => {
+        return (
             <div className={styles.innerDialog}>
                 <div className={styles.header}> {/* Header */}
-                    {state.folderName ? <FolderElement /> : null}
+                    {state.folderName && <FolderElement />}
                     <span className={styles.title}>{state.title}</span>
                 </div>
-
                 {
                     {
                         "Alert": <div> <DescComponent /> <OkButtonComponent /> </div>,
@@ -161,8 +163,80 @@ function CustomDialog() {
                         "Input": <div> <InputListComponent /> <YesNoButtonComponent /> </div>
                     }[state.dtype]
                 }
-
             </div>
+        );
+    }
+
+    const ListDialog = () => {
+        const data = () => {
+            const result = []
+            for(let i = 0;i < state.listData.length;i++) {
+                result.push(
+                    <li onClick={() => state.onClickItem(state.listData[i].folder_num)}>
+                        {state.listData[i].name}
+                    </li>
+                )
+            }
+            return result;
+        }
+
+        return (
+            <div className={styles.innerDialog}>
+                <ul>
+                    {data()}
+                </ul>
+                <button onClick={onCancelClick}>닫기</button>
+            </div>
+        );
+    }
+
+    const FolderDialog = () => {
+        const [optionIdx, setOptionIdx] = useState(0);
+
+        const colors = ["#FF8B8B", "#FFBB8B", "#FFE58B", "#8CEA8F", "#82B5F2", "#7A7EE4", "#C58BFF", "#A3A3A3"]
+        const colorList = [];
+
+        const colorClick = (idx) => {
+            setOptionIdx(idx);
+        }
+
+        colors.forEach((color, index) => {
+            colorList.push((
+                <li className={styles.colorCircle} style={{backgroundColor: color}} onClick={() => colorClick(index)}>
+                    {optionIdx == index && <img src={CheckIcon} /> }
+                </li>
+            ))
+        })
+
+        return (
+            <div className={styles.innerDialog}>
+                <div className={styles.header}>
+                    {state.folderName && <FolderElement />}
+                    <span className={styles.title}>수정하기</span>
+                </div>
+                <div className={styles.imgDiv}>
+                    <img src={LinkiveLogo} width={240} height={240}/>
+                </div>
+                <div>
+                    <span className={styles.colorDesc}>썸네일 색상 선택</span>
+                    <ul className={styles.horizontalUl}>{colorList}</ul>
+                </div>
+                <YesNoButtonComponent />
+            </div>
+        )
+    }
+
+    const DialogComponent = memo(() => (
+        <dialog className={styles.dialog} ref={dialogRef}>
+            {
+                {
+                    "Alert": <DefaultDialog />,
+                    "Confirm": <DefaultDialog />,
+                    "Input": <DefaultDialog />,
+                    "List": <ListDialog />,
+                    "Folder": <FolderDialog />
+                }[state.dtype]
+            }
         </dialog>
     ));
 
