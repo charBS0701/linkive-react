@@ -3,6 +3,7 @@ import styled from "styled-components";
 import palette from "../../styles/colorPalette";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { NavLink } from 'react-router-dom';
 
 const StyledBeforeBtn = styled.button`
     width: 164px;
@@ -240,6 +241,11 @@ const BtnAddLink = () => {
     // 리스트 상태 추척
     const folderListRef = useRef(null);
 
+    // 하드코딩 - 수정하기
+    const naviLinkView = () => {
+        window.location.href = "/viewLinkMemo/ViewLink";
+    }
+
 
     // 리스트 외부를 클릭했을 때 닫히게
     useEffect(() => {
@@ -331,9 +337,10 @@ const BtnAddLink = () => {
                 <StyledAfterLinkInput placeholder="링크를 입력해주세요"/>
                 <StyledAfterFolderText>Folder</StyledAfterFolderText>
                 <FolderListBox options={FolderList}/>
-                <StyledAfterAddBtn>
-                    <StyledAfterAddBtnImg src = "image/ic_btn_add_link_after.png"/>
+                <StyledAfterAddBtn onClick={naviLinkView}>
+                    <StyledAfterAddBtnImg src="image/ic_btn_add_link_after.png" />
                 </StyledAfterAddBtn>
+                
             </StyledAfterBorder>
     }
 

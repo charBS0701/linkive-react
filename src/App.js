@@ -32,6 +32,7 @@ import CustomDialog from "./components/CustomDialog";
 import FindId from "./pages/login/FindId";
 import Signin from "./pages/login/Signin";
 import BtnAddLink from "./pages/home/BtnAddLink";
+import EditViewLink from "./pages/viewLinkMemo/EditViewLink";
 
 function RedirectToLogin() {
   // 로그인 안했을 때 로그인 페이지로 이동
@@ -110,7 +111,8 @@ function App() {
                 <>
                   <Route
                     path="/login"
-                    element={<Login onLogin={() => setIsLoggedIn(true)} />}
+                    // element={<Login onLogin={() => setIsLoggedIn(true)} />}
+                    element={<EditViewLink />}
                   />
                   <Route
                     path="/login/findpassword"

@@ -72,13 +72,17 @@ const StyledResultPageNum = styled.div`
 
 
 const { kakao } = window
-
+kakao.maps.load(function() {
+  
+});
 const MapContainer = ({ searchPlace, onResultItemClick }) => {
 
   // 검색결과 배열에 담아줌
   const [Places, setPlaces] = useState([])
   
+
   useEffect(() => {
+    
     var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 })
     var markers = []
     const container = document.getElementById('myMap')

@@ -62,13 +62,15 @@ const StyledView = styled.div`
 // }
 const ViewText = (props) => {
     const [mode, setMode] = useState(props.state);
-    const [value, setValue] = useState("내용입니다.");
+    const [value, setValue] = useState("링카이브 깃허브 레포");
 
     const autoResizeTextarea = (e) => {
         let textarea = e.target;
         textarea.style.height = 'auto';
         let height = textarea.scrollHeight; // 높이
         textarea.style.height = `${height}px`;
+
+        // setValue(e.target.value);
     };
 
     // 빈 값일 때 backspace 키 입력 시 아이템 삭제

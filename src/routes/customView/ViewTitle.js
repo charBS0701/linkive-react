@@ -1,6 +1,7 @@
 import { useState } from "react";
 // import "../../css/customView/ViewTitle.css";
 import styled from "styled-components";
+import linkLogo from "../../contents/img_github.png";
 
 const StyledEditBorder = styled.div`
   width: 100%;
@@ -66,6 +67,7 @@ const StyledViewImage = styled.img`
 
   //세로 가운데 정렬
   align-self: center;
+  margin-left: 27px;
 `;
 
 const StyledViewMenuImage = styled.img`
@@ -90,10 +92,10 @@ const StyledModal = styled.div`
   z-index: 99;
 `;
 
-const ViewTitle = () => {
+const ViewTitle = (props) => {
 
     //모드
-    const [mode, setMode] = useState("edit");
+    const [mode, setMode] = useState(props.state);
 
     // // 모드 초기화
     // setMode(state);
@@ -101,12 +103,13 @@ const ViewTitle = () => {
     // 타이틀 내용
     const [value, setValue] = useState("제목");
     // 타이틀 링크 로고
-    const linkLogo = "image/ic_instagram.png"
 
     // // 메뉴 버튼 클릭 시 모달창
     // const [menu, setMenu] = useState(false) //스위치 역할
 
-    
+    const handleChange = (e) => {
+      setValue(e.target.value);
+    }
 
     let content = null;
     // edit 모드일 때와 view 모드일 때
@@ -115,20 +118,21 @@ const ViewTitle = () => {
     if (mode === "edit"){
       content = 
         <StyledEditBorder>
-          <StyledEdit placeholder="제목" maxLength={15}/>
+          <StyledViewImage src={linkLogo}/>
+          <StyledEdit placeholder="링카이브(Linkive)" maxLength={15} onChange={handleChange}/>
         </StyledEditBorder>
         
     }
     // view 모드
     // 글자 수정 안 됨, 링크 로고 및 메뉴 버튼 생김
-    // else if (mode==="view"){
-    //   content = 
-    //       <StyledView>
-    //           <StyledViewImage src={linkLogo}/>
-    //           <StyledViewText>{value}</StyledViewText>
-    //           <StyledViewMenuBtn onClick={openMenu}><StyledViewMenuImage src="image/ic_menu.png"/></StyledViewMenuBtn>
-    //       </StyledView>
-    // }
+    else if (mode==="view"){
+      content = 
+          <StyledView>
+              <StyledViewImage src={linkLogo}/>
+              <StyledViewText>{value}</StyledViewText>
+              <StyledViewMenuBtn><StyledViewMenuImage src="image/ic_menu.png"/></StyledViewMenuBtn>
+          </StyledView>
+    }
 
     return (
         <div>

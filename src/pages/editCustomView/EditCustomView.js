@@ -8,6 +8,7 @@ import ViewImage from "../../routes/customView/ViewImage";
 import BtnAddLink from "../home/BtnAddLink";
 import MapContainer from "../../routes/customView/MapContainer";
 import LandingPage from "../../routes/customView/LandingPage";
+import Setting from "../setting/Setting";
 
 import { useState, useEffect } from "react";
 import styled from "styled-components";
@@ -21,6 +22,10 @@ import itemCheckbox from "../../contents/item_checkbox.png";
 import itemCode from "../../contents/item_code.png";
 
 const EditCustomView = () => {
+  // 하드코딩 - 수정하기
+  const naviLinkView = () => {
+    window.location.href = Setting;
+  }
 
     // 추가된 커스텀뷰 리스트
     const [contentList, setContentList] = useState([0]);
@@ -106,7 +111,7 @@ const EditCustomView = () => {
             
         </Container>
         <BtnDoneAddPageSheetWrapper>
-            <BtnDoneAddPageSheet>만들기</BtnDoneAddPageSheet>
+            <BtnDoneAddPageSheet onClick={naviLinkView}>만들기</BtnDoneAddPageSheet>
         </BtnDoneAddPageSheetWrapper>
     </BtnContainer>
   );
