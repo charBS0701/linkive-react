@@ -47,6 +47,19 @@ const StyledAddBtnImage = styled.img`
     height: 46px;
 `;
 
+const StyledAddMenuTrashBtn = styled.button`
+    position : relative;
+    bottom: 230px;
+    left: 150px;
+    border: none;
+    background: none;
+    margin: 0;
+    // margin-right: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
 const StyledEditBorder = styled.div`
     width: 100%;
     height: 100%;
@@ -110,10 +123,10 @@ const StyledEditMenuTrashImage = styled.img`
     height: 32px;
 `;
 
-const ViewImage = () => {
+const ViewImage = (props) => {
     
     //모드
-    const [mode, setMode] = useState("add");
+    const [mode, setMode] = useState(props.state);
 
     // const AddInputRef = useRef<HTMLInputElement>(null);
     const AddInputRef = useRef(null);
@@ -122,6 +135,7 @@ const ViewImage = () => {
     const handleClickFileInput = () => {
         AddInputRef.current?.click();
     };
+
 
     const uploadImage = (e) => {
         const fileList = e.target.files;
@@ -138,6 +152,11 @@ const ViewImage = () => {
         }
     };
 
+    const handleclickTrashBtn = () => {
+        props.onClickTrashBtn();
+    }
+
+
     let content = null;
     if (mode === "add"){
         content =
@@ -150,9 +169,11 @@ const ViewImage = () => {
                     <StyledAddBtn type = "button" onClick={handleClickFileInput}>
                         <StyledAddBtnImage src="image/ic_add_view.png"/>
                     </StyledAddBtn>
+                    <StyledAddMenuTrashBtn>
+                        <StyledEditMenuTrashImage src="image/ic_trash.png" onClick={handleclickTrashBtn}/>
+                    </StyledAddMenuTrashBtn>
                 </StyledAdd>
             </StyledBorder>
-
     }
     // edit 모드
     else if (mode === "edit"){
@@ -167,7 +188,7 @@ const ViewImage = () => {
                             <StyledEditMenuEditImg src="image/ic_viewimage_edit.png"/>
                         </StyledEditMenuEditBtn >
                         <StyledEditMenuLine/>
-                        <StyledEditMenuTrashBtn>
+                        <StyledEditMenuTrashBtn onClick={handleclickTrashBtn}>
                             <StyledEditMenuTrashImage src="image/ic_trash.png"/>
                         </StyledEditMenuTrashBtn>
                 </StyledEditMenu>

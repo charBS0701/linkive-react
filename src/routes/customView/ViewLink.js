@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import "../../css/customView/ViewLink.css";
 import { useState } from "react";
 
 const StyledBorder = styled.div`
@@ -70,13 +69,18 @@ const StyledViewLinkAddr = styled.div`
 `;
 
 
-const ViewLink = () => {
+const ViewLink = (props) => {
 
     // 모드
-    const [mode, setMode] = useState("view");
+    const [mode, setMode] = useState(props.state);
 
-    const [title, setTitle] = useState("주소 제목");
-    const [addr, setAddr] = useState("https://www.gjw.co.kr/Contents/contents");
+    const [title, setTitle] = useState("GitHub - charBS0701/linkive-react");
+    const [addr, setAddr] = useState("https://github.com/charBS0701/linkive-react");
+
+    // 아이템 삭제 버튼 구현
+    const handleclickTrashBtn = () => {
+        props.onClickTrashBtn();
+    }
 
     let content = null;
     // edit 모드일 때
@@ -86,7 +90,7 @@ const ViewLink = () => {
             <StyledBorder>
                 <StyledLinkIcon src="image/ic_link.png"/>
                 <StyledEditInput placeholder="링크 추가" />
-                <StyledEditTrashBtn>
+                <StyledEditTrashBtn onClick={handleclickTrashBtn}>
                     <StyledEditTrashIcon src="image/ic_trash.png"/>
                 </StyledEditTrashBtn>
             </StyledBorder>

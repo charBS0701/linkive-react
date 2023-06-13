@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import "../../css/customView/ViewCode.css";
 import { useState } from "react";
 
 const StyledBorder = styled.div`
@@ -71,10 +70,10 @@ const StyledView = styled.div`
 
 
 
-const ViewCode = () => {
+const ViewCode = (props) => {
 
     // 모드
-    const [mode, setMode] = useState("view");
+    const [mode, setMode] = useState(props.state);
 
     // 코드 내용
     const [value, setValue] = useState("#include <stdio.h>"+<br/>+"void main(){"+<br/>+"int a;"+<br/>+"}")
@@ -112,6 +111,11 @@ const ViewCode = () => {
         }
     };
 
+    // 아이템 삭제 버튼 구현
+    const handleclickTrashBtn = () => {
+        props.onClickTrashBtn();
+    }
+
     let content = null;
     //edit 모드
     if (mode === "edit"){
@@ -119,7 +123,7 @@ const ViewCode = () => {
             <StyledBorder>
                 <StyledCodeImageBorder>
                     <StyledCodeImage src="image/ic_code.png"/>
-                    <StyledTrashBtn>
+                    <StyledTrashBtn onClick={handleclickTrashBtn}>
                         <StyledTrashImage src="image/ic_trash.png" />
                     </StyledTrashBtn>
                 </StyledCodeImageBorder>
@@ -130,7 +134,7 @@ const ViewCode = () => {
         content =
             <StyledBorder>
                 <StyledCodeImage src="image/ic_code.png"/>
-                <StyledView>#include &#60;stdio.h&#62;<br/>void main()&#123;<br/>int a;<br/>&#125;</StyledView>
+                <StyledView>System.out.print("Linkive");</StyledView>
             </StyledBorder>
     }
 
