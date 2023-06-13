@@ -1,6 +1,9 @@
+import {Navigate} from "react-router-dom";
+
 function Home() {
-  console.log("Home");
-  return <h1>Home</h1>;
+  return (
+      <Navigate to={'/link'} />
+  )
 }
 
 export default Home;

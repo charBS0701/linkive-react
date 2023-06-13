@@ -15,6 +15,8 @@ function AddLinkComponent(props) {
 
     const [folderList, setFolderList] = useState([]);
 
+    const noneFolder = ['폴더미지정'];
+
     useMemo(() => {
         if(props.hold) {
             return;
@@ -48,6 +50,8 @@ function AddLinkComponent(props) {
     folderList.forEach((v, k) => {
         options[v.folder_num] = v.name;
     });
+
+    options[0] = "폴더 미지정";
 
     return (
         <>

@@ -68,14 +68,23 @@ export function ItemComponent(props) {
         </div>
     );
 
+
+    const thumbnailImage = () => {
+        let image = LinkiveLogo;
+
+        for(let i = 0;i < props.data.content.arr.length;i++) {
+            const cur = props.data.content.arr[i];
+            if(cur.type == "image") {
+                image = cur.value;
+            }
+        }
+
+        return image;
+    }
+
     return(
         <li className={styles.li} value={props.key}>
-            {(props.data.content.thumbnail ? <img className={styles.mainImage}
-                                            src={props.data.content.thumbnail}
-                                            width={240} height={200}
-                                            onClick={() => navigate(`/viewlink/${props.data.memo_num}`)}/> :
-            <img src={LinkiveLogo} width={240} height={200} onClick={() => navigate(`/viewlink/${props.data.memo_num}`)} />
-            )}
+            <img src={thumbnailImage()} width={240} height={200} onClick={() => navigate(`/viewlink/${props.data.memo_num}`)} />
             <div className={styles.upper}>
                 <img className={styles.faviconImage} src={Insta} alt="Favicon" width={18} height={18}/>
                 <span className={styles.title} onClick={() => navigate(`/viewlink/${props.data.memo_num}`)}>{props.data.title}</span>
@@ -233,16 +242,18 @@ export function FolderItemComponent(props) {
             if(!pwres) {
                 return;
             }
+
+            payload.prev_password = pwres[0];
         }
 
-        payload.thumbnail = result.thumbnail;
+        payload.thumbnail = result.thumbnail.path.split('/')[3];
 
         axios.post('/api/folders/edit', payload, {
             headers: getTokens()
         }).then(async res => {
             if(res.status == 200) {
-                await alert("수정되었습니다.");
-                window.location.reload();
+                await alert("알림", "수정되었습니다.");
+                //window.location.reload();
                 return;
             }
         }).catch(e => {
@@ -269,11 +280,7 @@ export function FolderItemComponent(props) {
 
     const bottomMargin = {marginBottom: "20px"};
 
-    let thumbnail = LinkiveLogo;
-    if(props.data.thumbnail) {
-        const thumbObject = JSON.parse(props.data.thumbnail);
-        thumbnail = thumbObject.path;
-    }
+    let thumbnail = (props.data.thumbnail) ? `/api/static/${props.data.thumbnail}` : LinkiveLogo ;
 
     return(
         <li className={styles.li} value={props.key} >

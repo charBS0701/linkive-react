@@ -209,13 +209,13 @@ function CustomDialog() {
     }
 
     const FolderDialog = () => {
-        const thumbObj = JSON.parse(state.folderData.thumbnail);
-        const [optionIdx, setOptionIdx] = useState((thumbObj.color ? thumbObj.color : 0));
+        const thumbObj = state.folderData.thumbnail;
+        const [optionIdx, setOptionIdx] = useState(0);
 
         const colors = ["#FF8B8B", "#FFBB8B", "#FFE58B", "#8CEA8F", "#82B5F2", "#7A7EE4", "#C58BFF", "#A3A3A3"]
         const colorList = [];
         const fileRef = useRef(null);
-        const [thumbImage, setThumbImage] = useState((thumbObj.path ? thumbObj.path : LinkiveLogo));
+        const [thumbImage, setThumbImage] = useState((thumbObj ? `/api/static/${thumbObj}`: LinkiveLogo));
 
         const colorClick = (idx) => {
             setOptionIdx(idx);
