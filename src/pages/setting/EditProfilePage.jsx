@@ -159,7 +159,7 @@ const EditButton = ({accessToken, refreshToken, newPassword}) => {
     // To do : 닉네임, 아이디, 프로필사진 변경
     try {
       const response = await axios.post(
-        "http://localhost:8123/users/changeUserInfo",
+        "/api/users/changeUserInfo",
         {
           newNickname: "dum12",
           newId: "du1r2",

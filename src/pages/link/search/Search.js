@@ -1,6 +1,4 @@
-import React from 'react';
-
-import { useState } from 'react';
+import {useEffect, useMemo, useState} from 'react';
 
 import SearchComponent from "../SearchComponent";
 import OptionsComponent from "../../../components/OptionsComponent";
@@ -9,37 +7,86 @@ import styles from './css/Search.module.css'
 import ItemComponent from "./ItemComponent";
 import TestFavicon from "../../../contents/favicon_test.png";
 import MultiClassName from "../../../utils/MultiClassName";
+import {useSearchParams} from "react-router-dom";
+import axios from "axios";
+import {getTokens} from "../../../utils/getTokens";
 
 function Search(props) {
-    const [match, setMatch] = useState(false);
-    const buttonsData = ["전체", "제목", "본문", "폴더명", "장소"]
+    const [optionIdx, setOptionIdx] = useState(0);
+    const buttonsData = ["전체", "제목", "본문", "폴더명", "위치"];
+
+    const [searchParams] = useSearchParams();
+    const keyword = searchParams.get('keyword');
+
+    const [searchData, setSearchData] = useState(null);
+
+
+    useMemo(() => {
+        if(keyword.length < 1) {
+            return;
+        }
+        axios.post('/api/search', {
+            keyword: keyword,
+            method: null
+        }, {headers:getTokens()}).then(res => {
+            if(res.status == 200) {
+                 setSearchData(res.data.searchResult);
+            }
+        })
+    }, [keyword]);
+
+    const ItemListComponent = () => {
+        let data = [];
+        let target = [];
+
+        switch(optionIdx) {
+            case 0:
+                target = target.concat(searchData.title, searchData.content, searchData.folder, searchData.place);
+                target = target.reduce(function(acc, current) {
+                    if (acc.findIndex((obj) => obj.memo_num === current.memo_num) === -1) {
+                        acc.push(current);
+                    }
+                    return acc;
+                }, []);
+                break;
+            case 1:
+                target = searchData.title.slice();
+                break;
+            case 2:
+                target = searchData.content.slice();
+                break;
+            case 3:
+                target = searchData.folder.slice();
+                break;
+            case 4:
+                target = searchData.place.slice();
+                break;
+        }
+
+        for(let i = 0;i < target.length;i++) {
+            data.push(
+                <ItemComponent key={i} data={target[i]} match={optionIdx} keyword={keyword}/>
+            )
+        }
+
+        return data;
+    }
+
 
     const onChangeOptions =  (idx) => {
-        console.log(idx);
-
-        if(idx === 2) {
-            setMatch(true);
-        } else {
-            setMatch(false);
-        }
+        setOptionIdx(idx);
     }
 
     return (
         <div>
             <div className={styles.onlyMargin}>
-                <SearchComponent />
+                <SearchComponent default={keyword}/>
             </div>
             <div className={MultiClassName([styles.onlyMargin, styles.options])}>
-                <OptionsComponent data={buttonsData} default={0} onChange={onChangeOptions}/>
+                <OptionsComponent data={buttonsData} default={optionIdx} onChange={onChangeOptions}/>
             </div>
             <ul>
-                <ItemComponent
-                    src={"/images/img.png"}
-                    title={"롯데월드"}
-                    favicon={TestFavicon}
-                    folder={"놀이공원"}
-                    linkNumber={0}
-                    match={match}/>
+                {searchData && <ItemListComponent />}
             </ul>
         </div>
     )

@@ -56,7 +56,7 @@ const WithdrawModal = ({ isOpen, onClose, onLogout }) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8123/users/delete",
+        "/api/users/delete",
         {
           email,
           password,

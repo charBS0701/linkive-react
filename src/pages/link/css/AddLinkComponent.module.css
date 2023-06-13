@@ -56,6 +56,10 @@
     margin-left: 8px;
 
     padding: 4px 6px 4px 6px;
+
+    width: 74%;
+
+    font-size:14px;
 }
 
 .addFolderButton {
@@ -70,13 +74,11 @@
     padding: 12px 20px 12px 20px;
 
     cursor: pointer;
+
+    vertical-align: center;
 }
 
 .buttonCircle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
     border: none;
     background: white;
     border-radius: 100%;
@@ -87,6 +89,10 @@
     color: #6368E3;
 
     margin-left: 10px;
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .buttonCircleDark {
@@ -104,4 +110,49 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
+}
+
+.selectDiv {
+    border: 1px solid #6368E3;
+    border-radius: 10px;
+    position: relative;
+
+    display: block;
+
+    border: 1px solid #6368E3;
+    border-radius: 20px;
+    margin-left: 8px;
+
+    width: 80%;
+}
+
+.selectDiv:after {
+    position: absolute;
+
+    content: "▾";
+    font-size: 20px;
+    color: #6368E3;
+
+    pointer-events: none;
+
+    right: 8px;
+    bottom: 0px;
+}
+
+.select {
+    border: none;
+    font-size: 14px;
+
+    padding: 4px 32px 4px 6px;
+
+    color: #6368E3;
+    background-color: transparent;
+
+    appearance: none;
+
+    float: right;
+}
+
+.select:focus {
+    outline: none;
 }

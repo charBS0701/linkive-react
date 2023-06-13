@@ -1,24 +1,23 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import styles from "./css/SelectComponent.module.css";
 
 const SelectComponent = (props) => {
-    const [selectValue, setSelectValue] = useState();
+    const Options = () => {
+        let data = [];
 
-    const selectOnChange = (e) => {
-        setSelectValue(e.target.value);
-        if(props.onChange) {
-            props.onChange(e.target.value);
+        for(let i in props.options){
+            data.push(<option value={i}>{props.options[i]}</option>);
         }
+
+        return data;
     }
 
+
     return (
-        <div className={styles.selectDiv}>
-            <label>
-                <select className={styles.select} onChange={selectOnChange} value={selectValue}>
-                    <option value={"create"}>생성순</option>
-                    <option value={"name"}>이름순</option>
+        <div className={props.styles}>
+                <select className={((props.selectStyles) ? props.selectStyles : styles.select)} onChange={props.onChange} value={props.value}>
+                    <Options />
                 </select>
-            </label>
         </div>
     )
 };

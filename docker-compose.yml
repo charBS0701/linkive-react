@@ -1,0 +1,10 @@
+version: '3.9'
+
+services:
+  web:
+    platform: linux/amd64
+    build: .
+    image: peachtree/linkive_web
+    ports:
+      - "80:80"
+    restart: always

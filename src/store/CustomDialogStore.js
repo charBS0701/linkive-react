@@ -34,6 +34,11 @@ export const reducer = (state, action) => {
                 ...state,
                 buttonText: action.buttonText
             }
+        case 'SET_DESC_TEXT':
+            return {
+                ...state,
+                desc: action.desc
+            }
         case 'SET_INPUT_DATA':
             return {
                 ...state,
@@ -45,21 +50,18 @@ export const reducer = (state, action) => {
                 listData: action.listData,
                 onClickItem: action.onClickItem
             }
+        case 'SET_FOLDER_DATA':
+            return {
+                ...state,
+                folderData: action.folderData
+            }
         case 'SET_RESOLVE':
             return {
                 ...state,
                 resolve: action.resolve,
             }
         case 'CLEAR':
-            return {
-                ...state,
-                title: '',
-                desc: '',
-                folderName: '',
-                dtype: 'Alert',
-                buttonText: ['확인'],
-                inputData: []
-            }
+            return initState;
         default:
             return state;
     }

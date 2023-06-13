@@ -175,13 +175,13 @@ const Login = ({onLogin}) => {
             width: "300px",
           }}
         >
-          <a href="http://localhost:8123/users/auth/google">
+          <a href="/api/users/auth/google">
             <img src={googleBtn} alt="google_login" />
           </a>
-          <a href="http://localhost:8123/users/auth/kakao">
+          <a href="/api/users/auth/kakao">
             <img src={kakaoBtn} alt="kakao_login" />
           </a>
-          <a href="http://localhost:8123/users/auth/naver">
+          <a href="/api/users/auth/naver">
             <img src={naverBtn} alt="naver_login" />
           </a>
         </div>

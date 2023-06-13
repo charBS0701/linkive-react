@@ -1,39 +1,44 @@
 import axios from "axios";
-import { ItemComponent } from "./ItemComponent";
+import { ItemComponent } from "../ItemComponent";
 import React, { useState, useEffect } from "react";
 
 import { getTokens } from "../../../utils/getTokens";
 
-import TestFavicon from "../../../contents/favicon_test.png";
-
-import LinkiveLogo from "../../../contents/logo_linkive.png";
+import useCustomDialog from "../../../hooks/useCustomDialog";
 
 function ItemListComponent(props) {
     const [items, setItems] = useState([]);
 
     useEffect(() => {
-        const data = [];
-        let target = "";
-        axios.post(`/api/memos/folders/${props.folderNum}`, {}, {
-            headers: getTokens()
-        }).then(res => {
-            for (let i = 0; i < res.data.memoList.length; i++) {
-                const current = res.data.memoList[i];
+        if(!props.memoData) {
+            return;
+        }
 
-                data.push(
-                    <ItemComponent
-                        src={(current.thumbnail ? current.thumbnail : LinkiveLogo)}
-                        title={current.title}
-                        favicon={TestFavicon}
-                        folder={null}
-                        linkNumber={i}
-                        memoNum={current.memo_num}
-                    />
-                );
-            }
-            setItems(data);
-        });
-    }, [props.option])
+        const data = [];
+        let memoList = props.memoData;
+
+        if(props.sort == 0) {
+            memoList = memoList.sort((a, b) => {
+                return ((a.memo_num < b.memo_num) ? -1 : 1)
+            })
+        } else {
+            memoList = memoList.sort((a, b) => {
+                return ((a.title < b.title) ? -1 : 1)
+            })
+        }
+
+        for (let i = 0; i < memoList.length; i++) {;
+            const current = memoList[i];
+            data.push(
+                <ItemComponent
+                    key={i}
+                    data={current}
+                    inFolder={true}
+                />
+            );
+        }
+        setItems(data);
+    }, [props.memoData])
 
 
     return items;

@@ -11,7 +11,7 @@
 }
 
 .faviconImage {
-    margin: 3px;
+    margin: 3px 6px 3px 3px;
 }
 
 .folderIconImage {
@@ -20,13 +20,24 @@
 }
 
 .title {
-    margin-left: 3px;
     font-size: 16px;
 }
 
-.folderName {
-    font-size: 8px
+.matchTitle {
+    font-size: 16px;
+    color: #6368E3;
 }
+
+
+.folderName {
+    font-size: 8px;
+}
+
+.matchFolderName {
+    font-size: 8px;
+    color: #6368E3;
+}
+
 
 .info {
     display: flex;

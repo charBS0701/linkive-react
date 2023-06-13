@@ -11,7 +11,7 @@ const BtnProfile = ({ isLoggedIn }) => {
       if (isLoggedIn) {
         try {
           const response = await axios.get(
-            "http://localhost:8123/users/profileImg",
+            "/api/users/profileImg",
             {
               withCredentials: true,
             }

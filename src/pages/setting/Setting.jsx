@@ -123,7 +123,7 @@ const Setting = (props) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8123/users/userInfo", {
+      .get("/api/users/userInfo", {
         withCredentials: true,
       })
       .then((response) => {

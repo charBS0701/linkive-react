@@ -3,7 +3,6 @@ import { Routes, Route } from 'react-router-dom';
 
 import SearchComponent from "./SearchComponent";
 import OptionsComponent from "../../components/OptionsComponent";
-import AddFolderComponent from "./AddFolderComponent";
 import SelectComponent from './SelectComponent';
 import ItemListComponent from "./ItemListComponent";
 
@@ -13,36 +12,37 @@ import styles from "./css/Link.module.css";
 
 import Search from './search/Search';
 import Folder from "./folder/Folder";
-import BtnAddLink from "../home/BtnAddLink";
+import AddLinkComponent from "./AddLinkComponent";
+import AddFolderComponent from "./AddFolderComponent";
 
 function LinkComponent() {
-    const [wrap, setWrap] = useState(false);
     const [optionIdx, setOptionIdx] = useState(0);
+    const [selectValue, setSelectValue] = useState(0);
 
     const buttonsData = ["링크별", "폴더별"];
     const optionsOnChange = (idx) => {
         setOptionIdx(idx);
     }
 
-    const AddFolderButtonComponent = (p) =>{
-        return (
-            <button className={styles.addFolderButton} onClick={p.onClick}>
-                <span>폴더 추가</span>
-                <span className={styles.buttonCircle}>+</span>
-            </button>
-        )
+    const selectOnChange = (e) => {
+        setSelectValue(e.target.value);
     }
 
     const HeaderComponent = () => {
         return (
             <div className={MultiClassName([styles.onlyMargin, styles.toolbar])}>
                 <SearchComponent />
-                <BtnAddLink />
+                {
+                    {
+                    0: <AddLinkComponent/>,
+                    1: <AddFolderComponent/>
+                    } [optionIdx]
+                }
             </div>
         );
     };
 
-    //{wrap ? <AddFolderComponent state={{wrap, setWrap}}/> : <AddFolderButtonComponent onClick={() => setWrap(true)}/>}
+    const options = Object.assign({}, ["생성순", "이름순"]);
 
     return (
         <div>
@@ -51,10 +51,10 @@ function LinkComponent() {
                     <span>
                         <OptionsComponent data={buttonsData} default={0} onChange={optionsOnChange}/>
                     </span>
-                <SelectComponent />
+                <SelectComponent value={selectValue} onChange={selectOnChange} styles={styles.selectDiv} options={options}/>
             </div>
             <ul>
-                <ItemListComponent option={optionIdx} />
+                <ItemListComponent option={optionIdx} sort={selectValue}/>
             </ul>
         </div>
     );
