@@ -16,7 +16,7 @@ import {
 import Home from "./pages/home/Home";
 import Setting from "./pages/setting/Setting";
 import Login from "./pages/login/Login";
-import { default as LinkPage } from "./pages/link/Link"; // Prevent name collision
+import Link, { default as LinkPage } from "./pages/link/Link"; // Prevent name collision
 import Header from "./pages/home/Header";
 import FindPassword from "./pages/login/FindPassword.jsx";
 import LinkMenu from "./pages/link/Link";
@@ -32,6 +32,7 @@ import CustomDialog from "./components/CustomDialog";
 import FindId from "./pages/login/FindId";
 import Signin from "./pages/login/Signin";
 import BtnAddLink from "./pages/home/BtnAddLink";
+import DeleteLinkModal from "./pages/viewLinkMemo/DeleteLinkModal";
 
 function RedirectToLogin() {
   // 로그인 안했을 때 로그인 페이지로 이동
@@ -110,7 +111,8 @@ function App() {
                 <>
                   <Route
                     path="/login"
-                    element={<Login onLogin={() => setIsLoggedIn(true)} />}
+                    // element={<Login onLogin={() => setIsLoggedIn(true)} />}
+                    element={<BtnAddLink />}
                   />
                   <Route
                     path="/login/findpassword"

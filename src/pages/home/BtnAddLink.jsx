@@ -3,6 +3,7 @@ import styled from "styled-components";
 import palette from "../../styles/colorPalette";
 import axios from "axios";
 import Cookies from "js-cookie";
+import Link from "../link/Link";
 
 const StyledBeforeBtn = styled.button`
     width: 164px;
@@ -331,9 +332,11 @@ const BtnAddLink = () => {
                 <StyledAfterLinkInput placeholder="링크를 입력해주세요"/>
                 <StyledAfterFolderText>Folder</StyledAfterFolderText>
                 <FolderListBox options={FolderList}/>
-                <StyledAfterAddBtn>
-                    <StyledAfterAddBtnImg src = "image/ic_btn_add_link_after.png"/>
-                </StyledAfterAddBtn>
+                <Link to="/viewlink">
+                    <StyledAfterAddBtn>
+                        <StyledAfterAddBtnImg src = "image/ic_btn_add_link_after.png"/>
+                    </StyledAfterAddBtn>
+                </Link>
             </StyledAfterBorder>
     }
 
