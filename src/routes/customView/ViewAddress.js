@@ -95,6 +95,7 @@ const StyledView = styled.div`
     grid-column: 1/3;
     grid-row: 1/2;
     margin-left: 85px;
+    // display: flex;
 `;
 
 const StyledViewRoad = styled.div`
@@ -113,8 +114,8 @@ const ViewAddress = (props) => {
 
     //모드
     const [mode, setMode] = useState(props.state);
-    const [road, setRoad] = useState("경상북도 경주시 보문로 544");
-    const [lot, setLot] = useState("천군동 191-5 경주월드")
+    const [road, setRoad] = useState("경남 진주시 진주대로 501");
+    const [lot, setLot] = useState("지번: 경남 진주시 가좌동 900")
 
     const [selectedAddress, setSelectedAddress] = useState(null);
 
@@ -170,9 +171,10 @@ const ViewAddress = (props) => {
                     <StyledViewRoad>{road}</StyledViewRoad>
                     <StyledViewLotNum>지번: {lot}</StyledViewLotNum>
                 </StyledView>
-                <StyledEditTrashIcon
-                    src="image/ic_trash.png"
-                />
+                <StyledEditTrashBtn onClick={handleclickTrashBtn}>
+                    <StyledEditTrashIcon src="image/ic_trash.png"/>
+                </StyledEditTrashBtn>
+                
             </StyledBorder>
     }
     // view 모드

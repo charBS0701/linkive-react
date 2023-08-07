@@ -32,6 +32,7 @@ import CustomDialog from "./components/CustomDialog";
 import FindId from "./pages/login/FindId";
 import Signin from "./pages/login/Signin";
 import BtnAddLink from "./pages/home/BtnAddLink";
+import EditViewLink from "./pages/viewLinkMemo/EditViewLink";
 import DeleteLinkModal from "./pages/viewLinkMemo/DeleteLinkModal";
 
 function RedirectToLogin() {
@@ -111,8 +112,7 @@ function App() {
                 <>
                   <Route
                     path="/login"
-                    // element={<Login onLogin={() => setIsLoggedIn(true)} />}
-                    element={<BtnAddLink />}
+                    element={<Login onLogin={() => setIsLoggedIn(true)} />}
                   />
                   <Route
                     path="/login/findpassword"

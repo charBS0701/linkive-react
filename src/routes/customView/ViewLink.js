@@ -74,8 +74,8 @@ const ViewLink = (props) => {
     // 모드
     const [mode, setMode] = useState(props.state);
 
-    const [title, setTitle] = useState("주소 제목");
-    const [addr, setAddr] = useState("https://www.gjw.co.kr/Contents/contents");
+    const [title, setTitle] = useState("GitHub - charBS0701/linkive-react");
+    const [addr, setAddr] = useState("https://github.com/charBS0701/linkive-react");
 
     // 아이템 삭제 버튼 구현
     const handleclickTrashBtn = () => {

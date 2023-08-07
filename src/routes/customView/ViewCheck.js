@@ -73,9 +73,9 @@ const ViewCheck = (props) => {
     const [mode, setMode] = useState(props.state);
     
     // 내용
-    const [value, setValue] = useState("체크 리스트");
+    const [value, setValue] = useState(props.value);
 
-    const [isChecked, setIsChecked] = useState(false);
+    const [isChecked, setIsChecked] = useState(props.isChecked);
 
     // 텍스트의 크기에 따라 뷰의 크기 변경
     const autoResizeTextarea = (e) => {

@@ -134,7 +134,7 @@ const ViewCode = (props) => {
         content =
             <StyledBorder>
                 <StyledCodeImage src="image/ic_code.png"/>
-                <StyledView>#include &#60;stdio.h&#62;<br/>void main()&#123;<br/>int a;<br/>&#125;</StyledView>
+                <StyledView>System.out.print("Linkive");</StyledView>
             </StyledBorder>
     }
 
