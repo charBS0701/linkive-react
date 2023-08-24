@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import palette from "../../styles/colorPalette";
+// import og from 'open-graph';
 import axios from "axios";
 import Cookies from "js-cookie";
 import { NavLink } from 'react-router-dom';
@@ -125,29 +126,6 @@ const StyledAfterFolderListBorder = styled.div`
     }
 `;
 
-// const StyledAfterFolderList = styled.select`
-//     width: 100%;
-//     height: 100%;
-//     z-index: 3; // select가 아이콘보다 위여야 함
-//     background: transparent;
-//     box-sizing: border-box;
-//     padding-left: 19px;
-//     border: 1px solid #6368E3;
-//     border-radius: 30px;
-//     color: ${palette.mainColor};
-
-//     font-family: 'NanumSquare_acEB';
-//     font-size: 13px;
-
-//     // 방향 화살표 없애기
-//     -webkit-appearance: none;
-// 	-moz-appearance: none;
-// 	appearance: none;
-
-//     &:focus + ${StyledAfterFolderListIcon} {
-//         transform: rotate(180deg);
-//     }
-// `;
 
 const StyledAfterFolderItemSelected = styled.span`
     margin-left: 21px;
@@ -175,9 +153,6 @@ const StyledAfterFolderItemLi = styled.li`
     margin-top: 10px;
 `;
 
-// const StyledAfterFolderItemBtn = styled.button`
-    
-// `;
 
 const StyledAfterAddBtn = styled.button`
     border: none;
@@ -197,41 +172,11 @@ const StyledAfterAddBtnImg = styled.img`
 
 const BtnAddLink = () => {
 
-    // useEffect(() => {
-        // Check for access token
-        // const accessToken = Cookies.get("accessToken");
-        // const refreshToken = Cookies.get("refreshToken");
-        // const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InN1bWluIiwiZW1haWwiOiJzdW1pbkBuYXZlci5jb20iLCJuaWNrbmFtZSI6InN1bWluIiwic29jaWFsTG9naW4iOm51bGwsImlhdCI6MTY4NjQ5ODUyOCwiZXhwIjoxNjg5MDkwNTI4fQ.hvZFWRTTpx0ms31FO15Dv_2O7EJQbXHuRAwsHRTTyiw";
-        // const refreshToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InN1bWluIiwiZW1haWwiOiJzdW1pbkBuYXZlci5jb20iLCJuaWNrbmFtZSI6InN1bWluIiwic29jaWFsTG9naW4iOm51bGwsImlhdCI6MTY4NjQ5ODUyOCwiZXhwIjoxNjg3MTAzMzI4fQ.AmE4LWlj_V6B8ibEHD3rBVVcX9YpzX4Dk33om0Mau00";
-        // console.log(accessToken);
-    
-    //     if (accessToken) {
-    //     //   setIsLoggedIn(true);
-    
-    //     // 유저정보 불러오기
-    //       axios
-    //         .post("http://linkive.site/api/folders", {
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 Authorization: `JWT ${accessToken}`,
-    //                 "refresh-token": refreshToken,
-    //             }
-    //         })
-    //         .then((res) => {
-    //         //   setUserInfo(res.data);
-    //             console.log(res.data);
-    //         })
-    //         .catch((err) => {
-    //           console.log(err);
-    //         });
-    //     } else {
-    //     //   setIsLoggedIn(false);
-    //     }
-    //   }, []);
-    //   const [state, dispatch] = useReducer(reducer, initState);
-
     //모드
     const [mode, setMode] = useState("default");
+
+    // 링크값
+    const [url, setUrl] = useState("");
 
     // 리스트가 열렸는지 닫혔는지
     const [isOpen, setIsOpen] = useState(false);
@@ -242,9 +187,9 @@ const BtnAddLink = () => {
     const folderListRef = useRef(null);
 
     // 하드코딩 - 수정하기
-    const naviLinkView = () => {
-        window.location.href = "/viewLinkMemo/ViewLink";
-    }
+    // const naviLinkView = () => {
+    //     window.location.href = "/viewLinkMemo/ViewLink";
+    // }
 
 
     // 리스트 외부를 클릭했을 때 닫히게
@@ -285,6 +230,17 @@ const BtnAddLink = () => {
         setIsOpen(!isOpen);
     };
 
+    // // open graph
+    // const getLinkInformation = () => {
+    //     og(url, function (err, meta) {
+    //         if(err) {
+    //             console.log(err);
+    //           return;
+    //         }
+    //         console.log(meta);
+    //     });
+    // }
+
     const FolderListBox = (props) => {
       
         const handleOptionClick = (option) => {
@@ -318,6 +274,20 @@ const BtnAddLink = () => {
         );
     }
 
+    // open graph scrper
+
+    const ogs = require("open-graph-scraper");
+
+    const options = { url: 'http://ogp.me/' };
+    ogs(options)
+    .then((data) => {
+        const { error, html, result, response } = data;
+        console.log('error:', error);  // This returns true or false. True if there was an error. The error itself is inside the result object.
+        console.log('html:', html); // This contains the HTML of page
+        console.log('result:', result); // This contains all of the Open Graph results
+        console.log('response:', response); // This contains response from the Fetch API
+    })
+
     let content = null;
     if (mode === "default"){
         content = 
@@ -334,10 +304,13 @@ const BtnAddLink = () => {
         content = 
             <StyledAfterBorder>
                 <StyledAfterLinkText>Link</StyledAfterLinkText>
-                <StyledAfterLinkInput placeholder="링크를 입력해주세요"/>
+                <StyledAfterLinkInput 
+                    placeholder="링크를 입력해주세요"
+                    value={url}
+                    onChange={setUrl} />
                 <StyledAfterFolderText>Folder</StyledAfterFolderText>
                 <FolderListBox options={FolderList}/>
-                <StyledAfterAddBtn>
+                <StyledAfterAddBtn >
                     <StyledAfterAddBtnImg src = "image/ic_btn_add_link_after.png"/>
                 </StyledAfterAddBtn>
             </StyledAfterBorder>

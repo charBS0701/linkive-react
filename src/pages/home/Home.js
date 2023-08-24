@@ -1,5 +1,8 @@
+import BtnAddLink from "./BtnAddLink";
+
 function Home() {
-  return <h1>Home</h1>;
+  return <BtnAddLink/>
+  // return <h1>Home</h1>;
 }
 
 export default Home;

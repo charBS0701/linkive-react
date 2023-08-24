@@ -71,7 +71,7 @@ const Login = ({ onLogin }) => {
 
     // Perform login request using Axios
     axios
-      .post("api/users/login", { id, password }, { withCredentials: true })
+      .post("/api/users/login", { id, password }, { withCredentials: true })
       .then((res) => {
         console.log(res);
         console.log(res.data);
